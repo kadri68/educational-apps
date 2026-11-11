@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -9,20 +8,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
 <style>
 :root{
---bg:#0b1220;--panel:#111a2e;--panel2:#16213a;--line:#24324f;
---text:#e8eefc;--muted:#8a9bbd;--accent:#2dd4bf;--accent-d:#14b8a6;
---ok:#34d399;--bad:#f87171;--warn:#fbbf24;--r:14px;
---mono:ui-monospace,Consolas,"SF Mono",monospace;
+  --bg:#0b1220;--panel:#111a2e;--panel2:#16213a;--line:#24324f;
+  --text:#e8eefc;--muted:#8a9bbd;--accent:#2dd4bf;--accent-d:#14b8a6;
+  --ok:#34d399;--bad:#f87171;--warn:#fbbf24;--r:14px;
+  --mono:ui-monospace,Consolas,"SF Mono",monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{
-font-family:"IBM Plex Sans Arabic",system-ui,Tahoma,sans-serif;
-background:var(--bg);
-background-image:radial-gradient(900px 400px at 85% -10%,rgba(45,212,191,.12),transparent),radial-gradient(700px 400px at 0% 110%,rgba(99,102,241,.10),transparent);
-color:var(--text);min-height:100vh;padding:16px;font-size:14px;line-height:1.6;
+  font-family:"IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
+  background:var(--bg);
+  background-image:radial-gradient(900px 400px at 85% -10%,rgba(45,212,191,.12),transparent),radial-gradient(700px 400px at 0% 110%,rgba(99,102,241,.10),transparent);
+  color:var(--text);min-height:100vh;padding:16px;font-size:14px;line-height:1.6;
 }
 .app{max-width:900px;margin:0 auto}
 header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
@@ -34,18 +32,18 @@ header p{font-size:.78rem;color:var(--muted)}
 label{display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:.85rem;margin-bottom:6px}
 .counter{font-size:.75rem;font-weight:500;color:var(--accent);background:rgba(45,212,191,.1);padding:1px 10px;border-radius:99px}
 textarea{
-width:100%;min-height:130px;resize:vertical;padding:12px;border-radius:10px;
-background:#0a1120;border:1px solid var(--line);color:var(--text);
-font:.82rem/1.6 var(--mono);direction:ltr;text-align:left;transition:.15s;
+  width:100%;min-height:130px;resize:vertical;padding:12px;border-radius:10px;
+  background:#0a1120;border:1px solid var(--line);color:var(--text);
+  font:.82rem/1.6 var(--mono);direction:ltr;text-align:left;transition:.15s;
 }
 textarea::placeholder{color:#51628a;font-family:inherit;direction:rtl}
 textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,212,191,.15)}
 #output{min-height:90px;color:#9fe8dd}
 .btns{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
 button{
-font:inherit;font-size:.82rem;font-weight:600;padding:9px 16px;border:1px solid var(--line);
-border-radius:10px;cursor:pointer;background:var(--panel2);color:var(--text);
-display:inline-flex;align-items:center;gap:6px;transition:.15s;
+  font:inherit;font-size:.82rem;font-weight:600;padding:9px 16px;border:1px solid var(--line);
+  border-radius:10px;cursor:pointer;background:var(--panel2);color:var(--text);
+  display:inline-flex;align-items:center;gap:6px;transition:.15s;
 }
 button:hover{border-color:#3a4d78;background:#1b2a49}
 button:active{transform:scale(.97)}
@@ -83,421 +81,227 @@ button.sm{padding:5px 11px;font-size:.75rem;border-radius:8px}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
-
 <body>
 <div class="app">
-<header>
-<div class="logo">📡</div>
-<div>
-<h1>مستخرج ومحول اشتراكات Xtream</h1>
-<p>استخراج • فحص الصلاحية • رمز QR • تشغيل مباشر</p>
+  <header>
+    <div class="logo">📡</div>
+    <div>
+      <h1>مستخرج ومحول اشتراكات Xtream</h1>
+      <p>استخراج • فحص الصلاحية • رمز QR • تشغيل مباشر</p>
+    </div>
+  </header>
+  <section class="panel">
+    <p class="hint">استخراج تلقائي للهوست واسم المستخدم وكلمة المرور من أي نص أو روابط M3U، مع فحص الصلاحية وتوليد رمز QR لكل اشتراك.</p>
+    <label for="input">📋 ألصق النص هنا <span class="counter" id="inputCounter">0 اشتراك مكتشف</span></label>
+    <textarea id="input" placeholder="ألصق النص هنا بأي صيغة كانت..."></textarea>
+    <div class="btns">
+      <button class="primary" id="btnCheck">🔄 استخراج وفحص الصلاحية</button>
+      <button id="btnCopy">📋 نسخ كل الروابط</button>
+      <button id="btnPaste">📌 لصق من الحافظة</button>
+      <button class="danger" id="btnClear">🗑️ مسح</button>
+    </div>
+    <div id="cards" class="cards"></div>
+    <label for="output">🔗 روابط التشغيل المباشرة <span class="counter" id="outputCounter">0 رابط</span></label>
+    <textarea id="output" readonly placeholder="ستظهر روابط التشغيل هنا..."></textarea>
+  </section>
+  <section class="panel" id="checkBox">
+    <strong>📊 نتائج الفحص وتفاصيل الصلاحية</strong>
+    <div id="results" class="results"></div>
+  </section>
 </div>
-</header>
-
-<section class="panel">
-<p class="hint">استخراج تلقائي للهوست واسم المستخدم وكلمة المرور من أي نص أو روابط M3U، مع فحص الصلاحية وتوليد رمز QR لكل اشتراك.</p>
-
-<label for="input">📋 ألصق النص هنا <span class="counter" id="inputCounter">0 اشتراك مكتشف</span></label>
-<textarea id="input" placeholder="ألصق النص هنا بأي صيغة كانت..."></textarea>
-
-<div class="btns">
-<button class="primary" id="btnCheck">🔄 استخراج وفحص الصلاحية</button>
-<button id="btnCopy">📋 نسخ كل الروابط</button>
-<button id="btnPaste">📌 لصق من الحافظة</button>
-<button class="danger" id="btnClear">🗑️ مسح</button>
-</div>
-
-<div id="cards" class="cards"></div>
-
-<label for="output">🔗 روابط التشغيل المباشرة <span class="counter" id="outputCounter">0 رابط</span></label>
-<textarea id="output" readonly placeholder="ستظهر روابط التشغيل هنا..."></textarea>
-</section>
-
-<section class="panel" id="checkBox">
-<strong>📊 نتائج الفحص وتفاصيل الصلاحية</strong>
-<div id="results" class="results"></div>
-</section>
-</div>
-
 <div class="toast" id="toast">تم النسخ</div>
 
 <script>
 (function(){
-
-const PROXY_URL='https://xtream-proxy.kadri68.workers.dev/';
-
-const $=id=>document.getElementById(id);
-const input=$('input'),output=$('output');
-const inCnt=$('inputCounter'),outCnt=$('outputCounter');
-const checkBox=$('checkBox'),results=$('results');
-const cards=$('cards'),toast=$('toast');
-
-let timer=null,accounts=[];
-
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({
-'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-}[c]));
-
-const m3u=a=>`${a.host}/get.php?username=${encodeURIComponent(a.username)}&password=${encodeURIComponent(a.password)}&type=m3u_plus&output=ts`;
-
-function showToast(msg,d=2000){
-clearTimeout(timer);
-toast.textContent=msg;
-toast.classList.add('show');
-timer=setTimeout(()=>toast.classList.remove('show'),d);
-}
-
-async function copyText(t,msg='تم النسخ'){
-try{
-await navigator.clipboard.writeText(t);
-}catch(e){
-const ta=document.createElement('textarea');
-ta.value=t;
-document.body.appendChild(ta);
-ta.select();
-document.execCommand('copy');
-ta.remove();
-}
-showToast('✅ '+msg);
-}
-
-function normalizeHost(host,port){
-if(!host)return '';
-host=host.trim().replace(/\/+$/,'');
-if(!/^https?:\/\//i.test(host))host='http://'+host;
-try{
-const p=new URL(host);
-if(port&&!p.port)return `${p.protocol}//${p.hostname}:${port.trim()}`;
-return `${p.protocol}//${p.host}`;
-}catch(e){
-if(port&&!host.includes(':'+port))return host+':'+port.trim();
-return host;
-}
-}
-
-function parseText(text){
-const out=[];
-if(!text||!text.trim())return out;
-
-const urlRe=/(https?:\/\/[^\s"'<>]+(?:\/get\.php|\/live\/|\/playlist)[^\s"'<>]*)/gi;
-let m;
-
-while((m=urlRe.exec(text))!==null){
-try{
-const p=new URL(m[1]);
-const u=p.searchParams.get('username');
-const pw=p.searchParams.get('password');
-if(u&&pw)out.push({host:`${p.protocol}//${p.host}`,username:u,password:pw});
-}catch(e){}
-}
-
-const hostRe=/(?:host|url|server|سيرفر|رابط|هوست)\s*[:=]\s*(https?:\/\/[^\s\r\n]+|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?::\d+)?)/gi;
-const portRe=/(?:port|منفذ|بورت)\s*[:=]\s*(\d+)/gi;
-const userRe=/(?:user(?:name)?|مستخدم|يوزر|حساب)\s*[:=]\s*([^\s\r\n,;]+)/gi;
-const passRe=/(?:pass(?:word)?|كلمة\s*المرور|باسورد|كود)\s*[:=]\s*([^\s\r\n,;]+)/gi;
-
-const g=re=>[...text.matchAll(re)].map(x=>x[1]);
-const hosts=g(hostRe),ports=g(portRe),users=g(userRe),passes=g(passRe);
-const n=Math.min(hosts.length,users.length,passes.length);
-
-for(let i=0;i<n;i++){
-out.push({
-host:normalizeHost(hosts[i],ports[i]||null),
-username:users[i].trim(),
-password:passes[i].trim()
-});
-}
-
-const lines=text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
-
-for(let i=0;i<lines.length;i++){
-const l=lines[i];
-
-if(/^(?:https?:\/\/|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i.test(l)&&!l.includes('get.php')){
-if(i+3<lines.length&&/^\d+$/.test(lines[i+1])){
-out.push({host:normalizeHost(l,lines[i+1]),username:lines[i+2],password:lines[i+3]});
-i+=3;
-}else if(i+2<lines.length){
-out.push({host:normalizeHost(l),username:lines[i+1],password:lines[i+2]});
-i+=2;
-}
-}
-}
-
-const seen=new Set();
-
-return out.filter(a=>{
-const k=`${a.host}|${a.username}|${a.password}`.toLowerCase();
-if(seen.has(k))return false;
-seen.add(k);
-return true;
-});
-}
-
-function renderCards(list){
-cards.innerHTML=list.map(a=>`
-<div class="acc">
-<div><b>Host</b> ${esc(a.host)}</div>
-<div><b>User</b> ${esc(a.username)}</div>
-<div><b>Pass</b> ${esc(a.password)}</div>
-</div>`).join('');
-}
-
-function updateUI(){
-accounts=parseText(input.value);
-inCnt.textContent=`${accounts.length} اشتراك مكتشف`;
-renderCards(accounts);
-const urls=accounts.map(m3u);
-output.value=urls.join('\n\n');
-outCnt.textContent=`${urls.length} رابط`;
-return accounts;
-}
-
-const fmtDate=ts=>{
-if(!ts||ts==='null')return 'غير محدودة';
-const d=new Date(Number(ts)*1000);
-if(isNaN(d))return String(ts);
-const days=Math.ceil((d-Date.now())/864e5);
-const s=d.toLocaleDateString('en-GB');
-return days<0?`${s} (منتهية)`:`${s} (${days} يوم)`;
-};
-
-async function checkOne(a,idx){
-
-const el=$('res-'+idx);
-
-const set=(cls,txt)=>{
-el.className='res '+cls;
-el.querySelector('.status').textContent=txt;
-};
-
-const ctrl=new AbortController();
-const to=setTimeout(()=>ctrl.abort(),15000);
-
-try{
-
-const r=await fetch(PROXY_URL,{
-method:'POST',
-headers:{
-'Content-Type':'application/json'
-},
-body:JSON.stringify({
-host:a.host,
-username:a.username,
-password:a.password
-}),
-signal:ctrl.signal
-});
-
-const j=await r.json();
-
-if(!r.ok)throw new Error(j.error||'Proxy error');
-
-const ui=j&&j.user_info;
-
-if(!ui||ui.auth===0||ui.auth==='0'){
-set('fail','❌ بيانات غير صحيحة');
-el.querySelector('.st').textContent='غير صالح';
-return;
-}
-
-const active=String(ui.status).toLowerCase()==='active';
-const expired=ui.exp_date&&Number(ui.exp_date)*1000<Date.now();
-
-el.querySelector('.exp').textContent=fmtDate(ui.exp_date);
-el.querySelector('.st').textContent=ui.status||'--';
-el.querySelector('.mx').textContent=ui.max_connections??'--';
-el.querySelector('.ac').textContent=ui.active_cons??'--';
-
-if(active&&!expired){
-set('ok','✅ يعمل');
-}else{
-set('fail',expired?'⛔ منتهي':'⛔ غير فعال');
-}
-
-}catch(e){
-
-set('fail','⚠️ تعذّر الفحص');
-
-const msg=el.querySelector('.exp');
-
-msg.textContent=e.name==='AbortError'
-?'انتهت مهلة الاتصال'
-:e.message||'تعذّر الاتصال بالوسيط أو الخادم';
-
-el.querySelector('.st').textContent='فشل الاتصال';
-
-}finally{
-clearTimeout(to);
-}
-}
-
-function performCheck(list){
-
-checkBox.classList.add('active');
-
-results.innerHTML=list.map((a,i)=>`
-<div class="res" id="res-${i}">
-<div class="res-head">
-<span style="word-break:break-all">🌐 ${esc(a.host)}</span>
-<span class="status">⏳ جارٍ الفحص...</span>
-</div>
-
-<div class="details">
-<div><strong>المستخدم:</strong> ${esc(a.username)}</div>
-<div><strong>الصلاحية:</strong> <span class="exp">جاري التحقق...</span></div>
-<div><strong>الحالة:</strong> <span class="st">--</span></div>
-<div><strong>الأجهزة:</strong> <span class="mx">--</span> / متصل: <span class="ac">--</span></div>
-</div>
-
-<div class="acts">
-<button class="sm" data-act="dl" data-i="${i}">⬇️ تحميل M3U</button>
-<button class="sm" data-act="open" data-i="${i}">▶️ فتح</button>
-<button class="sm" data-act="copy" data-i="${i}">📋 نسخ</button>
-<button class="sm" data-act="qr" data-i="${i}">🔳 QR</button>
-</div>
-
-<div class="qr" id="qr-${i}">
-<div class="qr-box" id="qrbox-${i}"></div>
-<div class="qr-user">${esc(a.username)}</div>
-<button class="sm" style="margin-top:8px" data-act="qrdl" data-i="${i}">💾 حفظ الصورة</button>
-</div>
-</div>`).join('');
-
-list.forEach((a,i)=>checkOne(a,i));
-}
-
-results.addEventListener('click',async e=>{
-
-const b=e.target.closest('button[data-act]');
-if(!b)return;
-
-const a=accounts[b.dataset.i];
-if(!a)return;
-
-const act=b.dataset.act;
-const url=m3u(a);
-
-if(act==='copy'){
-copyText(url,'تم نسخ الرابط');
-}
-
-else if(act==='open'){
-window.open(url,'_blank','noopener');
-}
-
-else if(act==='dl'){
-
-try{
-const r=await fetch(url);
-const blob=await r.blob();
-const l=document.createElement('a');
-l.href=URL.createObjectURL(blob);
-l.download=`${a.username}.m3u`;
-l.click();
-URL.revokeObjectURL(l.href);
-
-}catch(err){
-window.open(url,'_blank','noopener');
-showToast('⚠️ تم الفتح في تبويب جديد بسبب قيود المتصفح');
-}
-
-}
-
-else if(act==='qr'){
-
-const wrap=$('qr-'+b.dataset.i);
-const box=$('qrbox-'+b.dataset.i);
-
-wrap.classList.toggle('show');
-
-if(wrap.classList.contains('show')&&!box.hasChildNodes()){
-if(typeof QRCode==='undefined'){
-showToast('⚠️ تعذّر تحميل مكتبة QR');
-return;
-}
-new QRCode(box,{
-text:url,
-width:180,
-height:180,
-correctLevel:QRCode.CorrectLevel.L
-});
-}
-
-}
-
-else if(act==='qrdl'){
-
-const src=$('qrbox-'+b.dataset.i).querySelector('canvas');
-if(!src)return;
-
-const c=document.createElement('canvas');
-c.width=src.width+40;
-c.height=src.height+70;
-
-const x=c.getContext('2d');
-x.fillStyle='#fff';
-x.fillRect(0,0,c.width,c.height);
-x.drawImage(src,20,20);
-x.fillStyle='#111';
-x.font='bold 16px monospace';
-x.textAlign='center';
-x.fillText(a.username,c.width/2,src.height+50);
-
-const l=document.createElement('a');
-l.href=c.toDataURL('image/png');
-l.download=`qr-${a.username}.png`;
-l.click();
-
-}
-
-});
-
-$('btnCheck').onclick=()=>{
-
-const list=updateUI();
-
-if(!list.length){
-showToast('⚠️ لم يتم العثور على أي بيانات صالحة');
-checkBox.classList.remove('active');
-return;
-}
-
-showToast(`✅ تم استخراج ${list.length}، جارٍ الفحص...`);
-performCheck(list);
-
-};
-
-$('btnCopy').onclick=()=>{
-output.value.trim()
-?copyText(output.value.trim(),'تم نسخ كل الروابط')
-:showToast('⚠️ لا توجد روابط للنسخ');
-};
-
-$('btnPaste').onclick=async()=>{
-
-try{
-input.value=await navigator.clipboard.readText();
-updateUI();
-showToast('📌 تم اللصق');
-
-}catch(e){
-showToast('⚠️ اسمح بالوصول للحافظة أو الصق يدوياً');
-input.focus();
-}
-
-};
-
-$('btnClear').onclick=()=>{
-input.value='';
-updateUI();
-results.innerHTML='';
-checkBox.classList.remove('active');
-showToast('🗑️ تم المسح');
-};
-
-input.addEventListener('input',updateUI);
-
+  const $=id=>document.getElementById(id);
+  const input=$('input'),output=$('output'),inCnt=$('inputCounter'),outCnt=$('outputCounter');
+  const checkBox=$('checkBox'),results=$('results'),cards=$('cards'),toast=$('toast');
+  const PROXY_URL='https://xtream-proxy.kadri68.workers.dev/';
+  let timer=null,accounts=[];
+  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const m3u=a=>`${a.host}/get.php?username=${encodeURIComponent(a.username)}&password=${encodeURIComponent(a.password)}&type=m3u_plus&output=ts`;
+  function showToast(msg,d=2000){
+    clearTimeout(timer);toast.textContent=msg;toast.classList.add('show');
+    timer=setTimeout(()=>toast.classList.remove('show'),d);
+  }
+  async function copyText(t,msg='تم النسخ'){
+    try{await navigator.clipboard.writeText(t)}catch(e){
+      const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();
+      document.execCommand('copy');ta.remove();
+    }
+    showToast('✅ '+msg);
+  }
+  function normalizeHost(host,port){
+    if(!host)return '';
+    host=host.trim().replace(/\/+$/,'');
+    if(!/^https?:\/\//i.test(host))host='http://'+host;
+    try{
+      const p=new URL(host);
+      if(port&&!p.port)return `${p.protocol}//${p.hostname}:${port.trim()}`;
+      return `${p.protocol}//${p.host}`;
+    }catch(e){
+      if(port&&!host.includes(':'+port))return host+':'+port.trim();
+      return host;
+    }
+  }
+  function parseText(text){
+    const out=[];
+    if(!text||!text.trim())return out;
+    const urlRe=/(https?:\/\/[^\s"'<>]+(?:\/get\.php|\/live\/|\/playlist)[^\s"'<>]*)/gi;
+    let m;
+    while((m=urlRe.exec(text))!==null){
+      try{
+        const p=new URL(m[1]);
+        const u=p.searchParams.get('username'),pw=p.searchParams.get('password');
+        if(u&&pw)out.push({host:`${p.protocol}//${p.host}`,username:u,password:pw});
+      }catch(e){}
+    }
+    const hostRe=/(?:host|url|server|سيرفر|رابط|هوست)\s*[:=]\s*(https?:\/\/[^\s\r\n]+|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?::\d+)?)/gi;
+    const portRe=/(?:port|منفذ|بورت)\s*[:=]\s*(\d+)/gi;
+    const userRe=/(?:user(?:name)?|مستخدم|يوزر|حساب)\s*[:=]\s*([^\s\r\n,;]+)/gi;
+    const passRe=/(?:pass(?:word)?|كلمة\s*المرور|باسورد|كود)\s*[:=]\s*([^\s\r\n,;]+)/gi;
+    const g=re=>[...text.matchAll(re)].map(x=>x[1]);
+    const hosts=g(hostRe),ports=g(portRe),users=g(userRe),passes=g(passRe);
+    const n=Math.min(hosts.length,users.length,passes.length);
+    for(let i=0;i<n;i++)out.push({host:normalizeHost(hosts[i],ports[i]||null),username:users[i].trim(),password:passes[i].trim()});
+    const lines=text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+    for(let i=0;i<lines.length;i++){
+      const l=lines[i];
+      if(/^(?:https?:\/\/|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i.test(l)&&!l.includes('get.php')){
+        if(i+3<lines.length&&/^\d+$/.test(lines[i+1])){
+          out.push({host:normalizeHost(l,lines[i+1]),username:lines[i+2],password:lines[i+3]});i+=3;
+        }else if(i+2<lines.length){
+          out.push({host:normalizeHost(l),username:lines[i+1],password:lines[i+2]});i+=2;
+        }
+      }
+    }
+    const seen=new Set();
+    return out.filter(a=>{
+      const k=`${a.host}|${a.username}|${a.password}`.toLowerCase();
+      if(seen.has(k))return false;seen.add(k);return true;
+    });
+  }
+  function renderCards(list){
+    cards.innerHTML=list.map(a=>`<div class="acc"><div><b>Host</b> ${esc(a.host)}</div><div><b>User</b> ${esc(a.username)}</div><div><b>Pass</b> ${esc(a.password)}</div></div>`).join('');
+  }
+  function updateUI(){
+    accounts=parseText(input.value);
+    inCnt.textContent=`${accounts.length} اشتراك مكتشف`;
+    renderCards(accounts);
+    const urls=accounts.map(m3u);
+    output.value=urls.join('\n\n');
+    outCnt.textContent=`${urls.length} رابط`;
+    return accounts;
+  }
+  const fmtDate=ts=>{
+    if(!ts||ts==='null')return 'غير محدودة';
+    const d=new Date(Number(ts)*1000);
+    if(isNaN(d))return String(ts);
+    const days=Math.ceil((d-Date.now())/864e5);
+    const s=d.toLocaleDateString('en-GB');
+    return days<0?`${s} (منتهية)`: `${s} (${days} يوم)`;
+  };
+  async function checkOne(a,idx){
+    const el=$('res-'+idx);
+    const set=(cls,txt)=>{el.className='res '+cls;el.querySelector('.status').textContent=txt};
+    try{
+      const r=await fetch(PROXY_URL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({host:a.host,username:a.username,password:a.password}),
+        signal:AbortSignal.timeout(15000)
+      });
+      let j;
+      try{j=await r.json()}catch(e){throw new Error('استجابة غير مفهومة من Worker (HTTP '+r.status+')')}
+      if(!r.ok)throw new Error(j.error||('Worker HTTP '+r.status));
+      const ui=j&&j.user_info;
+      if(!ui||ui.auth===0||ui.auth==='0'){
+        set('fail','❌ بيانات غير صحيحة');
+        el.querySelector('.exp').textContent='لم يتم قبول بيانات الاشتراك';
+        el.querySelector('.st').textContent='غير صالح';
+        return;
+      }
+      const active=String(ui.status).toLowerCase()==='active';
+      const expired=ui.exp_date&&Number(ui.exp_date)*1000<Date.now();
+      el.querySelector('.exp').textContent=fmtDate(ui.exp_date);
+      el.querySelector('.st').textContent=ui.status||'--';
+      el.querySelector('.mx').textContent=ui.max_connections??'--';
+      el.querySelector('.ac').textContent=ui.active_cons??'--';
+      if(active&&!expired)set('ok','✅ يعمل');else set('fail',expired?'⛔ منتهي':'⛔ غير فعال');
+    }catch(e){
+      const msg=e.name==='TimeoutError'?'انتهت مهلة الاتصال':(e.message||'تعذر الاتصال');
+      set('fail','⚠️ تعذّر الفحص');
+      el.querySelector('.exp').textContent=msg;
+      el.querySelector('.st').textContent='--';
+    }
+  }
+  function performCheck(list){
+    checkBox.classList.add('active');
+    results.innerHTML=list.map((a,i)=>`
+      <div class="res" id="res-${i}">
+        <div class="res-head"><span style="word-break:break-all">🌐 ${esc(a.host)}</span><span class="status">⏳ جارٍ الفحص...</span></div>
+        <div class="details">
+          <div><strong>المستخدم:</strong> ${esc(a.username)}</div>
+          <div><strong>الصلاحية:</strong> <span class="exp">جاري التحقق...</span></div>
+          <div><strong>الحالة:</strong> <span class="st">--</span></div>
+          <div><strong>الأجهزة:</strong> <span class="mx">--</span> / متصل: <span class="ac">--</span></div>
+        </div>
+        <div class="acts">
+          <button class="sm" data-act="dl" data-i="${i}">⬇️ تحميل M3U</button>
+          <button class="sm" data-act="open" data-i="${i}">▶️ فتح</button>
+          <button class="sm" data-act="copy" data-i="${i}">📋 نسخ</button>
+          <button class="sm" data-act="qr" data-i="${i}">🔳 QR</button>
+        </div>
+        <div class="qr" id="qr-${i}"><div class="qr-box" id="qrbox-${i}"></div><div class="qr-user">${esc(a.username)}</div>
+          <button class="sm" style="margin-top:8px" data-act="qrdl" data-i="${i}">💾 حفظ الصورة</button></div>
+      </div>`).join('');
+    list.forEach(checkOne);
+  }
+  results.addEventListener('click',async e=>{
+    const b=e.target.closest('button[data-act]');if(!b)return;
+    const a=accounts[b.dataset.i];if(!a)return;
+    const act=b.dataset.act,url=m3u(a);
+    if(act==='copy')copyText(url,'تم نسخ الرابط');
+    else if(act==='open')window.open(url,'_blank','noopener');
+    else if(act==='dl'){
+      try{
+        const r=await fetch(url);const blob=await r.blob();
+        const l=document.createElement('a');l.href=URL.createObjectURL(blob);
+        l.download=`${a.username}.m3u`;l.click();URL.revokeObjectURL(l.href);
+      }catch(err){
+        window.open(url,'_blank','noopener');
+        showToast('⚠️ تم الفتح في تبويب جديد بسبب قيود المتصفح');
+      }
+    }else if(act==='qr'){
+      const wrap=$('qr-'+b.dataset.i),box=$('qrbox-'+b.dataset.i);
+      wrap.classList.toggle('show');
+      if(wrap.classList.contains('show')&&!box.hasChildNodes()){
+        if(typeof QRCode==='undefined'){showToast('⚠️ تعذّر تحميل مكتبة QR');return}
+        new QRCode(box,{text:url,width:180,height:180,correctLevel:QRCode.CorrectLevel.L});
+      }
+    }else if(act==='qrdl'){
+      const src=$('qrbox-'+b.dataset.i).querySelector('canvas');
+      if(!src)return;
+      const c=document.createElement('canvas');c.width=src.width+40;c.height=src.height+70;
+      const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);
+      x.drawImage(src,20,20);x.fillStyle='#111';x.font='bold 16px monospace';x.textAlign='center';
+      x.fillText(a.username,c.width/2,src.height+50);
+      const l=document.createElement('a');l.href=c.toDataURL('image/png');l.download=`qr-${a.username}.png`;l.click();
+    }
+  });
+  $('btnCheck').onclick=()=>{
+    const list=updateUI();
+    if(!list.length){showToast('⚠️ لم يتم العثور على أي بيانات صالحة');checkBox.classList.remove('active');return}
+    showToast(`✅ تم استخراج ${list.length}، جارٍ الفحص...`);
+    performCheck(list);
+  };
+  $('btnCopy').onclick=()=>{output.value.trim()?copyText(output.value.trim(),'تم نسخ كل الروابط'):showToast('⚠️ لا توجد روابط للنسخ')};
+  $('btnPaste').onclick=async()=>{
+    try{input.value=await navigator.clipboard.readText();updateUI();showToast('📌 تم اللصق')}
+    catch(e){showToast('⚠️ اسمح بالوصول للحافظة أو الصق يدوياً');input.focus()}
+  };
+  $('btnClear').onclick=()=>{input.value='';updateUI();results.innerHTML='';checkBox.classList.remove('active');showToast('🗑️ تم المسح')};
+  input.addEventListener('input',updateUI);
 })();
 </script>
 </body>
