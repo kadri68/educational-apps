@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>محاكي السقوط الشاقولي في مائع</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>📐 محاكي السقوط الشاقولي في مائع</h1>
+
+  <div class="container">
+    <div class="inputs">
+
+      <label>اختيار نوع الجسم:
+        <select id="solid_select">
+          <option value="1050">بلاستيك</option>
+          <option value="700">خشب</option>
+          <option value="7800" selected>حديد</option>
+          <option value="2700">ألومنيوم</option>
+          <option value="8900">نحاس</option>
+          <option value="2500">زجاج</option>
+          <option value="custom">قيمة مخصصة</option>
+        </select>
+      </label>
+
+      <label>الكثافة الحجمية للجسم (kg/m³):
+        <input type="number" id="rho_s" value="7800">
+      </label>
+
+      <label>كتلة الجسم (kg):
+        <input type="number" id="mass" value="1">
+      </label>
+
+      <label>اختيار المائع:
+        <select id="fluid_select">
+          <option value="1.2">هواء</option>
+          <option value="1000" selected>ماء</option>
+          <option value="850">زيت</option>
+          <option value="789">كحول</option>
+          <option value="13560">زئبق</option>
+          <option value="1260">جليسرين</option>
+          <option value="custom">قيمة مخصصة</option>
+        </select>
+      </label>
+
+      <label>الكثافة الحجمية للمائع (kg/m³):
+        <input type="number" id="rho_f" value="1000">
+      </label>
+
+      <label>دافعة أرخميدس (N):
+        <input type="number" id="fb_input" placeholder="اتركها فارغة لحسابها تلقائيًا">
+      </label>
+
+      <label>معامل السحب/اللزوجة:
+        <input type="number" id="drag_coeff" value="0.5">
+      </label>
+
+      <label>زمن المحاكاة (s):
+        <input type="number" id="time_limit" value="10">
+      </label>
+
+      <label>نوع مقاومة المائع:
+        <select id="drag_type">
+          <option value="linear">خطية (سرعات منخفضة)</option>
+          <option value="quadratic">تربيعية (سرعات عالية)</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="buttons">
+      <button id="startBtn" class="btn start">بدء المحاكاة</button>
+      <button id="resetBtn" class="btn reset">إعادة الضبط</button>
+      <button id="summaryBtn" class="btn summary">ملخص المعلومات</button>
+      <button id="compareBtn" class="btn compare">مقارنة البيانات</button>
+      <button id="exportBtn" class="btn export">تصدير البيانات</button>
+      <button id="aboutBtn" class="btn about">حول المطور</button>
+    </div>
+  </div>
+
+  <canvas id="chart" width="800" height="400"></canvas>
+
+  <div id="comparisonTable"></div>
+  <div id="summaryInfo"></div>
+  <div id="aboutInfo"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مكتبة الصوتيات - البودكاست والتعليم</title>
+    <style>
+        /* ========== الخطوط الأساسية المحسّنة ========== */
+        body {
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .mobile-wrapper {
+            width: 100%;
+            max-width: 420px;
+            background: #f8f9fa;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #0b7285;
+            color: white;
+            padding: 18px 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            letter-spacing: 0.5px;
+        }
+
+        .search-container {
+            padding: 18px 15px 8px 15px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 30px;
+            border: 1px solid #b0c4ce;
+            font-size: 18px;
+            box-sizing: border-box;
+            font-family: inherit;
+            outline: none;
+            transition: 0.2s;
+            background-color: white;
+        }
+
+        #searchInput:focus {
+            border-color: #0b7285;
+            box-shadow: 0 0 0 3px rgba(11,114,133,0.2);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 15px;
+            flex-grow: 1;
+        }
+
+        .category-section {
+            margin-bottom: 5px;
+        }
+
+        .category-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0b4956;
+            padding-right: 8px;
+            margin: 0 0 12px 0;
+            border-right: 6px solid #0b7285;
+            background: linear-gradient(to left, #e3f2f5, transparent);
+            padding: 8px 12px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 16px 18px;
+            text-decoration: none;
+            color: black;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            border: 1px solid #dee2e6;
+            transition: 0.2s ease;
+            margin-bottom: 10px;
+        }
+
+        .card:active, .card:hover {
+            transform: translateY(-3px);
+            background: #e3fafc;
+            border-color: #0b7285;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        .icon {
+            font-size: 28px;
+            margin-left: 18px;
+            background: #eef2f6;
+            padding: 12px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: 0.2s;
+        }
+
+        .card:hover .icon {
+            background: #d0ebf0;
+        }
+
+        .card-text {
+            text-align: right;
+            flex: 1;
+        }
+
+        .card h3 {
+            margin: 0 0 6px 0;
+            font-size: 18px;
+            color: #11212e;
+            font-weight: 650;
+        }
+
+        .card p {
+            margin: 0;
+            font-size: 14px;
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px 15px;
+            background: #1f2c38;
+            color: #f0f3f5;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.8;
+            border-top: 3px solid #0b7285;
+        }
+
+        .developer-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #b6e6f0;
+            margin-bottom: 8px;
+        }
+
+        footer a {
+            color: #b6e6f0;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .no-result {
+            text-align: center;
+            color: #6c757d;
+            font-size: 16px;
+            padding: 30px 0;
+            background: #f1f3f5;
+            border-radius: 30px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="mobile-wrapper">
+    <header>
+        🎙️ مكتبة الصوتيات | بودكاست + تعليم
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="ابحث عن إذاعة، بودكاست، موقع تعليمي..." onkeyup="filterCards()">
+    </div>
+
+    <div class="container" id="cardsContainer">
+    
+        <!-- ========== قسم المحتوى الإسلامي ========== -->
+        <div class="category-section" data-category="islamic">
+            <div class="category-title">🕌 محتوى إسلامي | قرآن ودروس</div>
+
+            <a class="card" href="https://audio.islamweb.net/" target="_blank">
+                <div class="icon">🎙️</div>
+                <div class="card-text">
+                    <h3>صوتيات إسلام ويب</h3>
+                    <p>أضخم مكتبة دروس ومحاضرات إسلامية</p>
+                </div>
+            </a>
+
+            <a class="card" href="https://ar.islamway.net/" target="_blank">
+                <div class="icon">🕋</div>
+                <div class="card-text">
+                    <h3>طريق الإسلام</h3>
+                    <p>تلاوات، خطب، أناشيد إسلامية</p>
+                </div>
+            </a>
+
+            <a class="card" href="https://quran.com" target="_blank">
+                <div class="icon">📖</div>
+                <div class="card-text">
+                    <h3>القرآن الكريم</h3>
+                    <p>الاستماع لتلاوات أشهر القراء</p>
+                </div>
+            </a>
+
+            <a class="card" href="https://www.mp3quran.net" target="_blank">
+                <div class="icon">🕌</div>
+                <div class="card-text">
+                    <h3>إذاعة القرآن الكريم</h3>
+                    <p>تلاوات متنوعة بروايات مختلفة</p>
+                </div>
+            </a>
+
+            <a class="card" href="https://sunnah.com" target="_blank">
+                <div class="icon">📚</div>
+                <div class="card-text">
+                    <h3>مكتبة الأحاديث</h3>
+                    <p>استماع وتصفح الحديث النبوي</p>
+                </div>
+            </a>
+        </div>
+        
+        <!-- ========== قسم البودكاست المتنوع (عربي فقط) ========== -->
+        <div class="category-section" data-category="podcast">
+            <div class="category-title">🎧 بودكاست عربية متنوعة</div>
+
+            <a class="card" href="https://thmanyah.com/podcasts/" target="_blank">
+                <div class="icon">🎙️</div>
+                <div class="card-text">
+                    <h3>بودكاست ثمانية</h3>
+                    <p>فنجان، أبجورة، مربع – حوارات ثقافية واجتماعية</p>
+                </div>
+            </a>
+
+            <a class="card" href="https://podcasts.aljazeera.net/" target="_blank">
+                <div class="icon">🌍</div>
+                <div class="card-text">
+                    <h3>بودكاست الجزيرة</h3>
+                    <p>تحقيقات صحفية، تاريخ، وقصص إنسانية</p>
+                </div>
+            </a>
+
+            <a class="card" href="https://podcasts.apple.com/pw/podcast/droos-podcast-%D8%A8%D9%88%D8%AF%D9%83%D8%A7%D8%B3%D8%AA-%D8%AF%D8%B1%D9%88%D8%B3/id1594640188" target="_blank">
+                <div class="icon">🎓</div>
+                <div class="card-text">
+                    <h3>دروس بودكاست</h3>
+                    <p>تطوير الذات مع أحمد أبو زيد – حلقات ملهمة</p>
+                </div>
+            </a>
+
+            <a class="card" href="https://podcasts.apple.com/dz/podcast/%D8%A8%D9%88%D8%AF%D9%83%D8%A7%D8%B3%D8%AA-%D8%A3%D8%A8%D8%AC%D9%88%D8%B1%D8%A9/id1272687671?l=fr-FR" target="_blank">
+                <div class="icon">💡</div>
+                <div class="card-text">
+                    <h3>بودكاست أبجورة</h3>
+                    <p>تأملات أدبية وفلسفية بأسلوب راقٍ</p>
+                </div>
+            </a>
+
+            <!-- وعي – الرابط الجديد -->
+            <a class="card" href="https://podcasts.apple.com/sa/podcast/%D9%88%D8%B9%D9%8A/id1605382691" target="_blank">
+                <div class="icon">🌱</div>
+                <div class="card-text">
+                    <h3>بودكاست وعي</h3>
+                    <p>تربية، دين، شباب – نقاشات معاصرة (الرابط الجديد)</p>
+                </div>
+            </a>
+
+            <!-- زد – بديل عن رذ -->
+            <a class="card" href="https://zdpodcast.com/" target="_blank">
+                <div class="icon">🧠</div>
+                <div class="card-text">
+                    <h3>بودكاست زد</h3>
+                    <p>تطوير الذات، علم نفس، ووعي فكري</p>
+                </div>
+            </a>
+
+            <!-- خير – بودكاست  جليس -->
+            <a class="card" href="https://podcasts.apple.com/us/podcast/%D8%A8%D9%88%D8%AF%D9%83%D8%A7%D8%B3%D8%AA-%D8%AE%D9%8A%D8%B1-%D8%AC%D9%84%D9%8A%D8%B3/id1493176715" target="_blank">
+                <div class="icon">📖</div>
+                <div class="card-text">
+                    <h3>بودكاست خير جليس</h3>
+                    <p>خير جليس هي مبادرة تهدف لنشر المعرفة وثقافة القراءة لجميع 
+المتحدثين باللغة العربية عن طريق تلخيص الكتب الأكثر مبيعاً في العالم وعرضها بطريقة سهله ومبسطة للمشاهد</p>
+                </div>
+            </a>
+
+            <!-- سقراط – فلسفي -->
+            <a class="card" href="https://thmanyah.com/@socrates" target="_blank">
+                <div class="icon">🏛️</div>
+                <div class="card-text">
+                    <h3>بودكاست سقراط</h3>
+                    <p>حوارات فلسفية وفكرية معمقة</p>
+                </div>
+            </a>
+
+            <!-- آدم – باقٍ كما هو -->
+            <a class="card" href="https://castbox.fm/channel/6120231?utm_source=chatgpt.com&country=us" target="_blank">
+                <div class="icon">👤</div>
+                <div class="card-text">
+                    <h3>بودكاست آدم</h3>
+                    <p>حوارات صريحة مع شخصيات مؤثرة</p>
+                </div>
+            </a>
+            <!-- بودكاست العربي -->
+            <a class="card" href="https://ar-podcast.com/" target="_blank">
+                <div class="icon">🏛️</div>
+                <div class="card-text">
+                    <h3> بودكاست العربي</h3>
+                    <p>بسبب الحاجة لوجود دليل وأرشيف لاستكشاف برامج البودكاست العربية المختلفة في ٢٠١٣ أطلق محمد كشميري موقع البودكاست العربي، واستمر الموقع طوال السنين يأرشف ويضيف جديد البودكاست ويساعد آلاف المستمعين للوصول لبرامج البودكاست المختلفة. </p>
+                </div>
+            </a>
+    
+            <!--  بودكاست قصص -->
+            <a class="card" href="https://ar-podcast.com/tag/stories/" target="_blank">
+                <div class="icon">🏛️</div>
+                <div class="card-text">
+                    <h3>بودكاست قصص</h3>
+                    <p>قصص وحكايات واقعيه بالعربي</p>
+                </div>
+            </a>
+
+            <!-- TEDx – باقٍ -->
+            <a class="card" href="https://www.ted.com/talks?language=ar" target="_blank">
+                <div class="icon">💬</div>
+                <div class="card-text">
+                    <h3>TEDx بالعربي</h3>
+                    <p>أفكار ملهمة ومحاضرات مترجمة للعربية</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- ========== قسم المنصات التعليمية ========== -->
+        <div class="category-section" data-category="education">
+            <div class="category-title">📚 مواقع تعليمية عربية</div>
+
+            <a class="card" href="https://www.edraak.org/" target="_blank">
+                <div class="icon">📘</div>
+                <div class="card-text">
+                    <h3>إدراك</h3>
+                    <p>دورات مجانية بالعربية من جامعات مرموقة</p>
+                </div>
+            </a>
+
+            <a class="card" href="https://www.rwaq.org/" target="_blank">
+                <div class="icon">📗</div>
+                <div class="card-text">
+                    <h3>رواق</h3>
+                    <p>منصة عربية للتعليم المفتوح – مساقات تفاعلية</p>
+                </div>
+            </a>
+
+            <a class="card" href="https://www.khanacademy.org/ar" target="_blank">
+                <div class="icon">🧮</div>
+                <div class="card-text">
+                    <h3>أكاديمية خان</h3>
+                    <p>دروس في الرياضيات، العلوم، والمزيد بالعربية</p>
+                </div>
+            </a>
+
+            <a class="card" href="https://www.noonacademy.com/" target="_blank">
+                <div class="icon">🌙</div>
+                <div class="card-text">
+                    <h3>نون أكاديمي</h3>
+                    <p>منصة تعليمية للمناهج السعودية والعربية</p>
+                </div>
+            </a>
+
+            <a class="card" href="https://shams.ae/" target="_blank">
+                <div class="icon">☀️</div>
+                <div class="card-text">
+                    <h3>منصة شمس</h3>
+                    <p>محتوى تعليمي إماراتي وعربي تفاعلي</p>
+                </div>
+            </a>
+
+            <a class="card" href="https://www.youtube.com/user/arabicNour" target="_blank">
+                <div class="icon">▶️</div>
+                <div class="card-text">
+                    <h3>قناة نور العربية</h3>
+                    <p>تعليم اللغة العربية لغير الناطقين بها</p>
+                </div>
+            </a>
+
+  <!-- I Believe in Science -->
+<a class="card" href="https://ibelieveinsci.com/" target="_blank">
+<div class="icon">🔬</div>
+<div class="card-text">
+<h3>I Believe in Science</h3>
+<p>من أشهر المواقع العربية لتبسيط العلوم، ينشر مقالات علمية مترجمة ومبسطة في الفيزياء والطب والفضاء والتكنولوجيا.</p>
+</div>
+</a>
+
+<!-- Arageek -->
+<a class="card" href="https://www.arageek.com/" target="_blank">
+<div class="icon">💡</div>
+<div class="card-text">
+<h3>Arageek</h3>
+<p>مجلة عربية رقمية تهتم بالعلوم والتكنولوجيا وريادة الأعمال والمعرفة الرقمية.</p>
+</div>
+</a>
+
+<!-- Tahrir Academy -->
+<a class="card" href="https://www.tahriracademy.org/" target="_blank">
+<div class="icon">🎓</div>
+<div class="card-text">
+<h3>Tahrir Academy</h3>
+<p>منصة تعليمية عربية تقدم دروساً في الفيزياء والرياضيات والعلوم بطريقة مبسطة.</p>
+</div>
+</a>
+
+<!-- المخبر الاقتصادي -->
+<a class="card" href="https://www.youtube.com/@MokhbirEqtisadi" target="_blank">
+<div class="icon">📊</div>
+<div class="card-text">
+<h3>المخبر الاقتصادي</h3>
+<p>قناة علمية عربية تقدم تحليلاً اقتصادياً مبسطاً للأحداث العالمية.</p>
+</div>
+</a>
+
+<!-- الدحيح -->
+<a class="card" href="https://www.youtube.com/@ElDaheeh" target="_blank">
+<div class="icon">🧠</div>
+<div class="card-text">
+<h3>الدحيح</h3>
+<p>قناة علمية وثقافية عربية تقدم مواضيع علمية وفكرية بطريقة ممتعة.</p>
+</div>
+</a>
+
+<!-- Sciware -->
+<a class="card" href="https://www.youtube.com/@Sciware" target="_blank">
+<div class="icon">🚀</div>
+<div class="card-text">
+<h3>Sciware</h3>
+<p>قناة عربية تقدم محتوى علمي حول الفضاء والفيزياء والتكنولوجيا الحديثة.</p>
+</div>
+</a>
+
+<!-- Edraak -->
+<a class="card" href="https://www.edraak.org/" target="_blank">
+<div class="icon">📚</div>
+<div class="card-text">
+<h3>إدراك</h3>
+<p>منصة تعليمية عربية تقدم دورات مجانية في العلوم والتكنولوجيا واللغات.</p>
+</div>
+</a>
+
+<!-- أكاديمية حسوب -->
+<a class="card" href="https://academy.hsoub.com/" target="_blank">
+<div class="icon">💻</div>
+<div class="card-text">
+<h3>أكاديمية حسوب</h3>
+<p>منصة عربية لتعلم البرمجة والتكنولوجيا وعلوم الحاسوب.</p>
+</div>
+</a>
+
+<!-- ناسا بالعربي -->
+<a class="card" href="https://nasainarabic.net/" target="_blank">
+<div class="icon">🌌</div>
+<div class="card-text">
+<h3>ناسا بالعربي</h3>
+<p>موقع عربي يترجم وينشر أخبار الفضاء والعلوم من وكالة ناسا والمصادر العلمية العالمية.</p>
+</div>
+</a>
+
+<!-- الباحثون المسلمون -->
+<a class="card" href="https://muslims-res.com/" target="_blank">
+<div class="icon">🔎</div>
+<div class="card-text">
+<h3>الباحثون المسلمون</h3>
+<p>منصة عربية لنشر المقالات العلمية في الفيزياء والرياضيات والفلسفة والعلوم الطبيعية.</p>
+</div>
+</a>
+
+<!-- ثمانية -->
+<a class="card" href="https://thmanyah.com/" target="_blank">
+<div class="icon">🎧</div>
+<div class="card-text">
+<h3>ثمانية</h3>
+<p>منصة إعلامية عربية تقدم بودكاست ومقالات معرفية في الفكر والاقتصاد والعلوم.</p>
+</div>
+</a>
+
+<!-- الجزيرة علوم -->
+<a class="card" href="https://www.aljazeera.net/science/" target="_blank">
+<div class="icon">🧪</div>
+<div class="card-text">
+<h3>الجزيرة علوم</h3>
+<p>قسم العلوم في الجزيرة يقدم مقالات علمية في التكنولوجيا والفضاء والطب.</p>
+</div>
+</a>
+
+<!-- MIT بالعربي -->
+<a class="card" href="https://www.technologyreview.ae/" target="_blank">
+<div class="icon">🤖</div>
+<div class="card-text">
+<h3>MIT Technology Review العربية</h3>
+<p>مجلة عربية متخصصة في التكنولوجيا والابتكار والذكاء الاصطناعي.</p>
+</div>
+</a>
+
+<!-- منصة رواق -->
+<a class="card" href="https://www.rwaq.org/" target="_blank">
+<div class="icon">📖</div>
+<div class="card-text">
+<h3>رواق</h3>
+<p>منصة عربية للدورات الأكاديمية المجانية في العلوم والمعرفة.</p>
+</div>
+</a>
+
+<!-- TED بالعربي -->
+<a class="card" href="https://tedinarabic.ted.com/" target="_blank">
+<div class="icon">🎤</div>
+<div class="card-text">
+<h3>TED بالعربي</h3>
+<p>منصة تقدم محاضرات علمية وثقافية مترجمة للعربية من مؤتمرات TED العالمية.</p>
+</div>
+            </a>
+        </div>
+
+        <!-- ========== قسم المكتبات الصوتية المتنوعة ========== -->
+        <div class="category-section" data-category="audio">
+            <div class="category-title">🎵 مكتبات صوتية عامة</div>
+
+            <a class="card" href="https://archive.org/details/audio" target="_blank">
+                <div class="icon">🏛️</div>
+                <div class="card-text">
+                    <h3>أرشيف الصوتيات</h3>
+                    <p>آلاف التسجيلات الحرة – كتب، موسيقى، إذاعات</p>
+                </div>
+            </a>
+
+            <a class="card" href="https://soundcloud.com" target="_blank">
+                <div class="icon">🎶</div>
+                <div class="card-text">
+                    <h3>SoundCloud</h3>
+                    <p>منصة عالمية للموسيقى والمقاطع الصوتية</p>
+                </div>
+            </a>
+
+            <a class="card" href="https://www.spotify.com/ar/" target="_blank">
+                <div class="icon">🔊</div>
+                <div class="card-text">
+                    <h3>Spotify</h3>
+                    <p>البودكاست والموسيقى – محتوى عربي وعالمي</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- رسالة عند عدم وجود نتائج (تظهر بواسطة JS) -->
+        <div id="noResultsMsg" class="no-result" style="display: none;">لا توجد نتائج مطابقة</div>
+    </div>
+
+    <footer>
+        <div class="developer-name">المطور: الأستاذ محمد قادري</div>
+        أستاذ مادة الفيزياء – ثانوية محمد الأخضر فيلالي<br>
+        ولاية غرداية – الجزائر<br>
+        📧 kadri68@gmail.com | 📞 0662692987
+    </footer>
+</div>
+
+<script>
+    function filterCards() {
+        let input = document.getElementById('searchInput').value.toLowerCase().trim();
+        let cards = document.querySelectorAll('.card');
+        let noResultDiv = document.getElementById('noResultsMsg');
+        let visibleCount = 0;
+
+        for (let i = 0; i < cards.length; i++) {
+            let title = cards[i].querySelector('h3').innerText.toLowerCase();
+            let desc = cards[i].querySelector('p').innerText.toLowerCase();
+            let matches = title.includes(input) || desc.includes(input);
+
+            if (matches) {
+                cards[i].style.display = "flex";
+                visibleCount++;
+            } else {
+                cards[i].style.display = "none";
+            }
+        }
+
+        if (visibleCount === 0) {
+            noResultDiv.style.display = "block";
+        } else {
+            noResultDiv.style.display = "none";
+        }
+
+        let categories = document.querySelectorAll('.category-section');
+        categories.forEach(cat => {
+            let catCards = cat.querySelectorAll('.card');
+            let anyVisible = Array.from(catCards).some(card => card.style.display !== "none");
+            if (!anyVisible && catCards.length > 0) {
+                cat.style.display = "none";
+            } else {
+                cat.style.display = "block";
+            }
+        });
+    }
+
+    window.addEventListener('load', function() {
+        let categories = document.querySelectorAll('.category-section');
+        categories.forEach(cat => cat.style.display = "block");
+    });
+</script>
+
+</body>
+</html>

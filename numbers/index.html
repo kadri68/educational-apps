@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثابت كابريكار والأرقام المميزة</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator"></i> ثابت كابريكار والأرقام المميزة</h1>
+            <p class="tagline">استكشف عجائب الرياضيات من خلال الأرقام السحرية</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="section">
+                <h2><i class="fas fa-magic"></i> ثابت كابريكار (6174)</h2>
+                
+                <div class="input-group">
+                    <label for="number-input">أدخل رقماً مكون من 4 أرقام غير مكررة:</label>
+                    <input type="number" id="number-input" min="1000" max="9999" value="2019">
+                    <button id="calculate-btn"><i class="fas fa-play-circle"></i> ابدأ الرحلة الرياضية</button>
+                    <button id="random-btn"><i class="fas fa-random"></i> رقم عشوائي</button>
+                </div>
+                
+                <div class="kaprekar-constant">6174</div>
+                
+                <h3>خطوات التحول إلى الثابت:</h3>
+                <div class="steps-container" id="steps-container">
+                    <p>أدخل رقماً واضغط "ابدأ الرحلة الرياضية" لرؤية الخطوات</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2><i class="fas fa-star"></i> استكشف الأرقام المميزة</h2>
+                
+                <div class="special-numbers">
+                    <div class="number-card" data-number="0">
+                        <div class="number">0</div>
+                        <div class="number-name">الصفر</div>
+                    </div>
+                    <div class="number-card" data-number="1">
+                        <div class="number">1</div>
+                        <div class="number-name">الوحدة</div>
+                    </div>
+                    <div class="number-card" data-number="pi">
+                        <div class="number">π</div>
+                        <div class="number-name">باي</div>
+                    </div>
+                    <div class="number-card" data-number="phi">
+                        <div class="number">φ</div>
+                        <div class="number-name">النسبة الذهبية</div>
+                    </div>
+                    <div class="number-card" data-number="6">
+                        <div class="number">6</div>
+                        <div class="number-name">عدد مثالي</div>
+                    </div>
+                    <div class="number-card" data-number="28">
+                        <div class="number">28</div>
+                        <div class="number-name">عدد مثالي</div>
+                    </div>
+                    <div class="number-card" data-number="496">
+                        <div class="number">496</div>
+                        <div class="number-name">عدد مثالي</div>
+                    </div>
+                    <div class="number-card" data-number="1729">
+                        <div class="number">1729</div>
+                        <div class="number-name">رقم هاردي</div>
+                    </div>
+                    <div class="number-card" data-number="8128">
+                        <div class="number">8128</div>
+                        <div class="number-name">عدد مثالي</div>
+                    </div>
+                    <div class="number-card" data-number="142857">
+                        <div class="number">142857</div>
+                        <div class="number-name">عدد دوري</div>
+                    </div>
+                    <div class="number-card" data-number="kaprekar">
+                        <div class="number">6174</div>
+                        <div class="number-name">ثابت كابريكار</div>
+                    </div>
+                    <div class="number-card" data-number="e">
+                        <div class="number">e</div>
+                        <div class="number-name">ثابت أويلر</div>
+                    </div>
+                </div>
+                
+                <div class="info">
+                    <p><span class="highlight">ثابت كابريكار</span> هو الرقم 6174 الذي اكتشفه عالم الرياضيات الهندي داتاريا رامتشاندرا كابريكار.</p>
+                    <p>اختر أي رقم مكون من 4 أرقام (غير مكررة)، ثم:</p>
+                    <ol>
+                        <li>رتب الأرقام تنازلياً</li>
+                        <li>رتب الأرقام تصاعدياً</li>
+                        <li>اطرح الرقم الصغير من الكبير</li>
+                        <li>كرر العملية حتى تحصل على 6174</li>
+                    </ol>
+                    <p>بعد 7 خطوات كحد أقصى ستصل دائماً إلى هذا الثابت السحري!</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>تصميم تفاعلي لاستكشاف عجائب الرياضيات | ثابت كابريكار والأرقام المميزة</p>
+            <p class="math-quote">"الرياضيات هي مفتاح وملاذ كل العلوم" - كارل فريدريش غاوس</p>
+        </footer>
+    </div>
+    
+    <!-- Modal for Special Numbers -->
+    <div id="number-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="modal-header">
+                <div class="modal-number" id="modal-number">6174</div>
+                <h2 class="modal-title" id="modal-title">ثابت كابريكار</h2>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

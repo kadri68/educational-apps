@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>حاسبة وموسوعة قسيمة السيارات الجزائرية </title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Tahoma,sans-serif;
+}
+
+:root{
+--bg:#0f172a;
+--card:#1e293b;
+--text:#ffffff;
+--accent:#0ea5e9;
+--success:#16a34a;
+--danger:#dc2626;
+--warning:#f59e0b;
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+padding:15px;
+transition:.4s;
+}
+
+.light{
+--bg:#f4f4f4;
+--card:#ffffff;
+--text:#111111;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+}
+
+header{
+background:var(--card);
+padding:20px;
+border-radius:15px;
+text-align:center;
+margin-bottom:15px;
+box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+header h1{
+color:var(--accent);
+margin-bottom:10px;
+}
+
+.card{
+background:var(--card);
+padding:15px;
+border-radius:15px;
+margin-bottom:15px;
+box-shadow:0 0 10px rgba(0,0,0,.15);
+}
+
+label{
+display:block;
+margin-top:10px;
+margin-bottom:5px;
+font-weight:bold;
+}
+
+input,
+select{
+width:100%;
+padding:10px;
+border-radius:10px;
+border:none;
+margin-bottom:10px;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+margin:5px;
+font-size:15px;
+}
+
+.btn{
+background:var(--accent);
+color:white;
+}
+
+.success{
+background:var(--success);
+color:white;
+}
+
+.danger{
+background:var(--danger);
+color:white;
+}
+
+.warning{
+background:var(--warning);
+color:white;
+}
+
+.result{
+margin-top:15px;
+padding:15px;
+border-radius:10px;
+background:#334155;
+font-size:20px;
+font-weight:bold;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+table th,
+table td{
+border:1px solid #888;
+padding:8px;
+text-align:center;
+}
+
+.info{
+padding:10px;
+background:#0c4a6e;
+border-radius:10px;
+margin-top:10px;
+}
+
+.alert{
+padding:10px;
+background:#7f1d1d;
+border-radius:10px;
+margin-top:10px;
+}
+
+.countdown{
+font-size:22px;
+font-weight:bold;
+text-align:center;
+color:#fbbf24;
+margin:15px;
+}
+
+.buy-link{
+display:inline-block;
+padding:12px 20px;
+background:#16a34a;
+color:white;
+text-decoration:none;
+border-radius:10px;
+}
+
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.8);
+z-index:999;
+}
+
+.modal-content{
+background:white;
+color:black;
+max-width:700px;
+margin:50px auto;
+padding:20px;
+border-radius:15px;
+}
+
+@media(max-width:768px){
+
+header h1{
+font-size:22px;
+}
+
+button{
+width:100%;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+<h1>
+حاسبة وموسوعة قسيمة السيارات الجزائرية 
+</h1>
+
+<p>
+الأستاذ محمد قادري
+</p>
+
+<p>
+أستاذ مادة الفيزياء
+</p>
+
+<p>
+ثانوية محمد الأخضر فيلالي
+</p>
+
+<p>
+ولاية غرداية - الجزائر
+</p>
+
+</header>
+
+<div id="countdown" class="countdown"></div>
+
+<div class="card">
+
+<h2>
+بيانات المركبة
+</h2>
+
+<label>
+نوع المركبة
+</label>
+
+<select id="vehicleType">
+
+<option value="tourism">
+سيارة سياحية
+</option>
+
+<option value="utility">
+سيارة نفعية
+</option>
+
+<option value="bus">
+نقل المسافرين
+</option>
+
+<option value="122tourism">
+سيارة سياحية رقم 122
+</option>
+
+<option value="122utility">
+سيارة نفعية رقم 122
+</option>
+
+</select>
+
+<label>
+نوع الوقود
+</label>
+
+<select id="fuel">
+
+<option value="petrol">
+بنزين
+</option>
+
+<option value="diesel">
+مازوت
+</option>
+
+<option value="gpl">
+GPL سيرغاز
+</option>
+
+<option value="hybrid">
+هجينة
+</option>
+
+<option value="electric">
+كهربائية
+</option>
+
+</select>
+
+<label>
+سنة أول استعمال
+</label>
+
+<input
+type="number"
+id="year"
+value="2026">
+
+<div id="dynamicFields"></div>
+
+<label>
+<input
+type="checkbox"
+id="newCar">
+
+سيارة جديدة (بطاقة صفراء)
+</label>
+
+<label>
+<input
+type="checkbox"
+id="late50">
+
+تسوية متأخرة (+50%)
+</label>
+
+<label>
+<input
+type="checkbox"
+id="late100">
+
+معاينة من طرف الشرطة أو الدرك (+100%)
+</label>
+
+<button
+class="btn"
+onclick="calculateVignette()">
+
+حساب القسيمة
+
+</button>
+
+<button
+class="success"
+onclick="window.print()">
+
+طباعة التقرير
+
+</button>
+
+<button
+class="warning"
+onclick="toggleTheme()">
+
+الوضع الليلي
+
+</button>
+
+<div
+id="result"
+class="result">
+
+النتيجة ستظهر هنا
+
+</div>
+
+</div>
+<div class="card">
+
+<h2>
+الروابط الرسمية
+</h2>
+
+<p style="margin-top:10px">
+
+<a
+class="buy-link"
+href="https://qassimatouka.mf.gov.dz"
+target="_blank">
+
+شراء القسيمة إلكترونياً (قسيمتك)
+
+</a>
+
+</p>
+
+<br>
+
+<p>
+
+<a
+class="buy-link"
+href="https://mfdgi.gov.dz/"
+target="_blank">
+
+المديرية العامة للضرائب
+
+</a>
+
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+الجدول الرسمي لقسيمة السيارات 
+</h2>
+
+<h3>
+السيارات السياحية
+</h3>
+
+<table>
+
+<tr>
+<th>القوة الجبائية</th>
+<th>أقل من 3 سنوات</th>
+<th>3 إلى 6 سنوات</th>
+<th>6 إلى 10 سنوات</th>
+<th>أكثر من 10 سنوات</th>
+</tr>
+
+<tr>
+<td>حتى 6 أحصنة</td>
+<td>2000</td>
+<td>1500</td>
+<td>1000</td>
+<td>500</td>
+</tr>
+
+<tr>
+<td>من 7 إلى 9 أحصنة</td>
+<td>4000</td>
+<td>3000</td>
+<td>2000</td>
+<td>1500</td>
+</tr>
+
+<tr>
+<td>10 أحصنة فما فوق</td>
+<td>25000</td>
+<td>20000</td>
+<td>15000</td>
+<td>10000</td>
+</tr>
+
+</table>
+
+<br>
+
+<h3>
+السيارات النفعية
+</h3>
+
+<table>
+
+<tr>
+<th>الحمولة</th>
+<th>أقل من 5 سنوات</th>
+<th>5 سنوات فأكثر</th>
+</tr>
+
+<tr>
+<td>حتى 2.5 طن</td>
+<td>6000</td>
+<td>3000</td>
+</tr>
+
+<tr>
+<td>أكثر من 2.5 طن إلى 5.5 طن</td>
+<td>12000</td>
+<td>5000</td>
+</tr>
+
+<tr>
+<td>أكثر من 5.5 طن</td>
+<td>18000</td>
+<td>8000</td>
+</tr>
+
+</table>
+
+<br>
+
+<h3>
+نقل المسافرين
+</h3>
+
+<table>
+
+<tr>
+<th>عدد المقاعد</th>
+<th>أقل من 5 سنوات</th>
+<th>5 سنوات فأكثر</th>
+</tr>
+
+<tr>
+<td>أقل من 9</td>
+<td>5000</td>
+<td>3000</td>
+</tr>
+
+<tr>
+<td>من 9 إلى 27</td>
+<td>8000</td>
+<td>4000</td>
+</tr>
+
+<tr>
+<td>من 28 إلى 61</td>
+<td>12000</td>
+<td>6000</td>
+</tr>
+
+<tr>
+<td>أكثر من 62</td>
+<td>18000</td>
+<td>9000</td>
+</tr>
+
+</table>
+
+<br>
+
+<h3>
+السيارات 122
+</h3>
+
+<table>
+
+<tr>
+<th>النوع</th>
+<th>المبلغ</th>
+</tr>
+
+<tr>
+<td>سياحية</td>
+<td>500 دج</td>
+</tr>
+
+<tr>
+<td>نفعية</td>
+<td>3000 دج</td>
+</tr>
+
+</table>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+الإعفاءات القانونية
+</h2>
+
+<div class="info">
+
+✔ السيارات الكهربائية
+
+</div>
+
+<div class="info">
+
+✔ السيارات الهجينة
+
+</div>
+
+<div class="info">
+
+✔ سيارات الإسعاف
+
+</div>
+
+<div class="info">
+
+✔ السيارات المجهزة للمعوقين
+
+</div>
+
+<div class="info">
+
+✔ السيارات ذات الامتياز الدبلوماسي
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+العقوبات القانونية
+</h2>
+
+<div class="alert">
+
+زيادة 50% عند التسوية الطوعية بعد انتهاء الآجال القانونية
+
+</div>
+
+<div class="alert">
+
+زيادة 100% عند معاينة المخالفة من طرف الشرطة أو الدرك الوطني
+
+</div>
+
+<div class="alert">
+
+سحب البطاقة الرمادية ومنح وصل سير لمدة 7 أيام
+
+</div>
+
+<div class="alert">
+
+استرجاع البطاقة بعد دفع القسيمة والغرامة
+
+</div>
+
+<div class="alert">
+
+إمكانية الإحالة على الجهات القضائية في حالة عدم التسوية
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+معلومات هامة
+</h2>
+
+<div class="info">
+
+آخر أجل قانوني لاقتناء قسيمة السيارات لسنة 2026 هو:
+10 جوان 2026
+
+</div>
+
+<div class="info">
+
+السيارات الجديدة التي تسير بالبطاقة الصفراء
+ملزمة باقتناء القسيمة خلال 30 يوماً من تاريخ وضعها للسير.
+
+</div>
+
+<div class="info">
+
+يمكن الاحتفاظ بالنسخة الإلكترونية للقسيمة المقتناة عبر الإنترنت.
+
+</div>
+
+</div>
+<div id="developerModal" class="modal">
+
+<div class="modal-content">
+
+<h2>
+معلومات المطور
+</h2>
+
+<p>
+الأستاذ محمد قادري
+</p>
+
+<p>
+أستاذ مادة الفيزياء
+</p>
+
+<p>
+ثانوية محمد الأخضر فيلالي
+</p>
+
+<p>
+ولاية غرداية - الجزائر
+</p>
+
+<p>
+Email : kadri68@gmail.com
+</p>
+
+<p>
+Phone : 0662692987
+</p>
+
+<br>
+
+<button
+class="danger"
+onclick="closeDeveloper()">
+
+إغلاق
+
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<button
+class="btn"
+onclick="showDeveloper()">
+
+معلومات المطور
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const dynamicFields =
+document.getElementById(
+"dynamicFields"
+);
+
+const vehicleType =
+document.getElementById(
+"vehicleType"
+);
+
+vehicleType.addEventListener(
+"change",
+createDynamicFields
+);
+
+createDynamicFields();
+
+function createDynamicFields(){
+
+const type =
+vehicleType.value;
+
+let html = "";
+
+if(type==="tourism"){
+
+html = `
+<label>
+القوة الجبائية
+</label>
+
+<select id="power">
+
+<option value="6">
+حتى 6 أحصنة
+</option>
+
+<option value="9">
+من 7 إلى 9 أحصنة
+</option>
+
+<option value="10">
+10 أحصنة فما فوق
+</option>
+
+</select>
+`;
+
+}
+
+else if(type==="utility"){
+
+html = `
+<label>
+الحمولة
+</label>
+
+<select id="load">
+
+<option value="2.5">
+حتى 2.5 طن
+</option>
+
+<option value="5.5">
+من 2.5 إلى 5.5 طن
+</option>
+
+<option value="more">
+أكثر من 5.5 طن
+</option>
+
+</select>
+`;
+
+}
+
+else if(type==="bus"){
+
+html = `
+<label>
+عدد المقاعد
+</label>
+
+<select id="seats">
+
+<option value="9">
+أقل من 9
+</option>
+
+<option value="27">
+من 9 إلى 27
+</option>
+
+<option value="61">
+من 28 إلى 61
+</option>
+
+<option value="62">
+أكثر من 62
+</option>
+
+</select>
+`;
+
+}
+
+dynamicFields.innerHTML = html;
+
+}
+
+function calculateVignette(){
+
+const type =
+vehicleType.value;
+
+const fuel =
+document.getElementById(
+"fuel"
+).value;
+
+const year =
+parseInt(
+document.getElementById(
+"year"
+).value
+);
+
+const currentYear =
+2026;
+
+const age =
+currentYear - year;
+
+let amount = 0;
+
+let report = "";
+
+if(
+fuel==="electric" ||
+fuel==="hybrid"
+){
+
+document.getElementById(
+"result"
+).innerHTML =
+
+"✅ هذه المركبة معفاة من القسيمة.";
+
+return;
+
+}
+
+if(type==="tourism"){
+
+const power =
+document.getElementById(
+"power"
+).value;
+
+if(power==="6"){
+
+if(age<3) amount=2000;
+else if(age<=6) amount=1500;
+else if(age<=10) amount=1000;
+else amount=500;
+
+}
+
+if(power==="9"){
+
+if(age<3) amount=4000;
+else if(age<=6) amount=3000;
+else if(age<=10) amount=2000;
+else amount=1500;
+
+}
+
+if(power==="10"){
+
+if(age<3) amount=25000;
+else if(age<=6) amount=20000;
+else if(age<=10) amount=15000;
+else amount=10000;
+
+}
+
+}
+
+else if(type==="utility"){
+
+const load =
+document.getElementById(
+"load"
+).value;
+
+if(load==="2.5"){
+
+amount =
+age<5 ? 6000 : 3000;
+
+}
+
+else if(load==="5.5"){
+
+amount =
+age<5 ? 12000 : 5000;
+
+}
+
+else{
+
+amount =
+age<5 ? 18000 : 8000;
+
+}
+
+}
+
+else if(type==="bus"){
+
+const seats =
+document.getElementById(
+"seats"
+).value;
+
+if(seats==="9"){
+
+amount =
+age<5 ? 5000 : 3000;
+
+}
+
+else if(seats==="27"){
+
+amount =
+age<5 ? 8000 : 4000;
+
+}
+
+else if(seats==="61"){
+
+amount =
+age<5 ? 12000 : 6000;
+
+}
+
+else{
+
+amount =
+age<5 ? 18000 : 9000;
+
+}
+
+}
+
+else if(
+type==="122tourism"
+){
+
+amount = 500;
+
+}
+
+else if(
+type==="122utility"
+){
+
+amount = 3000;
+
+}
+
+if(
+document.getElementById(
+"late50"
+).checked
+){
+
+amount =
+amount +
+(amount*0.5);
+
+report +=
+"<br>⚠️ غرامة 50% مطبقة";
+
+}
+
+if(
+document.getElementById(
+"late100"
+).checked
+){
+
+amount =
+amount * 2;
+
+report +=
+"<br>⛔ غرامة 100% مطبقة";
+
+}
+
+if(
+document.getElementById(
+"newCar"
+).checked
+){
+
+report +=
+
+"<br>🚗 سيارة جديدة (بطاقة صفراء)";
+
+report +=
+
+"<br>⏳ يجب اقتناء القسيمة خلال 30 يوماً.";
+
+}
+
+if(
+fuel==="gpl"
+){
+
+report +=
+
+"<br>ℹ️ السيارة تعمل بسيرغاز GPL.";
+
+}
+
+document.getElementById(
+"result"
+).innerHTML =
+
+"قيمة القسيمة: "
+
++
+
+amount.toLocaleString()
+
++
+
+" دج"
+
++
+
+report;
+
+localStorage.setItem(
+"vignetteResult",
+document.getElementById(
+"result"
+).innerHTML
+);
+
+}
+
+function toggleTheme(){
+
+document.body.classList.toggle(
+"light"
+);
+
+}
+
+function showDeveloper(){
+
+document.getElementById(
+"developerModal"
+).style.display="block";
+
+}
+
+function closeDeveloper(){
+
+document.getElementById(
+"developerModal"
+).style.display="none";
+
+}
+
+function updateCountdown(){
+
+const deadline =
+new Date(
+"2026-06-10"
+);
+
+const now =
+new Date();
+
+const diff =
+deadline-now;
+
+const days =
+Math.ceil(
+diff /
+(1000*60*60*24)
+);
+
+document.getElementById(
+"countdown"
+).innerHTML =
+
+"الأيام المتبقية قبل انتهاء الآجال القانونية: "
+
++
+
+days
+
++
+
+" يوم";
+
+}
+
+updateCountdown();
+
+if(
+localStorage.getItem(
+"vignetteResult"
+)
+){
+
+document.getElementById(
+"result"
+).innerHTML =
+
+localStorage.getItem(
+"vignetteResult"
+);
+
+}
+
+</script>
+
+</body>
+</html>

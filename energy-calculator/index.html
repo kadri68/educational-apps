@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة الطاقة النووية المتقدمة - تطوير أ. محمد قادري</title>
+    <!-- تضمين Tailwind CSS من CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- تضمين ملف CSS الخارجي -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-900 text-white p-1 md:p-2" dir="rtl">
+
+    <div class="container mx-auto max-w-4xl bg-gray-800 p-1.5 md:p-3 rounded-lg shadow-xl">
+        <h1 class="text-xl md:text-2xl lg:text-3xl font-bold mb-3 text-center text-teal-400">حاسبة الطاقة النووية المتقدمة</h1>
+
+        <div class="mb-2.5 flex justify-center border-b border-gray-700">
+            <button id="tabBtnReactionCalc" class="tab-button active py-1 px-2.5 md:py-1.5 md:px-4 text-md md:text-lg rounded-t-md focus:outline-none" onclick="openTab(event, 'reactionCalculatorTab')">حاسبة التفاعلات</button>
+            <button id="tabBtnBECalc" class="tab-button py-1 px-2.5 md:py-1.5 md:px-4 text-md md:text-lg rounded-t-md focus:outline-none" onclick="openTab(event, 'beCalculatorTab')">حاسبة طاقة الربط</button>
+        </div>
+
+        <div id="reactionCalculatorTab" class="tab-content active">
+            <h2 class="text-lg md:text-xl font-semibold mb-2.5 text-center text-teal-300">حساب طاقة التفاعلات النووية</h2>
+            <div class="section-block mb-2.5">
+                <h3 class="text-md md:text-lg font-medium mb-1 text-gray-300">1. اختر تفاعلًا محددًا مسبقًا:</h3>
+                <select id="predefinedReactionSelect" class="w-full p-1.5 bg-gray-700 border border-gray-600 rounded-md focus:ring-teal-500 focus:border-teal-500">
+                    <option value="">-- اختر تفاعلًا جاهزًا --</option>
+                </select>
+                <div id="predefinedReactionDisplayContainer" class="mt-1">
+                    <div id="predefinedReactionDisplay" class="my-0.5 p-1.5 bg-gray-700 rounded-md text-sm md:text-md text-center min-h-[36px] text-gray-200">
+                        <p class="text-gray-400">لم يتم اختيار تفاعل جاهز.</p>
+                    </div>
+                    <button id="calculatePredefinedReactionButton" class="calc-button hidden">احسب التفاعل الجاهز</button>
+                </div>
+            </div>
+
+            <div class="section-block">
+                <h3 class="text-md md:text-lg font-medium mb-1 text-gray-300">2. أو قم ببناء تفاعل يدويًا (حتى 3 نواتج):</h3>
+                <div class="manual-reaction-grid grid grid-cols-1 md:grid-cols-12 items-center mb-1.5">
+                    <div class="md:col-span-5">
+                        <label class="block text-sm md:text-md mb-0.5">المتفاعلات (حتى 2):</label>
+                        <div class="grid grid-cols-2">
+                            <div>
+                                <select id="reactant1Select" class="w-full p-0.5 bg-gray-700 border border-gray-600 rounded-sm"></select>
+                                <input type="number" id="reactant1Count" value="1" min="1" class="w-full p-0.5 mt-0.5 bg-gray-700 border border-gray-600 rounded-sm" placeholder="العدد">
+                            </div>
+                            <div>
+                                <select id="reactant2Select" class="w-full p-0.5 bg-gray-700 border border-gray-600 rounded-sm"></select>
+                                <input type="number" id="reactant2Count" value="1" min="1" class="w-full p-0.5 mt-0.5 bg-gray-700 border border-gray-600 rounded-sm" placeholder="العدد">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:col-span-1 text-center text-xl md:text-2xl self-center pt-1.5 md:pt-0">→</div>
+                    <div class="md:col-span-6">
+                        <label class="block text-sm md:text-md mb-0.5">النواتج (حتى 3):</label>
+                        <div class="grid grid-cols-3">
+                            <div>
+                                <select id="product1Select" class="w-full p-0.5 bg-gray-700 border border-gray-600 rounded-sm"></select>
+                                <input type="number" id="product1Count" value="1" min="1" class="w-full p-0.5 mt-0.5 bg-gray-700 border border-gray-600 rounded-sm" placeholder="العدد">
+                            </div>
+                            <div>
+                                <select id="product2Select" class="w-full p-0.5 bg-gray-700 border border-gray-600 rounded-sm"></select>
+                                <input type="number" id="product2Count" value="1" min="1" class="w-full p-0.5 mt-0.5 bg-gray-700 border border-gray-600 rounded-sm" placeholder="العدد">
+                            </div>
+                            <div>
+                                <select id="product3Select" class="w-full p-0.5 bg-gray-700 border border-gray-600 rounded-sm"></select>
+                                <input type="number" id="product3Count" value="1" min="1" class="w-full p-0.5 mt-0.5 bg-gray-700 border border-gray-600 rounded-sm" placeholder="العدد">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="manualReactionDisplay" class="my-1.5 p-1.5 bg-gray-700 rounded-md text-sm md:text-md text-center min-h-[36px] text-gray-200">
+                     <p class="text-gray-400">قم ببناء تفاعلك هنا.</p>
+                </div>
+                 <button id="calculateManualReactionButton" class="calc-button mt-1.5 mb-2.5">
+                    احسب طاقة التفاعل اليدوي
+                </button>
+            </div>
+        </div>
+
+        <div id="beCalculatorTab" class="tab-content">
+            <h2 class="text-lg md:text-xl font-semibold mb-2.5 text-center text-teal-300">حساب طاقة الربط لكل نيوكليون</h2>
+            <div class="mb-2.5">
+                <label for="isotopeSelectBE" class="block text-md md:text-lg font-medium mb-1 text-gray-300">اختر النظير:</label>
+                <select id="isotopeSelectBE" class="w-full p-1.5 bg-gray-700 border border-gray-600 rounded-md focus:ring-teal-500 focus:border-teal-500">
+                    <option value="">-- اختر نظيرًا --</option>
+                </select>
+            </div>
+            <div id="beResults" class="mt-2.5 p-1.5 md:p-2 bg-gray-700 rounded-md min-h-[70px]">
+                <p class="text-gray-400 text-sm md:text-md text-center p-1.5">اختر نظيرًا لعرض طاقة الربط الخاصة به.</p>
+            </div>
+        </div>
+
+        <footer class="mt-3 text-center">
+            <p class="developer-credit">تطوير: أ. محمد قادري</p>
+            <button id="openAboutMeModalButton" class="about-me-button">من أنا؟</button>
+        </footer>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="resultsModal" class="modal">
+        <div class="modal-content">
+            <div id="modalBodyContent">
+                <!-- Content will be injected by JavaScript -->
+            </div>
+            <!-- Developer info removed from results modal -->
+            <button class="modal-bottom-close-button" onclick="closeResultsModal()">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- About Me Modal -->
+    <div id="aboutMeModal" class="modal">
+        <div class="modal-content">
+            <h3 class="text-lg md:text-xl lg:text-2xl mb-2 font-bold text-teal-300 text-center">عن المطور</h3>
+            <div id="aboutMeModalContent" class="text-center">
+                <p class="info-line">الأستاذ: محمد قادري</p>
+                <p class="info-line">استاذ بثانوية محمد الاخضر فيلالي - ولاية غرداية، الجزائر</p>
+                <p class="info-line">مدرس مادة الفيزياء</p>
+                <div class="contact-line mt-3">
+                    <p class="mb-1">للتواصل:</p>
+                    <span class="contact-item">البريد: <a href="mailto:kadri68@gmail.com" class="hover:underline">kadri68@gmail.com</a></span>
+                    <br class="sm:hidden"> <!-- Line break on small screens -->
+                    <span class="contact-item">الهاتف: <a href="tel:0662692987" class="hover:underline">0662692987</a></span>
+                </div>
+            </div>
+            <button class="modal-bottom-close-button" onclick="closeAboutMeModal()">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- تضمين ملف JavaScript الخارجي -->
+    <script src="script.js"></script>
+</body>
+</html>
+

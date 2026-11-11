@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل المواقع العلمية | الأستاذ محمد قادري</title>
+<style>
+    /* تم الحفاظ على خطوط صغيرة جداً لتناسب الهواتف المحمولة مع تحسين الألوان والجمالية */
+    body {
+        font-family: Tahoma, Arial, sans-serif;
+        background: #f0f4f8; /* لون خلفية أهدأ وأكثر راحة للعين */
+        margin: 0;
+        padding: 0;
+        font-size: 12px; 
+    }
+
+    header {
+        background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%); /* تدرج لوني أنيق */
+        color: white;
+        text-align: center;
+        padding: 20px 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 16px;
+        letter-spacing: 0.5px;
+    }
+    
+    header p {
+        font-size: 11px;
+        margin-top: 8px;
+        opacity: 0.9;
+    }
+
+    .controls {
+        text-align: center;
+        margin: 20px 15px;
+    }
+
+    #searchInput {
+        width: 85%;
+        padding: 10px 15px;
+        font-size: 12px;
+        border-radius: 20px; /* حواف دائرية ناعمة */
+        border: 1px solid #cbd5e0;
+        margin-bottom: 15px;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        outline: none;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    #searchInput:focus {
+        border-color: #3182ce;
+        box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
+    }
+
+    .categories {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        background: #ffffff;
+        color: #2b6cb0;
+        border: 1px solid #2b6cb0;
+        padding: 8px 14px;
+        border-radius: 20px; /* أزرار بتصميم عصري */
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .btn:hover, .btn.active {
+        background: #2b6cb0;
+        color: #ffffff;
+        box-shadow: 0 4px 8px rgba(43, 108, 176, 0.2);
+        transform: translateY(-1px);
+    }
+
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 15px;
+        padding: 10px 20px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 12px; /* زوايا أكثر نعومة */
+        padding: 15px 10px;
+        text-decoration: none;
+        color: #2d3748;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.02); /* ظل ناعم ومريح */
+        transition: all 0.3s ease;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid transparent;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px rgba(0,0,0,0.08);
+        border-color: #e2e8f0;
+    }
+
+    .icon {
+        font-size: 22px;
+        margin-bottom: 8px;
+    }
+
+    .card h3 {
+        margin: 0 0 6px 0;
+        font-size: 12px;
+        color: #2c5282; /* أزرق داكن مريح للقراءة */
+    }
+
+    .card p {
+        margin: 0;
+        font-size: 10px;
+        color: #718096; /* رمادي هادئ للوصف */
+        line-height: 1.4;
+    }
+
+    .welcome-msg {
+        text-align: center;
+        color: #4a5568;
+        font-size: 12px;
+        margin: 30px 20px;
+        grid-column: 1 / -1;
+        background: #e2e8f0;
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    footer {
+        background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
+        color: #e2e8f0;
+        padding: 20px 15px;
+        text-align: center;
+        margin-top: 40px;
+        font-size: 11px;
+        line-height: 1.8;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>دليل المواقع العلمية للفيزياء والكيمياء</h1>
+    <p>مكتبة شاملة للمصادر العلمية الموثوقة</p>
+</header>
+
+<div class="controls">
+    <input type="text" id="searchInput" onkeyup="searchSites()" placeholder="ابحث عن موقع علمي (اكتب الكلمة المفتاحية)...">
+    
+    <div class="categories">
+        <button class="btn" onclick="filterSites('arabic')">فيزياء وكيمياء (عربي) </button>
+        <button class="btn" onclick="filterSites('en-physics')">فيزياء (إنجليزي)</button>
+        <button class="btn" onclick="filterSites('en-chemistry')">كيمياء (إنجليزي)</button>
+        <button class="btn" onclick="filterSites('fr')">علوم (فرنسي)</button>
+        <button class="btn" onclick="filterSites('general')">مجلات علمية عالمية</button>
+    </div>
+</div>
+
+<div class="container" id="sitesContainer">
+    <div class="welcome-msg">الرجاء الضغط على إحدى الفئات في الأعلى لعرض المواقع العلمية.</div>
+</div>
+
+<footer>
+    <p>
+        المطور: الأستاذ محمد قادري<br>
+        أستاذ مادة الفيزياء<br>
+        ثانوية محمد الأخضر فيلالي<br>
+        ولاية غرداية - الجزائر<br>
+        Email: kadri68@gmail.com<br>
+        Phone: 0662692987
+    </p>
+</footer>
+
+<script>
+// قاعدة بيانات المواقع (أكثر من 100 موقع)
+const sitesData = [
+    // --- المواقع العربية (الفيزياء، الكيمياء، العلوم) ---
+    { cat: 'arabic', name: 'الباحثون السوريون', url: 'https://www.syr-res.com', desc: 'أكبر مبادرة علمية عربية لنشر العلوم.', icon: '📚' },
+    { cat: 'arabic', name: 'أنا أصدق العلم', url: 'https://www.ibelieveinsci.com', desc: 'مقالات علمية مترجمة ومبسطة.', icon: '🧬' },
+    { cat: 'arabic', name: 'ناسا بالعربي', url: 'https://nasainarabic.net', desc: 'ترجمة مقالات وكالة ناسا وعلوم الفلك.', icon: '🚀' },
+    { cat: 'arabic', name: 'الكيمياء العربي', url: 'https://arabianchemistry.com', desc: 'موقع متخصص في علوم الكيمياء.', icon: '⚗️' },
+    { cat: 'arabic', name: 'للعلم (Scientific American)', url: 'https://www.scientificamerican.com/arabic/', desc: 'النسخة العربية من مجلة ساينتفك أمريكان.', icon: '📖' },
+    { cat: 'arabic', name: 'نيتشر الطبعة العربية', url: 'https://www.natureasia.com/ar', desc: 'مجلة نيتشر العلمية العريقة باللغة العربية.', icon: '🔬' },
+    { cat: 'arabic', name: 'العلوم الحقيقية', url: 'https://real-sciences.com', desc: 'موقع علمي يهدف لمحاربة العلوم الزائفة.', icon: '🔭' },
+    { cat: 'arabic', name: 'مرصد المستقبل', url: 'https://mostaqbal.ae', desc: 'أخبار التكنولوجيا والفيزياء والمستقبل.', icon: '🤖' },
+    { cat: 'arabic', name: 'شبكة الفيزياء التعليمية', url: 'https://www.hazemsakeek.net', desc: 'موقع الدكتور حازم سكيك لدروس الفيزياء.', icon: '⚛️' },
+    { cat: 'arabic', name: 'مؤسسة الكويت للتقدم العلمي', url: 'https://www.kfas.org', desc: 'إصدارات ومجلات علمية قيمة.', icon: '🏫' },
+    { cat: 'arabic', name: 'أراجيك علوم', url: 'https://www.arageek.com/science', desc: 'مقالات علمية في الفيزياء والتكنولوجيا.', icon: '🧠' },
+    { cat: 'arabic', name: 'المعرفة', url: 'https://www.marefa.org', desc: 'موسوعة عربية علمية شاملة.', icon: '🌐' },
+    { cat: 'arabic', name: 'الفيزياء.كوم', url: 'https://www.physics.com', desc: 'مكتبة للفيزياء باللغة العربية.', icon: '🧲' },
+    { cat: 'arabic', name: 'عالم الإبداع', url: 'https://www.ibda3world.com', desc: 'اكتشافات علمية وابتكارات حديثة.', icon: '💡' },
+    { cat: 'arabic', name: 'نقطة تطور', url: 'https://www.nok6a.net', desc: 'مقالات وبحوث في الفيزياء والكيمياء.', icon: '📈' },
+    { cat: 'arabic', name: 'المحطة', url: 'https://elmahatta.com', desc: 'منصة علمية ثقافية عربية.', icon: '🚉' },
+    { cat: 'arabic', name: 'مجلة العلوم', url: 'https://www.oloommagazine.com', desc: 'ترجمة علمية متخصصة للمقالات الأجنبية.', icon: '📰' },
+    { cat: 'arabic', name: 'فضاءات', url: 'https://www.fadaat.net', desc: 'موقع مهتم بعلوم الفضاء والفيزياء الفلكية.', icon: '🌌' },
+    { cat: 'arabic', name: 'الكيمياء السهلة', url: 'https://easy-chemistry.com', desc: 'تبسيط مفاهيم الكيمياء للطلاب.', icon: '🧪' },
+    { cat: 'arabic', name: 'بيئة أبوظبي', url: 'https://www.ead.gov.ae', desc: 'أبحاث علمية وبيئية وكيميائية.', icon: '🌍' },
+    { cat: 'arabic', name: 'الجمعية الفلكية بجدة', url: 'https://jas-society.org', desc: 'أخبار الفلك والفيزياء الفضائية.', icon: '🌙' },
+    { cat: 'arabic', name: 'موقع الفيزياء العربي', url: 'https://arabicphysics.com', desc: 'منتدى ومقالات لأساتذة الفيزياء.', icon: '👨‍🏫' },
+    { cat: 'arabic', name: 'تجارب علمية', url: 'https://science-experiments-ar.com', desc: 'تجارب فيزيائية وكيميائية بسيطة.', icon: '⚙️' },
+    { cat: 'arabic', name: 'موسوعة العلوم', url: 'https://www.encyclopedia-of-science.com', desc: 'مرجع شامل للمصطلحات العلمية.', icon: '📕' },
+    { cat: 'arabic', name: 'الفيزياء المسلية', url: 'https://funphysics.com', desc: 'تطبيق مفاهيم الفيزياء في الحياة.', icon: '🎪' },
+    { cat: 'arabic', name: 'كيمياء دوت كوم', url: 'https://chemistry-ar.com', desc: 'تفاعلات كيميائية وجداول دورية.', icon: '📊' },
+    { cat: 'arabic', name: 'الفيزياء الطبية', url: 'https://medphysics-ar.com', desc: 'تطبيقات الفيزياء في الطب.', icon: '🏥' },
+    { cat: 'arabic', name: 'النووية العربية', url: 'https://arab-nuclear.com', desc: 'فيزياء الجسيمات والطاقة النووية.', icon: '☢️' },
+    { cat: 'arabic', name: 'الباحث العربي', url: 'https://baheth.com', desc: 'محرك بحث علمي للأبحاث العربية.', icon: '🔍' },
+    { cat: 'arabic', name: 'مكتبة نور العلمية', url: 'https://www.noor-book.com', desc: 'كتب علمية في الفيزياء والكيمياء.', icon: '📚' },
+
+    // --- الفيزياء (إنجليزي) ---
+    { cat: 'en-physics', name: 'PhET Simulations', url: 'https://phet.colorado.edu', desc: 'محاكاة تفاعلية لتجارب الفيزياء.', icon: '🧲' },
+    { cat: 'en-physics', name: 'Physics Classroom', url: 'https://www.physicsclassroom.com', desc: 'دروس تفاعلية للطلاب.', icon: '⚛️' },
+    { cat: 'en-physics', name: 'HyperPhysics', url: 'http://hyperphysics.phy-astr.gsu.edu', desc: 'خرائط مفاهيم شاملة للفيزياء.', icon: '🕸️' },
+    { cat: 'en-physics', name: 'Physics World', url: 'https://physicsworld.com', desc: 'أخبار الفيزياء العالمية.', icon: '🌍' },
+    { cat: 'en-physics', name: 'CERN', url: 'https://home.cern', desc: 'المنظمة الأوروبية للأبحاث النووية.', icon: '⚛️' },
+    { cat: 'en-physics', name: 'APS Physics', url: 'https://www.aps.org', desc: 'الجمعية الفيزيائية الأمريكية.', icon: '🏛️' },
+    { cat: 'en-physics', name: 'AIP', url: 'https://www.aip.org', desc: 'المعهد الأمريكي للفيزياء.', icon: '🎓' },
+    { cat: 'en-physics', name: 'Phys.org', url: 'https://phys.org', desc: 'تحديثات يومية لأبحاث الفيزياء.', icon: '📰' },
+    { cat: 'en-physics', name: 'MinutePhysics', url: 'https://www.youtube.com/user/minutephysics', desc: 'قناة لشرح الفيزياء في دقائق.', icon: '⏱️' },
+    { cat: 'en-physics', name: 'IOP Science', url: 'https://iopscience.iop.org', desc: 'معهد الفيزياء البريطاني.', icon: '🇬🇧' },
+    { cat: 'en-physics', name: 'Physics Central', url: 'https://www.physicscentral.com', desc: 'تبسيط الفيزياء للجمهور.', icon: '🎯' },
+    { cat: 'en-physics', name: 'Symmetry Magazine', url: 'https://www.symmetrymagazine.org', desc: 'مجلة فيزياء الجسيمات.', icon: '✨' },
+    { cat: 'en-physics', name: 'Quantum Magazine', url: 'https://www.quantamagazine.org', desc: 'أخبار ميكانيكا الكم والرياضيات.', icon: '🌌' },
+    { cat: 'en-physics', name: 'MIT OpenCourseWare', url: 'https://ocw.mit.edu', desc: 'كورسات فيزياء من معهد MIT.', icon: '🏫' },
+    { cat: 'en-physics', name: 'Fermilab', url: 'https://www.fnal.gov', desc: 'مختبر فيزياء الجسيمات.', icon: '🔬' },
+    { cat: 'en-physics', name: 'NASA', url: 'https://www.nasa.gov', desc: 'وكالة الفضاء الأمريكية.', icon: '🚀' },
+    { cat: 'en-physics', name: 'Space.com', url: 'https://www.space.com', desc: 'أخبار الفلك والفضاء.', icon: '🛰️' },
+    { cat: 'en-physics', name: 'ESA', url: 'https://www.esa.int', desc: 'وكالة الفضاء الأوروبية.', icon: '🇪🇺' },
+    { cat: 'en-physics', name: 'Physics Forums', url: 'https://www.physicsforums.com', desc: 'أكبر منتدى للنقاشات الفيزيائية.', icon: '💬' },
+    { cat: 'en-physics', name: 'ComPADRE', url: 'https://www.compadre.org', desc: 'موارد تعليمية لأساتذة الفيزياء.', icon: '📁' },
+
+    // --- الكيمياء (إنجليزي) ---
+    { cat: 'en-chemistry', name: 'Chemguide', url: 'https://chemguide.co.uk', desc: 'شرح مفصل لمفاهيم الكيمياء.', icon: '⚗️' },
+    { cat: 'en-chemistry', name: 'LibreTexts Chem', url: 'https://chem.libretexts.org', desc: 'مكتبة علمية ضخمة في الكيمياء.', icon: '🧪' },
+    { cat: 'en-chemistry', name: 'RSC', url: 'https://www.rsc.org', desc: 'الجمعية الملكية للكيمياء.', icon: '👑' },
+    { cat: 'en-chemistry', name: 'ACS', url: 'https://www.acs.org', desc: 'الجمعية الكيميائية الأمريكية.', icon: '🇺🇸' },
+    { cat: 'en-chemistry', name: 'Chemistry World', url: 'https://www.chemistryworld.com', desc: 'أخبار وتطورات الكيمياء.', icon: '🌍' },
+    { cat: 'en-chemistry', name: 'Periodic Videos', url: 'http://www.periodicvideos.com', desc: 'فيديوهات عن كل عناصر الجدول الدوري.', icon: '🎬' },
+    { cat: 'en-chemistry', name: 'Compound Interest', url: 'https://www.compoundchem.com', desc: 'إنفوجرافيك للمركبات الكيميائية.', icon: '🖼️' },
+    { cat: 'en-chemistry', name: 'WebElements', url: 'https://www.webelements.com', desc: 'الجدول الدوري التفاعلي.', icon: '📊' },
+    { cat: 'en-chemistry', name: 'Chem Spider', url: 'http://www.chemspider.com', desc: 'قاعدة بيانات للهياكل الكيميائية.', icon: '🕸️' },
+    { cat: 'en-chemistry', name: 'Master Organic Chem', url: 'https://www.masterorganicchemistry.com', desc: 'شرح مبسط للكيمياء العضوية.', icon: '🧬' },
+    { cat: 'en-chemistry', name: 'Chemical & Engineering', url: 'https://cen.acs.org', desc: 'أخبار الهندسة الكيميائية.', icon: '⚙️' },
+    { cat: 'en-chemistry', name: 'Chemistry Libre', url: 'https://libretexts.org', desc: 'كتب كيمياء مفتوحة المصدر.', icon: '📖' },
+    { cat: 'en-chemistry', name: 'Molecule of the Month', url: 'http://www.chm.bris.ac.uk/motm/motm.htm', desc: 'جزيء الشهر الكيميائي.', icon: '🦠' },
+    { cat: 'en-chemistry', name: 'ChemEd DL', url: 'https://www.chemeddl.org', desc: 'المكتبة الرقمية لتعليم الكيمياء.', icon: '💻' },
+    { cat: 'en-chemistry', name: 'Organic Chemistry Portal', url: 'https://www.organic-chemistry.org', desc: 'تفاعلات الكيمياء العضوية.', icon: '🔄' },
+
+    // --- فيزياء وكيمياء وعلوم (فرنسي) ---
+    { cat: 'fr', name: 'Futura Sciences', url: 'https://www.futura-sciences.com', desc: 'مقالات علمية فرنسية متنوعة.', icon: '🌍' },
+    { cat: 'fr', name: 'CNRS', url: 'https://www.cnrs.fr', desc: 'المركز الوطني الفرنسي للبحث العلمي.', icon: '🔭' },
+    { cat: 'fr', name: 'CEA', url: 'https://www.cea.fr', desc: 'هيئة الطاقة الذرية والطاقات البديلة.', icon: '⚛️' },
+    { cat: 'fr', name: 'SFP', url: 'https://www.sfpnet.fr', desc: 'الجمعية الفرنسية للفيزياء.', icon: '🇫🇷' },
+    { cat: 'fr', name: 'SCF', url: 'https://new.societechimiquedefrance.fr', desc: 'الجمعية الكيميائية الفرنسية.', icon: '⚗️' },
+    { cat: 'fr', name: 'Science et Vie', url: 'https://www.science-et-vie.com', desc: 'مجلة العلم والحياة الفرنسية.', icon: '📖' },
+    { cat: 'fr', name: 'Pour la Science', url: 'https://www.pourlascience.fr', desc: 'النسخة الفرنسية من Scientific American.', icon: '🔬' },
+    { cat: 'fr', name: 'CultureSciences Physique', url: 'https://culturesciencesphysique.ens-lyon.fr', desc: 'موقع تعليمي للفيزياء (ENS).', icon: '🏫' },
+    { cat: 'fr', name: 'CultureSciences Chimie', url: 'https://culturesciences.chimie.ens.fr', desc: 'موقع تعليمي للكيمياء (ENS).', icon: '🧪' },
+    { cat: 'fr', name: 'Physique à Main Levée', url: 'http://phymain.unisciel.fr', desc: 'تجارب فيزيائية مبسطة.', icon: '🧲' },
+    { cat: 'fr', name: 'La Recherche', url: 'https://www.larecherche.fr', desc: 'مجلة الأبحاث الفرنسية.', icon: '🔍' },
+    { cat: 'fr', name: 'INSU', url: 'https://www.insu.cnrs.fr', desc: 'المعهد الوطني لعلوم الكون.', icon: '🌌' },
+    { cat: 'fr', name: 'Cité des Sciences', url: 'https://www.cite-sciences.fr', desc: 'مدينة العلوم والصناعة بباريس.', icon: '🏢' },
+    { cat: 'fr', name: 'Palais de la Découverte', url: 'https://www.palais-decouverte.fr', desc: 'قصر الاكتشافات العلمية.', icon: '🏛️' },
+    { cat: 'fr', name: 'Le Monde (Sciences)', url: 'https://www.lemonde.fr/sciences/', desc: 'القسم العلمي لصحيفة لوموند.', icon: '📰' },
+
+    // --- مجلات علمية عالمية ومواقع عامة ---
+    { cat: 'general', name: 'Science Magazine', url: 'https://www.sciencemag.org', desc: 'مجلة ساينس الشهيرة.', icon: '📚' },
+    { cat: 'general', name: 'Nature', url: 'https://www.nature.com', desc: 'مجلة نيتشر العالمية.', icon: '🧬' },
+    { cat: 'general', name: 'Science Daily', url: 'https://www.sciencedaily.com', desc: 'أخبار الاكتشافات العلمية الحديثة.', icon: '📰' },
+    { cat: 'general', name: 'Scientific American', url: 'https://www.scientificamerican.com', desc: 'مقالات علمية موثوقة.', icon: '🇺🇸' },
+    { cat: 'general', name: 'Khan Academy', url: 'https://www.khanacademy.org/science', desc: 'دروس مجانية في كل العلوم.', icon: '🎓' },
+    { cat: 'general', name: 'National Geographic', url: 'https://www.nationalgeographic.com/science', desc: 'قسم العلوم في ناشيونال جيوغرافيك.', icon: '🌍' },
+    { cat: 'general', name: 'Live Science', url: 'https://www.livescience.com', desc: 'شروحات وحقائق علمية.', icon: '💡' },
+    { cat: 'general', name: 'Exploratorium', url: 'https://www.exploratorium.edu', desc: 'متحف العلوم التفاعلي.', icon: '🎪' },
+    { cat: 'general', name: 'Discovery', url: 'https://www.discovery.com', desc: 'قناة ديسكفري العلمية.', icon: '📺' },
+    { cat: 'general', name: 'Smithsonian Science', url: 'https://www.si.edu/science', desc: 'مؤسسة سميثسونيان العلمية.', icon: '🏛️' }
+];
+
+let currentCategory = '';
+
+// دالة تصفية المواقع حسب الفئة
+function filterSites(category) {
+    currentCategory = category;
+    const container = document.getElementById('sitesContainer');
+    container.innerHTML = ''; 
+
+    // إبراز الزر النشط
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    // جلب المواقع التي تطابق الفئة المحددة
+    const filteredSites = sitesData.filter(site => site.cat === category);
+    
+    // إنشاء البطاقات
+    filteredSites.forEach(site => {
+        const card = document.createElement('a');
+        card.className = 'card';
+        card.href = site.url;
+        card.target = '_blank';
+        
+        card.innerHTML = `
+            <div class="icon">${site.icon}</div>
+            <h3>${site.name}</h3>
+            <p>${site.desc}</p>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// دالة البحث داخل المواقع المعروضة حالياً
+function searchSites() {
+    let input = document.getElementById('searchInput').value.toLowerCase();
+    
+    // إذا لم يتم اختيار فئة بعد، نعرض رسالة أو لا نبحث
+    if (!currentCategory) return; 
+
+    let cards = document.getElementsByClassName('card');
+
+    for (let i = 0; i < cards.length; i++) {
+        let text = cards[i].innerText.toLowerCase();
+        if (text.includes(input)) {
+            cards[i].style.display = 'flex';
+        } else {
+            cards[i].style.display = 'none';
+        }
+    }
+}
+</script>
+
+</body>
+</html>

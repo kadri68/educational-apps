@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Windows Shortcuts Pro | اختصارات ويندوز</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --accent: #38bdf8;
+      --text: #f1f5f9;
+      --active-cat-color: #38bdf8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.4s ease;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* تأثير خلفية ديناميكي عند تفعيل فئة */
+    body.category-active {
+      background: color-mix(in srgb, var(--active-cat-color) 15%, var(--bg) 85%);
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #0ea5e9, #6366f1);
+      color: white;
+      transition: background 0.4s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    body.category-active header {
+      background: linear-gradient(90deg, var(--active-cat-color), #1e293b);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+
+    input,
+    select,
+    button {
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: none;
+      font-size: 15px;
+      font-family: 'Cairo', sans-serif;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input {
+      flex: 2;
+      min-width: 200px;
+      background: #1e293b;
+      color: #f1f5f9;
+      border: 1px solid #334155;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+    }
+
+    select {
+      flex: 0.8;
+      background: #1e293b;
+      color: #f1f5f9;
+      border: 1px solid #334155;
+      cursor: pointer;
+    }
+
+    button {
+      cursor: pointer;
+      background: var(--accent);
+      color: #0f172a;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    button:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+
+    .stat-box {
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+      background: #334155;
+      color: #e2e8f0;
+      border: 2px solid transparent;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .stat-box:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.2);
+    }
+
+    /* الصندوق النشط يصبح داكنًا مع حواف بلونه */
+    .stat-box.active {
+      background: #0f172a;
+      border: 2px solid var(--active-cat-color);
+      color: white;
+      box-shadow: 0 0 15px var(--active-cat-color);
+      transform: scale(1.03);
+    }
+
+    .stat-box.clear-filter {
+      background: #475569;
+      font-weight: 600;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 18px 20px;
+      margin: 12px 0;
+      border-radius: 16px;
+      transition: all 0.3s;
+      border: 1px solid transparent;
+      backdrop-filter: blur(4px);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    /* عند وجود فئة نشطة، يمكن إبراز البطاقات قليلاً */
+    body.category-active .card {
+      border-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .shortcut {
+      font-weight: 800;
+      color: var(--accent);
+      font-size: 17px;
+      letter-spacing: 0.5px;
+    }
+
+    .category {
+      display: inline-block;
+      padding: 6px 14px;
+      font-size: 12px;
+      border-radius: 20px;
+      margin-right: 8px;
+      font-weight: 700;
+      background: #475569;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .small-btn {
+      margin-top: 10px;
+      font-size: 13px;
+      padding: 8px 14px;
+      background: #334155;
+      color: #e2e8f0;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+      font-weight: 600;
+    }
+
+    .small-btn:hover {
+      background: #475569;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      opacity: 0.8;
+      font-size: 14px;
+      border-top: 1px solid #1e293b;
+      margin-top: 30px;
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+      z-index: 999;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      border: 1px solid var(--accent);
+    }
+
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    @media (max-width: 600px) {
+      .controls {
+        flex-direction: column;
+      }
+      input, select, button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>💻 Windows Shortcuts Pro</header>
+
+<div class="container">
+  <div class="controls">
+    <input type="text" id="search" placeholder="🔎 بحث بالاسم أو المفتاح...">
+    <select id="language">
+      <option value="ar">العربية</option>
+      <option value="en">English</option>
+    </select>
+    <button id="addBtn">➕ إضافة اختصار</button>
+  </div>
+
+  <div class="stats" id="stats">
+    <!-- سيتم ملؤها ديناميكيًا -->
+  </div>
+  <div id="list"></div>
+</div>
+
+<div id="toast" class="toast">تم النسخ!</div>
+
+<footer>Professional Edition – مُحسَّنة للاستخدام اليومي 🚀</footer>
+
+<script>
+  // بيانات الألوان لكل فئة (تُستخدم للتمييز)
+  const categoryColors = {
+    "General": "#66048b",
+    "System": "#0885e9",
+    "Window Management": "#234227",
+    "Desktop": "#015668",
+    "Virtual Desktop": "#2d6a4f",
+    "File Explorer": "#b45309",
+    "Browser": "#f97316",
+    "Screenshots": "#90538c",
+    "Accessibility": "#66048b",
+    "Media": "#F40968",
+    "Security": "#C00707",
+    "Developer": "#B35656",
+    "Advanced": "#4b5563",
+    "Word": "#0F81C7",
+    "Excel": "#237227",
+    "PowerPoint": "#f97316",
+    "Outlook": "#09938c",
+    "Teams": "#FFAA00"
+  };
+
+  let shortcuts = [];
+  let selectedCategory = null; // الفئة النشطة حاليًا
+
+  // تحميل البيانات من ملف JSON (تأكد من وجود shortcuts.json في نفس المجلد)
+  fetch('shortcuts.json')
+    .then(res => {
+      if (!res.ok) throw new Error('Network response was not ok');
+      return res.json();
+    })
+    .then(data => {
+      shortcuts = data;
+      loadCustomShortcuts();
+      render();
+    })
+    .catch(err => {
+      console.error('فشل تحميل الاختصارات:', err);
+      // بيانات افتراضية بسيطة في حالة فشل التحميل
+      shortcuts = [
+        {"category":"General","key":"Ctrl + C","description_ar":"نسخ العنصر المحدد","description_en":"Copy selected item"},
+        {"category":"General","key":"Ctrl + V","description_ar":"لصق العنصر المنسوخ","description_en":"Paste copied item"}
+      ];
+      render();
+    });
+
+  // ------ دوال العرض والتفاعل ------
+  function render(filterText = "") {
+    const listDiv = document.getElementById('list');
+    const statsDiv = document.getElementById('stats');
+    const lang = document.getElementById('language').value;
+    listDiv.innerHTML = "";
+    statsDiv.innerHTML = "";
+
+    // تجهيز نص البحث (مع تجاهل حالة الأحرف)
+    const searchTerm = filterText.toLowerCase();
+
+    // فلترة الاختصارات حسب البحث والفئة المحددة
+    let filtered = shortcuts.filter(s => {
+      const matchSearch = searchTerm === "" ||
+        s.key.toLowerCase().includes(searchTerm) ||
+        (lang === 'ar' ? s.description_ar.toLowerCase().includes(searchTerm) : s.description_en.toLowerCase().includes(searchTerm));
+      const matchCategory = !selectedCategory || s.category === selectedCategory;
+      return matchSearch && matchCategory;
+    });
+
+    // ----- بناء أزرار الإحصائيات -----
+    // حساب عدد الاختصارات في كل فئة
+    const counts = {};
+    shortcuts.forEach(s => {
+      counts[s.category] = (counts[s.category] || 0) + 1;
+    });
+
+    // زر "الكل" لإلغاء التصفية
+    const allBox = document.createElement('div');
+    allBox.className = 'stat-box clear-filter';
+    allBox.innerText = `🔄 الكل (${shortcuts.length})`;
+    allBox.onclick = () => {
+      if (selectedCategory !== null) {
+        selectedCategory = null;
+        updateBodyClass();
+        render(document.getElementById('search').value.toLowerCase());
+      }
+    };
+    if (selectedCategory === null) {
+      allBox.classList.add('active'); // يمكن جعله نشطًا عند عدم وجود فئة
+    }
+    statsDiv.appendChild(allBox);
+
+    // أزرار الفئات
+    Object.keys(counts).sort().forEach(cat => {
+      const box = document.createElement('div');
+      box.className = 'stat-box';
+      box.innerText = `${cat} (${counts[cat]})`;
+      box.style.backgroundColor = categoryColors[cat] || '#64748b';
+      box.style.color = '#fff';
+      box.onclick = (e) => {
+        e.stopPropagation();
+        if (selectedCategory === cat) {
+          // إذا نقرت على نفس الفئة مرة أخرى: إلغاء التحديد
+          selectedCategory = null;
+        } else {
+          selectedCategory = cat;
+        }
+        updateBodyClass();
+        render(document.getElementById('search').value.toLowerCase());
+      };
+
+      // تمييز الفئة النشطة
+      if (selectedCategory === cat) {
+        box.classList.add('active');
+        // تعيين لون الحدود والنص الداكن
+        box.style.setProperty('--active-cat-color', categoryColors[cat] || '#38bdf8');
+      }
+      statsDiv.appendChild(box);
+    });
+
+    // ----- عرض البطاقات -----
+    if (filtered.length === 0) {
+      listDiv.innerHTML = `<div style="text-align:center; padding:40px; opacity:0.7;">لا توجد اختصارات مطابقة</div>`;
+      return;
+    }
+
+    filtered.forEach(s => {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const catColor = categoryColors[s.category] || '#64748b';
+
+      card.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+          <span class="shortcut">${s.key}</span>
+          <span class="category" style="background:${catColor}; color:white;">${s.category}</span>
+        </div>
+        <div style="margin-top: 10px; font-size: 15px;">${lang === 'ar' ? s.description_ar : s.description_en}</div>
+        <button class="small-btn" onclick="copyToClipboard('${s.key.replace(/'/g, "\\'")}')">
+          📋 نسخ
+        </button>
+      `;
+      listDiv.appendChild(card);
+    });
+  }
+
+  // تحديث كلاس الجسم لتغيير الخلفية عند وجود فئة نشطة
+  function updateBodyClass() {
+    const body = document.body;
+    if (selectedCategory && categoryColors[selectedCategory]) {
+      body.classList.add('category-active');
+      body.style.setProperty('--active-cat-color', categoryColors[selectedCategory]);
+    } else {
+      body.classList.remove('category-active');
+      body.style.removeProperty('--active-cat-color');
+    }
+  }
+
+  // نسخ النص إلى الحافظة مع إشعار توست
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast(`✅ تم النسخ: ${text}`);
+    }).catch(() => {
+      showToast('❌ فشل النسخ');
+    });
+  }
+
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 1800);
+  }
+
+  // ------ البحث واللغة ------
+  document.getElementById('search').addEventListener('input', (e) => {
+    render(e.target.value.toLowerCase());
+  });
+
+  document.getElementById('language').addEventListener('change', () => {
+    render(document.getElementById('search').value.toLowerCase());
+  });
+
+  // ------ إضافة اختصار مخصص ------
+  document.getElementById('addBtn').addEventListener('click', () => {
+    const key = prompt('مفتاح الاختصار (مثال: Ctrl + Shift + K):');
+    if (!key || key.trim() === '') return;
+    const arDesc = prompt('الوصف بالعربية:');
+    if (!arDesc || arDesc.trim() === '') return;
+    const enDesc = prompt('English description:');
+    if (!enDesc || enDesc.trim() === '') return;
+    const category = prompt('الفئة (مثل: Custom, Design...):');
+    if (!category || category.trim() === '') return;
+
+    const newShortcut = {
+      key: key.trim(),
+      description_ar: arDesc.trim(),
+      description_en: enDesc.trim(),
+      category: category.trim(),
+      custom: true
+    };
+
+    shortcuts.push(newShortcut);
+    saveCustomShortcuts();
+    render(document.getElementById('search').value.toLowerCase());
+    showToast('✨ تمت إضافة الاختصار بنجاح');
+  });
+
+  // ------ تخزين الاختصارات المخصصة في localStorage ------
+  function saveCustomShortcuts() {
+    const customOnly = shortcuts.filter(s => s.custom === true);
+    localStorage.setItem('customShortcuts', JSON.stringify(customOnly));
+  }
+
+  function loadCustomShortcuts() {
+    const stored = localStorage.getItem('customShortcuts');
+    if (stored) {
+      try {
+        const customArr = JSON.parse(stored);
+        // دمج مع القائمة الحالية مع تجنب التكرار (حسب المفتاح والفئة)
+        customArr.forEach(c => {
+          const exists = shortcuts.some(s => s.key === c.key && s.category === c.category && s.custom);
+          if (!exists) {
+            shortcuts.push(c);
+          }
+        });
+      } catch (e) {
+        console.warn('بيانات مخصصة غير صالحة');
+      }
+    }
+  }
+
+  // زر إعادة تعيين الاختصارات المخصصة (يمكن إضافته اختياريًا)
+  // يمكنك إضافة زر في الـ footer مثلاً، لكن هنا نكتفي بوجوده في الكود.
+</script>
+
+</body>
+</html>

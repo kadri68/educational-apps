@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حاسبة الأستاذ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <span id="title">حاسبة الأستاذ</span>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <button class="header-btn help-btn" onclick="showHelp()" id="helpBtn">مساعدة</button>
+      <button class="header-btn share-btn" onclick="showShare()" id="shareBtn">مشاركة</button>
+      <button class="header-btn developer-btn" onclick="showDeveloper()" id="developerBtn">المطور</button>
+      <select class="lang-select" id="language" onchange="changeLanguage()">
+        <option value="ar">العربية</option>
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- أزرار التحكم العلوية -->
+  <div class="top-controls">
+    <button class="ceiling-toggle disabled" onclick="toggleCeiling()" id="ceilingBtn">
+      تفعيل تسقيف النقاط
+    </button>
+    <button class="stats-btn" onclick="toggleStats()" id="statsBtn">
+      إحصاء النتائج
+    </button>
+  </div>
+
+  <!-- تنبيه النظام -->
+  <div id="alertBox" class="alert-box hidden">
+    <div class="alert-content">
+      <span id="alertMessage"></span>
+      <button onclick="closeAlert()">×</button>
+    </div>
+  </div>
+
+  <!-- قسم إحصاء النتائج -->
+  <div id="statsSection" class="stats-section hidden">
+    <div class="stats-header">
+      <h3 id="statsTitle">جدول إحصاء النتائج</h3>
+      <div class="stats-controls">
+        <button class="copy-btn" onclick="copyStats()" id="copyBtn">نسخ الجدول</button>
+        <button class="clear-stats-btn" onclick="clearStats()" id="clearStatsBtn">مسح الجدول</button>
+      </div>
+    </div>
+    <div class="stats-table-container">
+      <table id="statsTable" class="stats-table">
+        <thead>
+          <tr>
+            <th>الطالب</th>
+            <th>تمرين 1</th>
+            <th>تمرين 2</th>
+            <th>تمرين 3</th>
+            <th>تمرين 4</th>
+            <th>النتيجة النهائية</th>
+          </tr>
+        </thead>
+        <tbody id="statsTableBody">
+        </tbody>
+        <tfoot>
+          <tr class="average-row">
+            <td><strong>المعدل</strong></td>
+            <td id="avg1">0.00</td>
+            <td id="avg2">0.00</td>
+            <td id="avg3">0.00</td>
+            <td id="avg4">0.00</td>
+            <td id="avgFinal">0.00</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- قسم النتائج في الأعلى -->
+  <div class="results-section">
+    <div class="results-grid" id="resultsGrid"></div>
+    <div class="total-result" id="totalResult"></div>
+    <div class="final-actions">
+      <button class="confirm-btn" onclick="confirmFinalGrade()" id="confirmBtn">تأكيد النتيجة النهائية</button>
+      <button class="new-entry-btn hidden" onclick="newEntry()" id="newEntryBtn">إدخال جديد</button>
+    </div>
+  </div>
+
+  <!-- أزرار التمارين الأربعة -->
+  <div class="exercise-buttons" id="exerciseButtons"></div>
+
+  <!-- أزرار التحكم فوق الأرقام -->
+  <div class="control-buttons">
+    <button class="control-btn remove" onclick="removeLast()">REMOVE</button>
+    <button class="control-btn clear" onclick="clearCurrent()">CLEAR</button>
+  </div>
+
+  <!-- أزرار الأرقام -->
+  <div class="number-buttons" id="numberButtons"></div>
+
+  <!-- النافذة المنبثقة للمطور -->
+  <div id="developerModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header developer-header">معلومات المطور</div>
+      <div class="modal-body">
+        <div><strong>الأستاذ محمد قادري</strong></div>
+        <div>أستاذ مادة الفيزياء</div>
+        <div>ثانوية محمد الأخضر فيلالي</div>
+        <div>ولاية غرداية - الجزائر</div>
+        <div><strong>Email:</strong> kadri68@gmail.com</div>
+        <div><strong>Phone:</strong> 0662692987</div>
+      </div>
+      <button class="modal-close developer-close" onclick="closeDeveloper()">إغلاق</button>
+    </div>
+  </div>
+
+  <!-- نافذة المساعدة -->
+  <div id="helpModal" class="modal">
+    <div class="modal-content help-modal">
+      <div class="modal-header help-header">دليل الاستخدام</div>
+      <div class="modal-body help-content">
+        <h3>كيفية استخدام التطبيق:</h3>
+        <ul>
+          <li><strong>اختر التمرين:</strong> اضغط على زر التمرين المطلوب</li>
+          <li><strong>أدخل النقاط:</strong> اضغط على الأرقام لإضافة النقاط</li>
+          <li><strong>تسقيف النقاط:</strong> فعل/ألغ تسقيف النقاط حسب الحاجة</li>
+          <li><strong>حدود النقاط (مع التسقيف):</strong> تمرين 1: 6، تمرين 2: 7، تمرين 3: 7، تمرين 4: 8</li>
+          <li><strong>الحد الأقصى الإجمالي:</strong> 20 نقطة</li>
+          <li><strong>التقريب:</strong> 0.25→0.5 و 0.75→1.0</li>
+          <li><strong>تأكيد النتيجة:</strong> اضغط لتأكيد النتيجة وإظهار زر الإدخال الجديد</li>
+          <li><strong>إحصاء النتائج:</strong> اضغط على زر إحصاء النتائج لعرض جدول النتائج المسجلة</li>
+          <li><strong>الألوان:</strong> أصفر=الحد الأقصى، برتقالي=تجاوز بـ1، أحمر=تجاوز بـ2+</li>
+        </ul>
+      </div>
+      <button class="modal-close help-close" onclick="closeHelp()">إغلاق</button>
+    </div>
+  </div>
+
+  <!-- نافذة المشاركة -->
+  <div id="shareModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header share-header">مشاركة التطبيق</div>
+      <div class="modal-body">
+        <p>شارك تطبيق حاسبة الأستاذ مع زملائك:</p>
+        <div class="share-buttons">
+          <button class="share-btn email-share" onclick="shareViaEmail()">📧 مشاركة عبر الإيميل</button>
+          <button class="share-btn whatsapp-share" onclick="shareViaWhatsApp()">📱 مشاركة عبر واتساب</button>
+          <button class="share-btn apps-share" onclick="shareViaApps()">🔗 مشاركة عبر التطبيقات</button>
+        </div>
+      </div>
+      <button class="modal-close share-close" onclick="closeShare()">إغلاق</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

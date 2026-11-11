@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows Shortcuts Pro</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0f172a;
+  --card:#1e293b;
+  --accent:#38bdf8;
+  --text:#f1f5f9;
+}
+
+body{
+  margin:0;
+  font-family:'Cairo',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+header{
+  padding:20px;
+  text-align:center;
+  font-size:24px;
+  font-weight:800;
+  background:linear-gradient(90deg,#0ea5e9,#6366f1);
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+}
+
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+
+input, select, button{
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  font-size:14px;
+}
+
+input, select{
+  flex:1;
+}
+
+button{
+  cursor:pointer;
+  background:var(--accent);
+  color:black;
+  font-weight:bold;
+}
+
+.card{
+  background:var(--card);
+  padding:15px;
+  margin:10px 0;
+  border-radius:12px;
+  transition:.3s;
+}
+
+.card:hover{
+  transform:translateY(-3px);
+}
+
+.shortcut{
+  font-weight:800;
+  color:var(--accent);
+  font-size:16px;
+}
+
+.category{
+  display:inline-block;
+  padding:5px 10px;
+  font-size:12px;
+  border-radius:20px;
+  margin-right:8px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.category:hover{
+  transform:scale(1.05);
+}
+
+.stats{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.stat-box{
+  padding:8px 14px;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.stat-box:hover{
+  transform:scale(1.05);
+}
+
+.small-btn{
+  margin-top:8px;
+  font-size:12px;
+  padding:6px;
+}
+
+footer{
+  text-align:center;
+  padding:15px;
+  opacity:.7;
+  margin-top:20px;
+}
+</style>
+</head>
+<body>
+
+<header>💻 Windows Shortcuts </header>
+
+<div class="container">
+
+<div class="controls">
+<input type="text" id="search" placeholder="🔎 Search...">
+<select id="language">
+<option value="ar">العربية</option>
+<option value="en">English</option>
+</select>
+<button onclick="addCustom()">➕ إضافة اختصار</button>
+</div>
+
+<div class="stats" id="stats"></div>
+<div id="list"></div>
+
+</div>
+
+<footer>
+Professional Edition - Ready for GitHub 🚀
+</footer>
+
+<script>
+let shortcuts = [];
+
+const categoryColors = {
+  "Windows": "#0885e9",
+  "Microsoft Office": "#70d55e",
+  "Browser": "#f97316",
+  "Visual Studio": "#d905f7",
+  "General": "#66048b",
+  "Security": "#C00707",
+  "Accessibility": "#66048b",
+    "Outlook": "#09938c",
+      "Word": "#0F81C7",
+        "Teams": "#FFAA00",
+         "PowerPoint": "#f97316",
+  "Developer": "#B35656",
+   "Screenshots": "#90538c",
+   "Window Management": "#234227",
+      "Excel": "#237227",
+      "Media": "#F40968",
+         "Desktop": "#015668"
+};
+
+// تحميل JSON
+fetch('shortcuts.json')
+.then(res => res.json())
+.then(data => {
+  shortcuts = data;
+  loadCustom();
+  render();
+});
+
+function render(filter="", categoryFilter=null){
+  const list = document.getElementById('list');
+  const stats = document.getElementById('stats');
+  list.innerHTML="";
+  stats.innerHTML="";
+  const lang = document.getElementById('language').value;
+
+  let filtered = shortcuts.filter(s =>
+    (
+      s.key.toLowerCase().includes(filter) ||
+      s.description_ar.toLowerCase().includes(filter) ||
+      s.description_en.toLowerCase().includes(filter)
+    ) &&
+    (!categoryFilter || s.category === categoryFilter)
+  );
+
+  // الإحصائيات
+  const counts = {};
+  shortcuts.forEach(s=>{
+    counts[s.category] = (counts[s.category]||0)+1;
+  });
+
+  Object.keys(counts).forEach(cat=>{
+    const box=document.createElement('div');
+    box.className='stat-box';
+    box.innerText=`${cat} (${counts[cat]})`;
+    box.style.background=categoryColors[cat] || "#64748b";
+    box.onclick=()=>render(filter,cat);
+    stats.appendChild(box);
+  });
+
+  // عرض
+  filtered.forEach(s =>{
+    const div=document.createElement('div');
+    div.className='card';
+    const color = categoryColors[s.category] || "#64748b";
+
+    div.innerHTML=`
+      <div>
+        <span class='shortcut'>${s.key}</span>
+        <span class='category' style="background:${color}">
+          ${s.category}
+        </span>
+      </div>
+      <div>${lang==='ar'?s.description_ar:s.description_en}</div>
+      <button class='small-btn' onclick="copyShortcut('${s.key}')">
+        📋 Copy
+      </button>
+    `;
+    list.appendChild(div);
+  });
+}
+
+document.getElementById('search').addEventListener('input',e=>{
+  render(e.target.value.toLowerCase());
+});
+
+document.getElementById('language').addEventListener('change',()=>render());
+
+function copyShortcut(text){
+  navigator.clipboard.writeText(text);
+  alert('Copied: '+text);
+}
+
+function addCustom(){
+  const key=prompt('Shortcut Key:');
+  const ar=prompt('Arabic Description:');
+  const en=prompt('English Description:');
+  const category=prompt('Category:');
+
+  if(key && ar && en && category){
+    const obj={
+      key,
+      description_ar:ar,
+      description_en:en,
+      category,
+      custom:true
+    };
+    shortcuts.push(obj);
+    saveCustom();
+    render();
+  }
+}
+
+function saveCustom(){
+  const custom=shortcuts.filter(s=>s.custom);
+  localStorage.setItem('customShortcuts',JSON.stringify(custom));
+}
+
+function loadCustom(){
+  const custom=JSON.parse(localStorage.getItem('customShortcuts'))||[];
+  shortcuts=[...shortcuts,...custom];
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,536 @@
+/* إعادة تعيين الأنماط الأساسية */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    /* استخدام خطوط نظامية لضمان التوافقية */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* تعريف متغيرات CSS لسهولة التعديل على الألوان */
+:root {
+    --primary: #2c3e50; /* كحلي داكن */
+    --secondary: #3498db; /* أزرق سماوي */
+    --accent: #e74c3c; /* أحمر */
+    --light: #ecf0f1; /* رمادي فاتح جداً */
+    --dark: #2c3e50; /* نفس Primary */
+    --success: #27ae60; /* أخضر */
+    --warning: #f39c12; /* برتقالي */
+    --card-bg: #ffffff; /* خلفية البطاقات بيضاء */
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* ظل خفيف للعناصر */
+}
+
+/* أنماط جسم الصفحة */
+body {
+    background: linear-gradient(135deg, #1a2a3a, #2c3e50); /* تدرج لوني للخلفية */
+    color: #333; /* لون النص الافتراضي */
+    line-height: 1.6; /* تباعد الأسطر */
+    padding: 20px; /* مسافة داخلية حول المحتوى */
+    min-height: 100vh; /* ارتفاع كامل للشاشة */
+    transition: all 0.3s ease; /* انتقال سلس عند تغيير الأنماط */
+    font-size: 15px; /* خط أصغر قليلاً */
+}
+
+/* تغيير اتجاه النص حسب اللغة */
+body.en, body.fr {
+    direction: ltr;
+    text-align: left;
+}
+
+/* حاوية المحتوى الرئيسية */
+.container {
+    max-width: 1200px;
+    margin: 0 auto; /* توسيط الحاوية */
+}
+
+/* قسم الرأس (Header) */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    color: white;
+    animation: fadeIn 1s ease; /* تأثير ظهور تدريجي */
+    position: relative; /* لتحديد موقع مبدل اللغة */
+}
+
+header h1 {
+    font-size: 2.2rem; /* خط أصغر قليلاً من السابق */
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+header p {
+    font-size: 1rem; /* خط أصغر قليلاً من السابق */
+    max-width: 800px;
+    margin: 0 auto;
+    color: #ecf0f1;
+}
+
+/* مبدل اللغة وزر المساعدة */
+.header-controls {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+body.ar .header-controls {
+    left: auto;
+    right: 20px;
+    flex-direction: row-reverse; /* عكس الترتيب للعربية */
+}
+
+.lang-btn, .help-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.85rem; /* خط أصغر */
+    /* تلوين الأزرار */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.lang-btn:hover, .lang-btn.active, .help-btn:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* أزرار التبويبات */
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    gap: 10px;
+}
+
+.tab-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    padding: 10px 20px; /* تصغير المسافة الداخلية */
+    border-radius: 30px;
+    font-size: 1rem; /* خط أصغر قليلاً */
+    cursor: pointer;
+    color: white;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* تلوين الأزرار */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.tab-btn.active, .tab-btn:hover {
+    background: var(--secondary);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+/* قسم البحث */
+.search-section {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow);
+    animation: slideUp 0.8s ease; /* تأثير ظهور من الأسفل */
+    display: flex; /* لترتيب حقل البحث والزر */
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.search-container {
+    position: relative;
+    max-width: 700px;
+    width: 100%;
+}
+
+.search-box {
+    width: 100%;
+    padding: 12px 20px; /* تصغير المسافة الداخلية */
+    border-radius: 50px;
+    border: 2px solid #ddd;
+    font-size: 1rem; /* خط أصغر قليلاً */
+    transition: all 0.3s ease;
+    padding-left: 50px; /* مسافة لأيقونة البحث */
+    /* تعديل padding-left/right حسب اتجاه النص */
+    padding-right: 20px; 
+    padding-left: 50px;
+}
+
+body.ar .search-box {
+    padding-right: 50px;
+    padding-left: 20px;
+}
+
+.search-box:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #777;
+    font-size: 1.1rem; /* خط أصغر قليلاً */
+    left: 20px; /* لغة عربية: يمين، لغات أخرى: يسار */
+}
+
+body.ar .search-icon {
+    left: auto;
+    right: 20px;
+}
+
+.show-all-btn {
+    background: var(--secondary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    /* تلوين الأزرار */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.show-all-btn:hover {
+    background: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* حاوية النتائج */
+.results-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* تصغير الحد الأدنى لعرض البطاقة */
+    gap: 25px;
+    margin-top: 30px;
+}
+
+/* بطاقة النتيجة الفردية */
+.result-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 0.6s ease;
+    cursor: pointer; /* للإشارة إلى أنها قابلة للنقر */
+}
+
+.result-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background: var(--primary);
+    color: white;
+    padding: 15px 20px; /* تصغير المسافة الداخلية */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem; /* خط أصغر قليلاً */
+}
+
+.card-body {
+    padding: 15px 20px; /* تصغير المسافة الداخلية */
+    font-size: 0.9rem; /* خط أصغر قليلاً */
+}
+
+.chem-property {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0; /* تصغير المسافة الداخلية */
+    border-bottom: 1px solid #eee;
+}
+
+.chem-property:last-child {
+    border-bottom: none;
+}
+
+.property-name {
+    font-weight: bold;
+    color: var(--dark);
+}
+
+.property-value {
+    color: #555;
+    text-align: left;
+    direction: ltr; /* لضمان عرض القيم بشكل صحيح */
+    flex-grow: 1; /* للسماح لها بأخذ المساحة المتبقية */
+    word-break: break-all; /* لكسر الكلمات الطويلة جداً */
+    white-space: nowrap; /* إبقاء المعادلات في سطر واحد */
+    overflow-x: auto; /* السماح بالتمرير الأفقي إذا كانت المعادلة طويلة */
+    padding-left: 10px; /* مسافة بين الاسم والقيمة */
+}
+
+/* إخفاء شريط التمرير الأفقي الافتراضي ولكن السماح بالتمرير */
+.property-value::-webkit-scrollbar {
+    height: 4px;
+}
+.property-value::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+.property-value::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+.property-value::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.redox {
+    border-top: 4px solid var(--accent);
+}
+
+.acid-base {
+    border-top: 4px solid var(--success);
+}
+
+.chem-equation {
+    font-family: 'Courier New', monospace; /* خط أحادي المسافة للمعادلات */
+    font-weight: bold;
+}
+
+.description-text {
+    margin-top: 15px;
+    color: #666;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+/* رسالة لا توجد نتائج */
+.no-results {
+    text-align: center;
+    padding: 40px;
+    grid-column: 1 / -1; /* لتوسيطها في الشبكة */
+    background: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    font-size: 1rem;
+}
+
+/* رسالة التعليمات الأولية */
+.initial-instructions {
+    text-align: center;
+    padding: 40px;
+    grid-column: 1 / -1; /* لتوسيطها في الشبكة */
+    background: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    font-size: 1rem;
+}
+.initial-instructions i {
+    color: var(--secondary);
+    margin-bottom: 20px;
+}
+
+/* قسم التذييل (Footer) */
+.footer {
+    text-align: center;
+    margin-top: 40px;
+    color: #ecf0f1;
+    padding: 20px;
+    font-size: 0.85rem; /* خط أصغر */
+    position: relative;
+}
+
+.developer-btn {
+    background: var(--secondary);
+    color: white;
+    border: none;
+    padding: 8px 18px; /* تصغير المسافة الداخلية */
+    border-radius: 30px;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem; /* خط أصغر */
+    /* تلوين الأزرار */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.developer-btn:hover {
+    background: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* أنماط نافذة المطور المنبثقة (Modal) ونافذة المساعدة */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    transform: translateY(-50px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    text-align: right; /* محاذاة لليمين للنص العربي */
+}
+
+body.en .modal-content, body.fr .modal-content {
+    text-align: left; /* محاذاة لليسار للغات الأخرى */
+}
+
+.modal-overlay.show .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #777;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+body.ar .modal-close-btn {
+    left: 15px;
+    right: auto;
+}
+
+.modal-close-btn:hover {
+    color: var(--accent);
+}
+
+.modal-content h3 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.modal-content p {
+    margin: 10px 0;
+    font-size: 0.95rem;
+}
+
+.modal-content .contact-info {
+    justify-content: flex-end; /* محاذاة لليمين في المودال */
+}
+
+body.en .modal-content .contact-info, body.fr .modal-content .contact-info {
+    justify-content: flex-start; /* محاذاة لليسار في المودال */
+}
+
+.modal-content ul {
+    margin-top: 15px;
+    padding-right: 20px; /* لغة عربية */
+    list-style-type: disc;
+}
+
+body.en .modal-content ul, body.fr .modal-content ul {
+    padding-left: 20px; /* لغات أخرى */
+    padding-right: 0;
+}
+
+.modal-content ul li {
+    margin-bottom: 8px;
+}
+
+/* تأثيرات الحركة */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* استجابة للتصميم (Responsive Design) */
+@media (max-width: 768px) {
+    .results-container {
+        grid-template-columns: 1fr; /* عمود واحد على الشاشات الصغيرة */
+    }
+    
+    header h1 {
+        font-size: 1.8rem; /* تصغير الخط أكثر على الجوال */
+    }
+    
+    .tabs {
+        flex-direction: column; /* أزرار التبويبات عمودياً على الجوال */
+    }
+    
+    .header-controls {
+        position: relative; /* إزالة الوضع المطلق على الجوال */
+        top: 0;
+        left: 0;
+        right: 0;
+        justify-content: center;
+        margin-bottom: 20px;
+        flex-direction: row; /* إعادة الترتيب الافتراضي على الجوال */
+    }
+
+    body.ar .header-controls {
+        flex-direction: row; /* لغة عربية: لا عكس على الجوال */
+        right: 0;
+    }
+
+    .search-section {
+        flex-direction: column;
+    }
+
+    .show-all-btn {
+        width: 100%;
+    }
+}
+

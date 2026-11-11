@@ -1,0 +1,1 @@
+http://asmr4k.pro:8080/get.php?username=1684488539&password=4709331408&type=m3u_plus&output=ts

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مستخرج ومحول اشتراكات Xtream الذكي</title>
+    <!-- مكتبة توليد QR Code خفيفة وسريعة -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --bg: #f4f6f9;
+            --card-bg: #ffffff;
+            --text: #1a202c;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --accent: #0284c7;
+            --accent-hover: #0369a1;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --radius: 10px;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .container {
+            width: 100%;
+            max-width: 850px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            padding: 16px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .header h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .badge {
+            background: #e0f2fe;
+            color: var(--accent);
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+        .info-box {
+            background: #f8fafc;
+            border-right: 3px solid var(--accent);
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-bottom: 12px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        label {
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: block;
+            font-size: 0.8rem;
+        }
+        textarea {
+            width: 100%;
+            height: 120px;
+            font-size: 0.8rem;
+            font-family: Consolas, monospace;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: #fafbfc;
+            resize: vertical;
+            direction: ltr;
+            text-align: left;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(2,132,199,0.15);
+            background: #fff;
+        }
+        #output {
+            height: 100px;
+            background: #f8fafc;
+        }
+        .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 10px 0;
+            justify-content: center;
+        }
+        button, .btn-action {
+            padding: 7px 14px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            background: #e2e8f0;
+            color: #334155;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+            transition: 0.2s ease;
+        }
+        button.primary { background: var(--accent); color: #fff; }
+        button.primary:hover { background: var(--accent-hover); }
+        button.success { background: var(--success); color: #fff; }
+        button.success:hover { background: #15803d; }
+        button.danger { background: #fee2e2; color: var(--danger); }
+        button.danger:hover { background: #fecaca; }
+        button.outline { background: #fff; border: 1px solid #cbd5e1; }
+        button:active, .btn-action:active { transform: scale(0.97); }
+
+        .btn-action.small {
+            padding: 4px 9px;
+            font-size: 0.72rem;
+            border-radius: 6px;
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+        .btn-action.small.download { background: #dcfce7; color: #166534; }
+        .btn-action.small.open { background: #e0f2fe; color: #0369a1; }
+        .btn-action.small.copy { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+        .btn-action.small.qr-toggle { background: #fef3c7; color: #92400e; }
+
+        .counter {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-align: left;
+            direction: ltr;
+            margin-top: 2px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .cards-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 10px 0;
+            max-height: 180px;
+            overflow-y: auto;
+        }
+        .account-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 12px;
+            direction: ltr;
+            text-align: left;
+            font-family: Consolas, monospace;
+            font-size: 0.75rem;
+        }
+        .account-card span {
+            display: block;
+            word-break: break-all;
+        }
+        .account-card .item-label {
+            font-weight: bold;
+            color: var(--accent);
+            display: inline-block;
+            min-width: 55px;
+        }
+
+        /* حاوية نتائج الفحص */
+        .check-results {
+            margin-top: 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px;
+            background: #fafbfc;
+            display: none;
+        }
+        .check-results.active { display: block; }
+        .results-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 380px;
+            overflow-y: auto;
+        }
+        .result-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            direction: ltr;
+            text-align: left;
+        }
+        .result-card.status-border-ok { border-right: 4px solid var(--success); }
+        .result-card.status-border-fail { border-right: 4px solid var(--danger); }
+        .result-card.status-border-checking { border-right: 4px solid var(--warning); }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: Consolas, monospace;
+            font-size: 0.75rem;
+        }
+        .result-details {
+            font-size: 0.75rem;
+            color: #475569;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 4px;
+            background: #f8fafc;
+            padding: 6px 8px;
+            border-radius: 6px;
+        }
+        .result-details div strong {
+            color: #1e293b;
+        }
+        .result-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        .server-url {
+            word-break: break-all;
+            font-family: Consolas, monospace;
+            color: #334155;
+            font-size: 0.75rem;
+        }
+
+        /* قسم رمز الـ QR */
+        .qr-section {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 6px;
+            text-align: center;
+        }
+        .qr-section.show { display: flex; }
+        .qr-box {
+            padding: 8px;
+            background: #fff;
+            border-radius: 6px;
+            display: inline-block;
+        }
+        .qr-user-label {
+            margin-top: 6px;
+            font-family: Consolas, monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #1e293b;
+            direction: ltr;
+        }
+        .qr-download-btn {
+            margin-top: 6px;
+            padding: 3px 8px;
+            font-size: 0.7rem;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #334155;
+        }
+        .qr-download-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #0f172a;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 999;
+            transition: transform 0.3s ease;
+            pointer-events: none;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>📡 استخراج وفحص اشتراكات Xtream مع رمز QR</h2>
+            <span class="badge">صلاحية السيرفر • رمز QR • تحميل وتشغيل مباشر</span>
+        </div>
+
+        <div class="info-box">
+            استخراج تلقائي للهوست، المستخدم وكلمة المرور من أي نص أو روابط M3U، مع فحص الصلاحية وتوليد رمز QR لكل سيرفر مكتوب تحته اسم المستخدم.
+        </div>
+
+        <label for="input">📋 ألصق النص هنا:</label>
+        <textarea id="input" placeholder="ألصق النص هنا بأي صيغة كانت..."></textarea>
+        <div class="counter" id="inputCounter">0 اشتراك مكتشف</div>
+
+        <div class="btn-row">
+            <button class="primary" onclick="convertAndCheck()">🔄 استخراج وفحص الصلاحية</button>
+            <button class="success" onclick="copyOutput()">📋 نسخ كل الروابط</button>
+            <button class="outline" onclick="pasteFromClipboard()">📌 لصق من الحافظة</button>
+            <button class="danger" onclick="clearAll()">🗑️ مسح</button>
+        </div>
+
+        <div id="cardsContainer" class="cards-list"></div>
+
+        <label for="output">🔗 روابط التشغيل المباشرة:</label>
+        <textarea id="output" readonly placeholder="ستظهر روابط التشغيل هنا..."></textarea>
+        <div class="counter" id="outputCounter">0 رابط</div>
+
+        <!-- قسم نتائج الفحص مع تفاصيل الصلاحية ورمز QR -->
+        <div class="check-results" id="checkResultsContainer">
+            <strong style="display:block; margin-bottom:8px; font-size:0.8rem;">📊 نتائج الفحص وتفاصيل الصلاحية:</strong>
+            <div id="resultsList" class="results-container"></div>
+        </div>
+
+        <div class="toast" id="toast">تم النسخ</div>
+    </div>
+
+    <script>
+        (function() {
+            const inputArea = document.getElementById('input');
+            const outputArea = document.getElementById('output');
+            const inputCounter = document.getElementById('inputCounter');
+            const outputCounter = document.getElementById('outputCounter');
+            const checkContainer = document.getElementById('checkResultsContainer');
+            const resultsList = document.getElementById('resultsList');
+            const cardsContainer = document.getElementById('cardsContainer');
+            const toast = document.getElementById('toast');
+
+            let toastTimer = null;
+            let extractedAccounts = [];
+
+            function showToast(msg, duration=2000) {
+                if(toastTimer) clearTimeout(toastTimer);
+                toast.textContent = msg;
+                toast.classList.add('show');
+                toastTimer = setTimeout(() => {
+                    toast.classList.remove('show');
+                    toastTimer = null;
+                }, duration);
+            }
+
+            function normalizeHost(host, port) {
+                if(!host) return '';
+                host = host.trim().replace(/\/+$/, '');
+                if (!/^https?:\/\//i.test(host)) host = 'http://' + host;
+                try {
+                    const parsed = new URL(host);
+                    if(port && !parsed.port) {
+                        return `${parsed.protocol}//${parsed.hostname}:${port.trim()}`;
+                    }
+                    return `${parsed.protocol}//${parsed.host}`;
+                } catch(e) {
+                    if(port && !host.includes(':' + port)) return host + ':' + port.trim();
+                    return host;
+                }
+            }
+
+            // استخراج الحسابات
+            function parseTextSmartly(text) {
+                const accounts = [];
+                if(!text || !text.trim()) return accounts;
+
+                // 1. فحص روابط M3U
+                const urlRegex = /(https?:\/\/[^\s"'<>]+(?:\/get\.php|\/live\/|\/playlist)[^\s"'<>]*)/gi;
+                let match;
+                while ((match = urlRegex.exec(text)) !== null) {
+                    try {
+                        const parsed = new URL(match[1]);
+                        const user = parsed.searchParams.get('username');
+                        const pass = parsed.searchParams.get('password');
+                        if(user && pass) {
+                            accounts.push({
+                                host: `${parsed.protocol}//${parsed.host}`,
+                                username: user,
+                                password: pass
+                            });
+                        }
+                    } catch(e) {}
+                }
+
+                // 2. فحص نمط المفتاح والقيمة
+                const hostRegex = /(?:host|url|server|سيرفر|رابط|هوست)\s*[:=]\s*(https?:\/\/[^\s\r\n]+|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?::\d+)?)/gi;
+                const portRegex = /(?:port|منفذ|بورت)\s*[:=]\s*(\d+)/gi;
+                const userRegex = /(?:user(?:name)?|مستخدم|يوزر|حساب)\s*[:=]\s*([^\s\r\n,;]+)/gi;
+                const passRegex = /(?:pass(?:word)?|كلمة\s*المرور|باسورد|كود)\s*[:=]\s*([^\s\r\n,;]+)/gi;
+
+                const hosts = [...text.matchAll(hostRegex)].map(m => m[1]);
+                const ports = [...text.matchAll(portRegex)].map(m => m[1]);
+                const users = [...text.matchAll(userRegex)].map(m => m[1]);
+                const passes = [...text.matchAll(passRegex)].map(m => m[1]);
+
+                const kvCount = Math.min(hosts.length, users.length, passes.length);
+                for(let i = 0; i < kvCount; i++) {
+                    accounts.push({
+                        host: normalizeHost(hosts[i], ports[i] || null),
+                        username: users[i].trim(),
+                        password: passes[i].trim()
+                    });
+                }
+
+                // 3. فحص صيغة الأسطر المتتابعة
+                const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l !== '');
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    if (/^(?:https?:\/\/|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i.test(line) && !line.includes('get.php')) {
+                        if (i + 3 < lines.length && /^\d+$/.test(lines[i+1])) {
+                            accounts.push({
+                                host: normalizeHost(line, lines[i+1]),
+                                username: lines[i+2],
+                                password: lines[i+3]
+                            });
+                            i += 3;
+                        } else if (i + 2 < lines.length) {
+                            accounts.push({
+                                host: normalizeHost(line),
+                                username: lines[i+1],
+                                password: lines[i+2]
+                            });
+                            i += 2;
+                        }
+                    }
+                }
+
+                const seen = new Set();
+                return accounts.filter(acc => {
+                    const key = `${acc.host}|${acc.username}|${acc.password}`.toLowerCase();
+                    if(seen.has(key)) return false;
+                    seen.add(key);
+                    return true;
+                });
+            }
+
+            function renderCards(accounts) {
+                cardsContainer.innerHTML = '';
+                accounts.forEach(acc => {
+                    const card = document.createElement('div');
+                    card.className = 'account-card';
+                    card.innerHTML = `
+                        <span><span class="item-label">Host:</span> ${escapeHtml(acc.host)}</span>
+                        <span><span class="item-label">User:</span> ${escapeHtml(acc.username)}</span>
+                        <span><span class="item-label">Pass:</span> ${escapeHtml(acc.password)}</span>
+                    `;
+                    cardsContainer.appendChild(card);
+                });
+            }
+
+            function updateUI() {
+                extractedAccounts = parseTextSmartly(inputArea.value);
+                inputCounter.textContent = `${extractedAccounts.length} اشتراك مكتشف`;
+                renderCards(extractedAccounts);
+
+                const urls = extractedAccounts.map(acc => {
+                    return `${acc.host}/get.php?username=${encodeURIComponent(acc.username)}&password=${encodeURIComponent(acc.password)}&type=m3u_plus&output=ts`;
+                });
+
+                if(urls.length > 0) {
+                    outputArea.value = urls.join('\n\n');
+                    outputCounter.textContent = `${urls.length} رابط`;
+                } else {
+                    outputArea.value = '';
+                    outputCounter.textContent = '0 رابط';
+                }
+                return { accounts: extractedAccounts, urls };
+            }
+
+            inputArea.addEventListener('input', updateUI);
+
+            window.convertAndCheck = function() {
+                const data = updateUI();
+                if(data.accounts.length === 0) {
+                    showToast('⚠️ لم يتم العثور على أي بيانات صالحة');
+                    checkContainer.classList.remove('active');
+                    return;
+                }
+                showToast(`✅ تم استخراج ${data.accounts.length}، جارٍ الفحص...`);
+                performCheck(data.accounts);
+            };
+
+            // دالة الفحص مع إنشاء وتوليد QR Code
+            async function performCheck(accounts) {
+                checkContainer.classList.add('active');
+                resultsList.innerHTML = '';
+
+                accounts.forEach((acc, idx) => {
+                    const m3uUrl = `${acc.host}/get.php?username=${encodeURIComponent(acc.username)}&password=${encodeURIComponent(acc.password)}&type=m3u_plus&output=ts`;
+                    const card = document.createElement('div');
+                    card.className = 'result-card status-border-checking';
+                    card.id = `result-card-${idx}`;
+                    card.innerHTML = `
+                        <div class="result-header">
+                            <span class="server-url">🌐 ${escapeHtml(acc.host)}</span>
+                            <span class="status-indicator">⏳ جارٍ الفحص...</span>
+                        </div>
+                        <div class="result-details" id="details-${idx}">
+                            <div><strong>المستخدم:</strong> ${escapeHtml(acc.username)}</div>
+                            <div><strong>الصلاحية:</strong> <span class="exp-date">جاري التحقق...</span></div>
+                            <div><strong>الحالة:</strong> <span class="acc-status">--</span></div>
+                            <div><strong>الأجهزة:</strong> <span class="max-cons">--</span></div>
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn-action small download" onclick="downloadM3U('${encodeURIComponent(m3uUrl)}', '${escapeHtml(acc.username)}')">📥 تحميل M3U</button>
+                            <a class="btn-action small open" href="${escapeHtml(m3uUrl)}" target="_blank" rel="noopener noreferrer">🌐 فتح الرابط</a>
+                            <button class="btn-action small copy" onclick="copySingle('${encodeURIComponent(m3uUrl)}')">📋 نسخ الرابط</button>
+                            <button class="btn-action small qr-toggle" onclick="toggleQR(${idx})">📱 عرض QR كود</button>
+                        </div>
+                        <!-- قسم رمز الـ QR -->
+                        <div class="qr-section" id="qr-section-${idx}">
+                            <div class="qr-box" id="qrcode-${idx}"></div>
+                            <div class="qr-user-label">User: ${escapeHtml(acc.username)}</div>
+                            <button class="qr-download-btn" onclick="downloadQR(${idx}, '${escapeHtml(acc.username)}')">💾 تحميل صورة QR</button>
+                        </div>
+                    `;
+                    resultsList.appendChild(card);
+
+                    // توليد رمز QR في الخلفية
+                    try {
+                        new QRCode(document.getElementById(`qrcode-${idx}`), {
+                            text: m3uUrl,
+                            width: 130,
+                            height: 130,
+                            colorDark: "#000000",
+                            colorLight: "#ffffff",
+                            correctLevel: QRCode.CorrectLevel.M
+                        });
+                    } catch(err) {}
+                });
+
+                accounts.forEach((acc, idx) => checkAccountDetails(acc, idx));
+            }
+
+            // إظهار وإخفاء QR Code
+            window.toggleQR = function(index) {
+                const qrSec = document.getElementById(`qr-section-${index}`);
+                if(qrSec) {
+                    qrSec.classList.toggle('show');
+                }
+            };
+
+            // تنزيل صورة QR كود
+            window.downloadQR = function(index, username) {
+                const qrBox = document.getElementById(`qrcode-${index}`);
+                const img = qrBox.querySelector('img');
+                const canvas = qrBox.querySelector('canvas');
+                let dataUrl = '';
+                if(img && img.src) {
+                    dataUrl = img.src;
+                } else if(canvas) {
+                    dataUrl = canvas.toDataURL('image/png');
+                }
+
+                if(dataUrl) {
+                    const a = document.createElement('a');
+                    a.href = dataUrl;
+                    a.download = `qr_${username || 'iptv'}.png`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    showToast('💾 جاري تنزيل صورة الـ QR...');
+                } else {
+                    showToast('⚠️ تعذر استخراج صورة الـ QR');
+                }
+            };
+
+            async function checkAccountDetails(acc, index) {
+                const card = document.getElementById(`result-card-${index}`);
+                const statusSpan = card.querySelector('.status-indicator');
+                const expDateSpan = card.querySelector('.exp-date');
+                const accStatusSpan = card.querySelector('.acc-status');
+                const maxConsSpan = card.querySelector('.max-cons');
+
+                const apiUrl = `${acc.host}/player_api.php?username=${encodeURIComponent(acc.username)}&password=${encodeURIComponent(acc.password)}`;
+                
+                let success = false;
+                let data = null;
+
+                // محاولة الاتصال المباشر
+                try {
+                    const controller = new AbortController();
+                    const id = setTimeout(() => controller.abort(), 5000);
+                    const res = await fetch(apiUrl, { signal: controller.signal });
+                    clearTimeout(id);
+                    if(res.ok) {
+                        data = await res.json();
+                        success = true;
+                    }
+                } catch(e) {}
+
+                // محاولة ثانية عبر CORS Proxy
+                if(!success) {
+                    try {
+                        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
+                        const controller = new AbortController();
+                        const id = setTimeout(() => controller.abort(), 7000);
+                        const res = await fetch(proxyUrl, { signal: controller.signal });
+                        clearTimeout(id);
+                        if(res.ok) {
+                            data = await res.json();
+                            success = true;
+                        }
+                    } catch(e) {}
+                }
+
+                if(success && data && data.user_info) {
+                    const u = data.user_info;
+                    card.className = 'result-card status-border-ok';
+                    statusSpan.innerHTML = '<span style="color:var(--success); font-weight:bold;">✅ يعمل</span>';
+
+                    // تحويل التاريخ وعرضه بالأرقام اللاتينية (en-GB)
+                    if(u.exp_date && u.exp_date !== null && u.exp_date !== 'null') {
+                        const ts = parseInt(u.exp_date, 10);
+                        const date = new Date(ts * 1000);
+                        if(!isNaN(date.getTime())) {
+                            const now = new Date();
+                            const isExpired = date < now;
+                            const formatted = date.toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                            expDateSpan.innerHTML = `<span style="color:${isExpired ? 'var(--danger)' : 'var(--success)'}; font-weight:bold;">${formatted} ${isExpired ? '(Expired)' : ''}</span>`;
+                        } else {
+                            expDateSpan.textContent = String(u.exp_date);
+                        }
+                    } else {
+                        expDateSpan.innerHTML = '<span style="color:var(--success); font-weight:bold;">غير محدد (نشط)</span>';
+                    }
+
+                    accStatusSpan.textContent = u.status || 'Active';
+                    maxConsSpan.textContent = String(u.max_connections || '1');
+                } else {
+                    // فحص تجريبي بديل
+                    try {
+                        const controller = new AbortController();
+                        const id = setTimeout(() => controller.abort(), 4000);
+                        await fetch(`${acc.host}/get.php?username=${encodeURIComponent(acc.username)}&password=${encodeURIComponent(acc.password)}&type=m3u_plus&output=ts`, {
+                            mode: 'no-cors',
+                            signal: controller.signal
+                        });
+                        clearTimeout(id);
+                        card.className = 'result-card status-border-ok';
+                        statusSpan.innerHTML = '<span style="color:var(--success); font-weight:bold;">✅ مستجيب</span>';
+                        expDateSpan.textContent = 'تعذر قراءة التاريخ';
+                        accStatusSpan.textContent = 'متصل';
+                    } catch(err) {
+                        card.className = 'result-card status-border-fail';
+                        statusSpan.innerHTML = '<span style="color:var(--danger); font-weight:bold;">❌ غير متصل / خطأ</span>';
+                        expDateSpan.textContent = 'غير متاح';
+                        accStatusSpan.textContent = 'متوقف أو غير صالح';
+                    }
+                }
+            }
+
+            // تنزيل ملف M3U
+            window.downloadM3U = function(encodedUrl, username) {
+                const url = decodeURIComponent(encodedUrl);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `playlist_${username || 'iptv'}.m3u`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                showToast('📥 جاري بدء التنزيل...');
+            };
+
+            window.copySingle = function(encodedUrl) {
+                const url = decodeURIComponent(encodedUrl);
+                if(navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(url).then(() => showToast('✅ تم نسخ الرابط'));
+                } else {
+                    const temp = document.createElement('input');
+                    temp.value = url;
+                    document.body.appendChild(temp);
+                    temp.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(temp);
+                    showToast('✅ تم نسخ الرابط');
+                }
+            };
+
+            function escapeHtml(text) {
+                return (text || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            }
+
+            window.pasteFromClipboard = async function() {
+                try {
+                    if(navigator.clipboard && navigator.clipboard.readText) {
+                        const text = await navigator.clipboard.readText();
+                        if(text.trim()) {
+                            inputArea.value = text;
+                            updateUI();
+                            showToast('📋 تم اللصق بنجاح');
+                        } else {
+                            showToast('⚠️ الحافظة فارغة');
+                        }
+                    }
+                } catch(e) {
+                    showToast('⚠️ تعذر اللصق التلقائي، الصق يدوياً');
+                }
+            };
+
+            window.copyOutput = function() {
+                const txt = outputArea.value.trim();
+                if(!txt) { showToast('⚠️ لا توجد روابط'); return; }
+                if(navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(txt).then(() => showToast('✅ تم نسخ كل الروابط'));
+                } else {
+                    outputArea.select();
+                    document.execCommand('copy');
+                    showToast('✅ تم النسخ');
+                }
+            };
+
+            window.clearAll = function() {
+                inputArea.value = '';
+                outputArea.value = '';
+                cardsContainer.innerHTML = '';
+                checkContainer.classList.remove('active');
+                resultsList.innerHTML = '';
+                updateUI();
+                showToast('🗑️ تم مسح البيانات');
+            };
+
+            updateUI();
+        })();
+    </script>
+</body>
+</html>

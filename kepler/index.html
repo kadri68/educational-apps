@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب حركة الأقمار الصناعية</title>
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --primary-hover: #764ba2;
+            --dark: #333;
+            --light: #f8f9fa;
+            --border: #ddd;
+            --border-radius: 12px;
+            --box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            --base-font-size: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: var(--base-font-size);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            direction: rtl;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .developer-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .developer-btn:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 120px;
+            padding: 15px 20px;
+            background: var(--light);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color: var(--dark);
+            min-height: 44px;
+        }
+
+        .tab:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .example-card {
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .example-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            border-color: var(--primary-color);
+        }
+
+        .example-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .example-card p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            direction: rtl;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .slider-container {
+            margin: 15px 0;
+        }
+
+        .slider-container input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .slider-value {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+            min-height: 44px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 8px;
+            border-right: 4px solid var(--primary-color);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .result-item span:first-child {
+            font-weight: bold;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .result-item span:last-child {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        canvas {
+            width: 100%;
+            height: 400px;
+            border-radius: var(--border-radius);
+            background: white;
+            display: block;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close {
+            color: #aaa;
+            float: left;
+            font-size: 2rem;
+            font-weight: bold;
+            line-height: 1;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: var(--dark);
+        }
+
+        .developer-info {
+            text-align: center;
+        }
+
+        .developer-info h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.35rem;
+        }
+
+        .developer-info p {
+            margin: 10px 0;
+            font-size: 1rem;
+            color: var(--dark);
+        }
+
+        .developer-info a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .developer-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            html {
+                font-size: 14px;
+            }
+
+            .header {
+                padding: 15px 10px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header p {
+                font-size: 0.875rem;
+            }
+
+            .developer-btn {
+                position: static;
+                margin-top: 10px;
+                width: 100%;
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
+
+            .container {
+                margin: 10px auto;
+                padding: 0 12px;
+                width: 95vw;
+            }
+
+            .tabs {
+                gap: 8px;
+                padding: 8px;
+            }
+
+            .tab {
+                padding: 10px 12px;
+                font-size: 0.875rem;
+                min-width: 100px;
+            }
+
+            .examples-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .example-card {
+                padding: 15px;
+            }
+
+            .example-card h3 {
+                font-size: 1rem;
+            }
+
+            .example-card p {
+                font-size: 0.85rem;
+            }
+
+            .card {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .input-group input,
+            .input-group select {
+                padding: 10px;
+                font-size: 0.95rem;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+            }
+
+            .controls-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            canvas {
+                height: 300px;
+            }
+
+            .modal-content {
+                width: 90vw;
+                margin: 10% auto;
+                padding: 20px;
+            }
+
+            .developer-info h2 {
+                font-size: 1.2rem;
+            }
+
+            .developer-info p {
+                font-size: 0.9rem;
+            }
+
+            .result-item {
+                padding: 10px;
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .result-item span {
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Tablet Responsive Styles */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                max-width: 90%;
+            }
+
+            .examples-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .controls-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            html {
+                font-size: 13px;
+            }
+
+            .header h1 {
+                font-size: 1.3rem;
+            }
+
+            .tab {
+                min-width: 80px;
+                padding: 8px 10px;
+                font-size: 0.8rem;
+            }
+
+            .developer-btn {
+                font-size: 0.75rem;
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🛰️ حساب حركة الأقمار الصناعية</h1>
+        <p>أداة متقدمة لحساب ومحاكاة مدارات الأقمار الصناعية</p>
+        <button class="developer-btn" onclick="openDeveloperModal()">معلومات المطور</button>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab active" onclick="openTab(event, 'examples')">أمثلة</button>
+            <button class="tab" onclick="openTab(event, 'calculations')">الحسابات</button>
+            <button class="tab" onclick="openTab(event, 'visualization')">التصور</button>
+            <button class="tab" onclick="openTab(event, 'simulator')">المحاكاة</button>
+            <button class="tab" onclick="openTab(event, 'kepler')">قوانين كبلر</button>
+        </div>
+
+        <!-- Examples Tab -->
+        <div id="examples" class="tab-content active">
+            <div class="card">
+                <h2 style="margin-bottom: 20px; color: var(--primary-color); font-size: 1.35rem;">أمثلة الأقمار الصناعية المشهورة</h2>
+                <div class="examples-grid">
+                    <div class="example-card" onclick="loadExample('iss')">
+                        <h3>🛰️ محطة الفضاء الدولية (ISS)</h3>
+                        <p>ارتفاع: 400 كم<br>فترة المدار: 90 دقيقة<br>سرعة: 27,600 كم/س</p>
+                    </div>
+                    <div class="example-card" onclick="loadExample('geostationary')">
+                        <h3>📡 القمر الثابت بالنسبة للأرض</h3>
+                        <p>ارتفاع: 35,786 كم<br>فترة المدار: 24 ساعة<br>للاتصالات</p>
+                    </div>
+                    <div class="example-card" onclick="loadExample('gps')">
+                        <h3>🌐 أقمار تحديد المواقع (GPS)</h3>
+                        <p>ارتفاع: 20,200 كم<br>فترة المدار: 12 ساعة<br>للملاحة</p>
+                    </div>
+                    <div class="example-card" onclick="loadExample('hubble')">
+                        <h3>🔭 تلسكوب هابل الفضائي</h3>
+                        <p>ارتفاع: 547 كم<br>فترة المدار: 97 دقيقة<br>لمراقبة الكون</p>
+                    </div>
+                    <div class="example-card" onclick="loadExample('moon')">
+                        <h3>🌙 القمر حول الأرض</h3>
+                        <p>المسافة: 384,400 كم<br>فترة المدار: 27.3 يوم<br>القمر الطبيعي</p>
+                    </div>
+                    <div class="example-card" onclick="loadExample('weather')">
+                        <h3>🌦️ أقمار الطقس</h3>
+                        <p>ارتفاع: 850 كم<br>فترة المدار: 102 دقيقة<br>لرصد الطقس</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calculations Tab -->
+        <div id="calculations" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 20px; color: var(--primary-color); font-size: 1.35rem;">معاملات القمر الصناعي</h2>
+                
+                <div class="input-group">
+                    <label>الجسم المداري:</label>
+                    <select id="celestialBody">
+                        <option value="Earth">الأرض 🌍</option>
+                        <option value="Moon">القمر 🌙</option>
+                        <option value="Mars">المريخ 🔴</option>
+                        <option value="Jupiter">المشتري 🪐</option>
+                        <option value="Sun">الشمس ☀️</option>
+                    </select>
+                </div>
+
+                <div class="slider-container">
+                    <label>ارتفاع المدار (كم): <span class="slider-value" id="heightValue">400</span></label>
+                    <input type="range" id="heightSlider" min="100" max="100000" value="400" step="100" oninput="updateHeight()">
+                </div>
+
+                <div class="slider-container">
+                    <label>الانحراف المداري (e): <span class="slider-value" id="eccentricityValue">0.00</span></label>
+                    <input type="range" id="eccentricitySlider" min="0" max="0.9" value="0" step="0.01" oninput="updateEccentricity()">
+                </div>
+
+                <button class="btn" onclick="calculate()">حساب المدار 🚀</button>
+
+                <div class="results" id="results" style="display: none;">
+                    <h3 style="margin-bottom: 15px; color: var(--primary-color); font-size: 1.1rem;">النتائج:</h3>
+                    <div class="result-item">
+                        <span>نصف القطر المداري:</span>
+                        <span id="orbitalRadius">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span>السرعة المدارية:</span>
+                        <span id="orbitalVelocity">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span>الفترة المدارية:</span>
+                        <span id="orbitalPeriod">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span>نصف المحور الأكبر (a):</span>
+                        <span id="semiMajorAxis">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span>ارتفاع الحضيض:</span>
+                        <span id="perihelion">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span>ارتفاع الأوج:</span>
+                        <span id="aphelion">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span>السرعة عند الحضيض:</span>
+                        <span id="velocityPerihelion">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span>السرعة عند الأوج:</span>
+                        <span id="velocityAphelion">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span>الجاذبية السطحية:</span>
+                        <span id="surfaceGravity">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span>سرعة الإفلات:</span>
+                        <span id="escapeVelocity">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visualization Tab -->
+        <div id="visualization" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 20px; color: var(--primary-color); font-size: 1.35rem;">رسم المدار</h2>
+                <button class="btn" onclick="drawOrbit()">رسم المدار 🎨</button>
+                <canvas id="orbitCanvas" style="margin-top: 20px;"></canvas>
+            </div>
+        </div>
+
+        <!-- Kepler's Laws Tab -->
+        <div id="kepler" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 20px; color: var(--primary-color); font-size: 1.35rem;">قوانين كبلر الثلاثة</h2>
+                <p style="margin-bottom: 20px; font-size: 0.95rem;">اكتشف يوهانس كبلر ثلاثة قوانين تصف حركة الكواكب حول الشمس</p>
+                
+                <!-- Kepler Law Selection -->
+                <div class="input-group">
+                    <label>اختر القانون:</label>
+                    <select id="keplerLaw">
+                        <option value="first">القانون الأول: المدارات الإهليلجية</option>
+                        <option value="second">القانون الثاني: المساحات المتساوية</option>
+                        <option value="third">القانون الثالث: العلاقة بين الفترة والمسافة</option>
+                    </select>
+                </div>
+
+                <!-- First Law Visualization -->
+                <div id="keplerFirst" class="kepler-section">
+                    <div class="card" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); margin: 20px 0;">
+                        <h3 style="color: var(--primary-color); font-size: 1.1rem; margin-bottom: 10px;">القانون الأول: المدارات الإهليلجية</h3>
+                        <p style="font-size: 0.9rem; line-height: 1.8;">المسار المداري لأي كوكب حول الشمس يكون إهليلجياً (بيضاوياً)، مع وجود الشمس في إحدى البؤرتين.</p>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label>الانحراف المداري (e): <span class="slider-value" id="keplerEccValue">0.50</span></label>
+                        <input type="range" id="keplerEcc" min="0" max="0.9" value="0.5" step="0.01" oninput="updateKeplerFirst()">
+                    </div>
+                    
+                    <button class="btn" onclick="animateKeplerFirst()" id="keplerFirstBtn">بدء الحركة ▶️</button>
+                    <canvas id="keplerFirstCanvas" style="margin-top: 20px; background: #00001a;"></canvas>
+                </div>
+
+                <!-- Second Law Visualization -->
+                <div id="keplerSecond" class="kepler-section" style="display: none;">
+                    <div class="card" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); margin: 20px 0;">
+                        <h3 style="color: var(--primary-color); font-size: 1.1rem; margin-bottom: 10px;">القانون الثاني: المساحات المتساوية</h3>
+                        <p style="font-size: 0.9rem; line-height: 1.8;">الخط الواصل بين الكوكب والشمس يمسح مساحات متساوية في أزمنة متساوية. هذا يعني أن الكوكب يتحرك أسرع عندما يكون قريباً من الشمس.</p>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label>الانحراف المداري: <span class="slider-value" id="kepler2EccValue">0.60</span></label>
+                        <input type="range" id="kepler2Ecc" min="0.1" max="0.9" value="0.6" step="0.01" oninput="updateKeplerSecond()">
+                    </div>
+                    
+                    <button class="btn" onclick="animateKeplerSecond()" id="keplerSecondBtn">عرض المساحات المتساوية ▶️</button>
+                    <canvas id="keplerSecondCanvas" style="margin-top: 20px; background: #00001a;"></canvas>
+                </div>
+
+                <!-- Third Law Visualization -->
+                <div id="keplerThird" class="kepler-section" style="display: none;">
+                    <div class="card" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); margin: 20px 0;">
+                        <h3 style="color: var(--primary-color); font-size: 1.1rem; margin-bottom: 10px;">القانون الثالث: T² ∝ a³</h3>
+                        <p style="font-size: 0.9rem; line-height: 1.8;">مربع الزمن الدوري يتناسب مع مكعب نصف المحور الأكبر: T² = (4π²/GM) × a³</p>
+                    </div>
+                    
+                    <div class="card" style="margin: 20px 0; overflow-x: auto;">
+                        <h4 style="color: var(--primary-color); margin-bottom: 15px; font-size: 1rem;">بيانات كواكب المجموعة الشمسية</h4>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                            <thead>
+                                <tr style="background: var(--primary-color); color: white;">
+                                    <th style="padding: 10px; border: 1px solid var(--border);">الكوكب</th>
+                                    <th style="padding: 10px; border: 1px solid var(--border);">نصف المحور (مليون كم)</th>
+                                    <th style="padding: 10px; border: 1px solid var(--border);">الفترة المدارية (يوم)</th>
+                                    <th style="padding: 10px; border: 1px solid var(--border);">T² / a³</th>
+                                </tr>
+                            </thead>
+                            <tbody id="planetTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <button class="btn" onclick="animateKeplerThird()" id="keplerThirdBtn">عرض حركة الكواكب ▶️</button>
+                    <canvas id="keplerThirdCanvas" style="margin-top: 20px; background: #00001a;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simulator Tab -->
+        <div id="simulator" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 20px; color: var(--primary-color); font-size: 1.35rem;">محاكاة الحركة المدارية</h2>
+                
+                <div class="controls-grid">
+                    <div class="slider-container">
+                        <label>ارتفاع المحاكاة (كم): <span class="slider-value" id="simHeightValue">400</span></label>
+                        <input type="range" id="simHeight" min="100" max="50000" value="400" step="100" oninput="updateSimHeight()">
+                    </div>
+                    <div class="slider-container">
+                        <label>سرعة المحاكاة: <span class="slider-value" id="simSpeedValue">1x</span></label>
+                        <input type="range" id="simSpeed" min="1" max="10" value="1" step="1" oninput="updateSimSpeed()">
+                    </div>
+                </div>
+
+                <button class="btn" onclick="toggleSimulation()" id="simButton">بدء المحاكاة ▶️</button>
+                <canvas id="simulatorCanvas" style="margin-top: 20px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Developer Info Modal -->
+    <div id="developerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeveloperModal()">&times;</span>
+            <div class="developer-info">
+                <h2>👨‍🏫 معلومات المطور</h2>
+                <p><strong>الأستاذ محمد قادري</strong></p>
+                <p>أستاذ مادة الفيزياء</p>
+                <p>ثانوية محمد الأخضر فيلالي</p>
+                <p>ولاية غرداية - الجزائر 🇩🇿</p>
+                <p>📧 البريد الإلكتروني: <a href="mailto:kadri68@gmail.com">kadri68@gmail.com</a></p>
+                <p>📱 الهاتف: <a href="tel:0662692987">0662692987</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Physics Constants
+        const G = 6.674e-11;
+        
+        const celestialBodies = {
+            Earth: { mass: 5.972e24, radius: 6371000, color: '#3498db', name: 'الأرض' },
+            Moon: { mass: 7.347e22, radius: 1737000, color: '#bdc3c7', name: 'القمر' },
+            Mars: { mass: 6.39e23, radius: 3389500, color: '#e74c3c', name: 'المريخ' },
+            Jupiter: { mass: 1.898e27, radius: 69911000, color: '#f39c12', name: 'المشتري' },
+            Sun: { mass: 1.989e30, radius: 695700000, color: '#f1c40f', name: 'الشمس' }
+        };
+
+        const examples = {
+            iss: { height: 400, eccentricity: 0.0002, body: 'Earth' },
+            geostationary: { height: 35786, eccentricity: 0, body: 'Earth' },
+            gps: { height: 20200, eccentricity: 0.01, body: 'Earth' },
+            hubble: { height: 547, eccentricity: 0.0005, body: 'Earth' },
+            moon: { height: 384400, eccentricity: 0.0549, body: 'Earth' },
+            weather: { height: 850, eccentricity: 0.001, body: 'Earth' }
+        };
+
+        let currentBody = celestialBodies.Earth;
+        let simulationRunning = false;
+        let animationId = null;
+
+        // Tab Navigation
+        function openTab(evt, tabName) {
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            
+            const tabs = document.getElementsByClassName('tab');
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // Load Example
+        function loadExample(exampleName) {
+            const example = examples[exampleName];
+            document.getElementById('celestialBody').value = example.body;
+            updateBodyParameters();
+            document.getElementById('heightSlider').value = example.height;
+            updateHeight();
+            document.getElementById('eccentricitySlider').value = example.eccentricity;
+            updateEccentricity();
+            
+            // Switch to calculations tab
+            const calculationsTab = document.querySelector('[onclick*="calculations"]');
+            calculationsTab.click();
+            
+            // Auto-calculate
+            setTimeout(() => calculate(), 300);
+        }
+
+        // Update Body Parameters
+        function updateBodyParameters() {
+            const bodyName = document.getElementById('celestialBody').value;
+            currentBody = celestialBodies[bodyName];
+        }
+
+        // Update Height
+        function updateHeight() {
+            const value = document.getElementById('heightSlider').value;
+            document.getElementById('heightValue').textContent = parseInt(value).toLocaleString();
+        }
+
+        // Update Eccentricity
+        function updateEccentricity() {
+            const value = document.getElementById('eccentricitySlider').value;
+            document.getElementById('eccentricityValue').textContent = parseFloat(value).toFixed(2);
+        }
+
+        // Calculate Orbital Parameters
+        function calculate() {
+            const height = parseFloat(document.getElementById('heightSlider').value) * 1000;
+            const eccentricity = parseFloat(document.getElementById('eccentricitySlider').value);
+            
+            // Perihelion radius (closest point)
+            const r_p = currentBody.radius + height;
+            
+            // Semi-major axis calculation from perihelion and eccentricity
+            const a = r_p / (1 - eccentricity);
+            
+            // Aphelion radius (farthest point)
+            const r_a = a * (1 + eccentricity);
+            
+            // Velocities at perihelion and aphelion
+            const v_p = Math.sqrt(G * currentBody.mass * (2 / r_p - 1 / a));
+            const v_a = Math.sqrt(G * currentBody.mass * (2 / r_a - 1 / a));
+            
+            // Orbital period using Kepler's third law
+            const period = 2 * Math.PI * Math.sqrt(Math.pow(a, 3) / (G * currentBody.mass));
+            
+            // Escape velocity at perihelion
+            const escapeVelocity = Math.sqrt(2 * G * currentBody.mass / r_p);
+            
+            // Surface gravity at orbit altitude
+            const surfaceGravity = G * currentBody.mass / (r_p * r_p);
+            
+            // Display results with appropriate units
+            const isSunOrbit = currentBody === celestialBodies.Sun;
+            const isJupiterOrbit = currentBody === celestialBodies.Jupiter;
+            
+            if (isSunOrbit) {
+                document.getElementById('orbitalRadius').textContent = (r_p / 1e9).toFixed(4) + ' مليون كم';
+                document.getElementById('semiMajorAxis').textContent = (a / 1e9).toFixed(4) + ' مليون كم';
+                document.getElementById('perihelion').textContent = (height / 1e6).toFixed(2) + ' مليون كم';
+                document.getElementById('aphelion').textContent = ((r_a - currentBody.radius) / 1e6).toFixed(2) + ' مليون كم';
+            } else if (isJupiterOrbit) {
+                document.getElementById('orbitalRadius').textContent = (r_p / 1000).toFixed(0) + ' كم';
+                document.getElementById('semiMajorAxis').textContent = (a / 1000).toFixed(0) + ' كم';
+                document.getElementById('perihelion').textContent = (height / 1000).toFixed(0) + ' كم';
+                document.getElementById('aphelion').textContent = ((r_a - currentBody.radius) / 1000).toFixed(0) + ' كم';
+            } else {
+                document.getElementById('orbitalRadius').textContent = (r_p / 1000).toFixed(2) + ' كم';
+                document.getElementById('semiMajorAxis').textContent = (a / 1000).toFixed(2) + ' كم';
+                document.getElementById('perihelion').textContent = (height / 1000).toFixed(2) + ' كم';
+                document.getElementById('aphelion').textContent = ((r_a - currentBody.radius) / 1000).toFixed(2) + ' كم';
+            }
+            
+            document.getElementById('orbitalVelocity').textContent = (v_p / 1000).toFixed(2) + ' كم/ث';
+            document.getElementById('velocityPerihelion').textContent = (v_p / 1000).toFixed(2) + ' كم/ث';
+            document.getElementById('velocityAphelion').textContent = (v_a / 1000).toFixed(2) + ' كم/ث';
+            
+            // Format period based on body
+            const seconds = period;
+            const minutes = seconds / 60;
+            const hours = minutes / 60;
+            const days = hours / 24;
+            const years = days / 365.25;
+            
+            let periodText = '';
+            if (years >= 1) {
+                periodText = years.toFixed(2) + ' سنة';
+            } else if (days >= 1) {
+                periodText = days.toFixed(2) + ' يوم';
+            } else if (hours >= 1) {
+                const h = Math.floor(hours);
+                const m = Math.floor((hours - h) * 60);
+                periodText = h + ' ساعة ' + m + ' دقيقة';
+            } else {
+                periodText = minutes.toFixed(2) + ' دقيقة';
+            }
+            document.getElementById('orbitalPeriod').textContent = periodText;
+            
+            document.getElementById('surfaceGravity').textContent = surfaceGravity.toFixed(3) + ' م/ث²';
+            document.getElementById('escapeVelocity').textContent = (escapeVelocity / 1000).toFixed(2) + ' كم/ث';
+            
+            document.getElementById('results').style.display = 'block';
+        }
+
+        // Draw Orbit
+        function drawOrbit() {
+            const canvas = document.getElementById('orbitCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            const height = parseFloat(document.getElementById('heightSlider').value) * 1000;
+            const eccentricity = parseFloat(document.getElementById('eccentricitySlider').value);
+            
+            // Fixed body size for visibility
+            const bodyRadius = 20;
+            const orbitRadius = Math.min(canvas.width, canvas.height) * 0.35;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Background
+            ctx.fillStyle = '#00001a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Calculate ellipse parameters
+            const a = orbitRadius;
+            const b = orbitRadius * Math.sqrt(1 - eccentricity * eccentricity);
+            const c = a * eccentricity;
+            
+            // Draw orbit path
+            ctx.beginPath();
+            ctx.ellipse(centerX + c, centerY, a, b, 0, 0, 2 * Math.PI);
+            ctx.strokeStyle = 'rgba(102, 126, 234, 0.6)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Draw celestial body at focus
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, bodyRadius, 0, 2 * Math.PI);
+            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, bodyRadius);
+            gradient.addColorStop(0, currentBody.color);
+            gradient.addColorStop(1, currentBody.color + '88');
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Draw satellite at perihelion (closest point)
+            const satelliteX = centerX + c - a;
+            const satelliteY = centerY;
+            ctx.beginPath();
+            ctx.arc(satelliteX, satelliteY, 6, 0, 2 * Math.PI);
+            ctx.fillStyle = '#e74c3c';
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Draw aphelion point
+            const aphelionX = centerX + c + a;
+            const aphelionY = centerY;
+            ctx.beginPath();
+            ctx.arc(aphelionX, aphelionY, 4, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.fill();
+            
+            // Draw focal line
+            ctx.beginPath();
+            ctx.moveTo(centerX - a - c, centerY);
+            ctx.lineTo(centerX + a + c, centerY);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            
+            // Labels
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(currentBody.name, centerX, centerY + bodyRadius + 18);
+            ctx.fillText('حضيض', satelliteX, satelliteY - 15);
+            ctx.fillText('أوج', aphelionX, aphelionY - 15);
+        }
+
+        // Simulation Functions
+        function updateSimHeight() {
+            const value = document.getElementById('simHeight').value;
+            document.getElementById('simHeightValue').textContent = parseInt(value).toLocaleString();
+        }
+
+        function updateSimSpeed() {
+            const value = document.getElementById('simSpeed').value;
+            document.getElementById('simSpeedValue').textContent = value + 'x';
+        }
+
+        function toggleSimulation() {
+            simulationRunning = !simulationRunning;
+            const btn = document.getElementById('simButton');
+            
+            if (simulationRunning) {
+                btn.textContent = 'إيقاف المحاكاة ⏸️';
+                runSimulation();
+            } else {
+                btn.textContent = 'بدء المحاكاة ▶️';
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                }
+            }
+        }
+
+        function runSimulation() {
+            const canvas = document.getElementById('simulatorCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            const bodyRadius = Math.min(canvas.width, canvas.height) * 0.15;
+            const orbitRadius = Math.min(canvas.width, canvas.height) * 0.35;
+            
+            let angle = 0;
+            const speed = parseFloat(document.getElementById('simSpeed').value) * 0.02;
+            
+            function animate() {
+                if (!simulationRunning) return;
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw celestial body
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, bodyRadius, 0, 2 * Math.PI);
+                ctx.fillStyle = currentBody.color;
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Draw orbit path
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, orbitRadius, 0, 2 * Math.PI);
+                ctx.strokeStyle = 'rgba(102, 126, 234, 0.3)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Draw satellite
+                const satelliteX = centerX + orbitRadius * Math.cos(angle);
+                const satelliteY = centerY + orbitRadius * Math.sin(angle);
+                
+                ctx.beginPath();
+                ctx.arc(satelliteX, satelliteY, 8, 0, 2 * Math.PI);
+                ctx.fillStyle = '#e74c3c';
+                ctx.fill();
+                ctx.strokeStyle = '#c0392b';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Draw velocity vector
+                const vx = -Math.sin(angle) * 30;
+                const vy = Math.cos(angle) * 30;
+                ctx.beginPath();
+                ctx.moveTo(satelliteX, satelliteY);
+                ctx.lineTo(satelliteX + vx, satelliteY + vy);
+                ctx.strokeStyle = '#2ecc71';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                angle += speed;
+                animationId = requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+
+        // Developer Modal
+        function openDeveloperModal() {
+            document.getElementById('developerModal').style.display = 'block';
+        }
+
+        function closeDeveloperModal() {
+            document.getElementById('developerModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('developerModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Kepler's Laws Functions
+        let keplerFirstRunning = false;
+        let keplerSecondRunning = false;
+        let keplerThirdRunning = false;
+        let keplerAnimationId = null;
+
+        function switchKeplerLaw() {
+            const law = document.getElementById('keplerLaw').value;
+            document.getElementById('keplerFirst').style.display = law === 'first' ? 'block' : 'none';
+            document.getElementById('keplerSecond').style.display = law === 'second' ? 'block' : 'none';
+            document.getElementById('keplerThird').style.display = law === 'third' ? 'block' : 'none';
+            
+            // Stop all animations
+            keplerFirstRunning = false;
+            keplerSecondRunning = false;
+            keplerThirdRunning = false;
+            if (keplerAnimationId) {
+                cancelAnimationFrame(keplerAnimationId);
+            }
+            
+            // Initialize third law table if needed
+            if (law === 'third') {
+                initKeplerThirdTable();
+            }
+        }
+
+        function updateKeplerFirst() {
+            const value = document.getElementById('keplerEcc').value;
+            document.getElementById('keplerEccValue').textContent = parseFloat(value).toFixed(2);
+            if (!keplerFirstRunning) {
+                drawKeplerFirst();
+            }
+        }
+
+        function drawKeplerFirst() {
+            const canvas = document.getElementById('keplerFirstCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const e = parseFloat(document.getElementById('keplerEcc').value);
+            const a = Math.min(canvas.width, canvas.height) * 0.3;
+            const b = a * Math.sqrt(1 - e * e);
+            const c = a * e;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw orbit
+            ctx.beginPath();
+            ctx.ellipse(centerX + c, centerY, a, b, 0, 0, 2 * Math.PI);
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Draw Sun at focus
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
+            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 20);
+            gradient.addColorStop(0, '#ffff00');
+            gradient.addColorStop(1, '#ff9900');
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            
+            // Draw other focus
+            ctx.beginPath();
+            ctx.arc(centerX + 2 * c, centerY, 3, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.fill();
+            
+            // Labels
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('الشمس', centerX, centerY + 35);
+            ctx.fillText('البؤرة الثانية', centerX + 2 * c, centerY + 20);
+        }
+
+        function animateKeplerFirst() {
+            keplerFirstRunning = !keplerFirstRunning;
+            const btn = document.getElementById('keplerFirstBtn');
+            
+            if (keplerFirstRunning) {
+                btn.textContent = 'إيقاف ⏸️';
+                runKeplerFirst();
+            } else {
+                btn.textContent = 'بدء الحركة ▶️';
+                if (keplerAnimationId) cancelAnimationFrame(keplerAnimationId);
+            }
+        }
+
+        function runKeplerFirst() {
+            const canvas = document.getElementById('keplerFirstCanvas');
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const e = parseFloat(document.getElementById('keplerEcc').value);
+            const a = Math.min(canvas.width, canvas.height) * 0.3;
+            const b = a * Math.sqrt(1 - e * e);
+            const c = a * e;
+            
+            let angle = 0;
+            
+            function animate() {
+                if (!keplerFirstRunning) return;
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw orbit
+                ctx.beginPath();
+                ctx.ellipse(centerX + c, centerY, a, b, 0, 0, 2 * Math.PI);
+                ctx.strokeStyle = '#667eea';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // Draw Sun
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
+                const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 20);
+                gradient.addColorStop(0, '#ffff00');
+                gradient.addColorStop(1, '#ff9900');
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                // Calculate planet position (using parametric form)
+                const planetX = centerX + c + a * Math.cos(angle);
+                const planetY = centerY + b * Math.sin(angle);
+                
+                // Draw line from sun to planet
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(planetX, planetY);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                // Draw planet
+                ctx.beginPath();
+                ctx.arc(planetX, planetY, 10, 0, 2 * Math.PI);
+                ctx.fillStyle = '#3498db';
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Kepler's second law: speed varies
+                const r = Math.sqrt(Math.pow(planetX - centerX, 2) + Math.pow(planetY - centerY, 2));
+                const speed = 0.01 * (a / r);
+                angle += speed;
+                
+                keplerAnimationId = requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+
+        function updateKeplerSecond() {
+            const value = document.getElementById('kepler2Ecc').value;
+            document.getElementById('kepler2EccValue').textContent = parseFloat(value).toFixed(2);
+            if (!keplerSecondRunning) {
+                drawKeplerSecond();
+            }
+        }
+
+        function drawKeplerSecond() {
+            const canvas = document.getElementById('keplerSecondCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const e = parseFloat(document.getElementById('kepler2Ecc').value);
+            const a = Math.min(canvas.width, canvas.height) * 0.3;
+            const b = a * Math.sqrt(1 - e * e);
+            const c = a * e;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw orbit
+            ctx.beginPath();
+            ctx.ellipse(centerX + c, centerY, a, b, 0, 0, 2 * Math.PI);
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Draw Sun
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
+            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 20);
+            gradient.addColorStop(0, '#ffff00');
+            gradient.addColorStop(1, '#ff9900');
+            ctx.fillStyle = gradient;
+            ctx.fill();
+        }
+
+        function animateKeplerSecond() {
+            keplerSecondRunning = !keplerSecondRunning;
+            const btn = document.getElementById('keplerSecondBtn');
+            
+            if (keplerSecondRunning) {
+                btn.textContent = 'إيقاف ⏸️';
+                runKeplerSecond();
+            } else {
+                btn.textContent = 'عرض المساحات المتساوية ▶️';
+                if (keplerAnimationId) cancelAnimationFrame(keplerAnimationId);
+            }
+        }
+
+        function runKeplerSecond() {
+            const canvas = document.getElementById('keplerSecondCanvas');
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const e = parseFloat(document.getElementById('kepler2Ecc').value);
+            const a = Math.min(canvas.width, canvas.height) * 0.3;
+            const b = a * Math.sqrt(1 - e * e);
+            const c = a * e;
+            
+            let angle = 0;
+            let phase = 0;
+            const areas = [];
+            
+            function animate() {
+                if (!keplerSecondRunning) return;
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw orbit
+                ctx.beginPath();
+                ctx.ellipse(centerX + c, centerY, a, b, 0, 0, 2 * Math.PI);
+                ctx.strokeStyle = '#667eea';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // Draw Sun
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
+                const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 20);
+                gradient.addColorStop(0, '#ffff00');
+                gradient.addColorStop(1, '#ff9900');
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                // Calculate planet position
+                const planetX = centerX + c + a * Math.cos(angle);
+                const planetY = centerY + b * Math.sin(angle);
+                
+                // Draw swept areas
+                if (phase < 4) {
+                    const angleStep = Math.PI / 4;
+                    const colors = ['rgba(255, 100, 100, 0.3)', 'rgba(100, 255, 100, 0.3)', 
+                                    'rgba(100, 100, 255, 0.3)', 'rgba(255, 255, 100, 0.3)'];
+                    
+                    for (let i = 0; i <= phase; i++) {
+                        ctx.beginPath();
+                        ctx.moveTo(centerX, centerY);
+                        const startAngle = i * angleStep;
+                        const endAngle = (i + 1) * angleStep;
+                        
+                        for (let t = startAngle; t <= endAngle; t += 0.1) {
+                            const x = centerX + c + a * Math.cos(t);
+                            const y = centerY + b * Math.sin(t);
+                            ctx.lineTo(x, y);
+                        }
+                        ctx.closePath();
+                        ctx.fillStyle = colors[i % colors.length];
+                        ctx.fill();
+                    }
+                }
+                
+                // Draw line from sun to planet
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(planetX, planetY);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Draw planet
+                ctx.beginPath();
+                ctx.arc(planetX, planetY, 10, 0, 2 * Math.PI);
+                ctx.fillStyle = '#3498db';
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Variable speed
+                const r = Math.sqrt(Math.pow(planetX - centerX, 2) + Math.pow(planetY - centerY, 2));
+                const speed = 0.015 * (a / r);
+                angle += speed;
+                
+                if (angle >= (phase + 1) * Math.PI / 4 && phase < 3) {
+                    phase++;
+                }
+                
+                if (angle >= 2 * Math.PI) {
+                    angle = 0;
+                    phase = 0;
+                }
+                
+                keplerAnimationId = requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+
+        function initKeplerThirdTable() {
+            const planets = [
+                { name: 'عطارد', a: 57.9, T: 87.97, color: '#95a5a6' },
+                { name: 'الزهرة', a: 108.2, T: 224.7, color: '#f1c40f' },
+                { name: 'الأرض', a: 149.6, T: 365.25, color: '#3498db' },
+                { name: 'المريخ', a: 227.9, T: 687, color: '#e74c3c' },
+                { name: 'المشتري', a: 778.5, T: 4333, color: '#f39c12' }
+            ];
+            
+            const tbody = document.getElementById('planetTableBody');
+            tbody.innerHTML = '';
+            
+            planets.forEach(planet => {
+                const ratio = (planet.T * planet.T) / (planet.a * planet.a * planet.a);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="padding: 10px; border: 1px solid var(--border); text-align: center;">${planet.name}</td>
+                    <td style="padding: 10px; border: 1px solid var(--border); text-align: center;">${planet.a}</td>
+                    <td style="padding: 10px; border: 1px solid var(--border); text-align: center;">${planet.T}</td>
+                    <td style="padding: 10px; border: 1px solid var(--border); text-align: center;">${ratio.toFixed(6)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function animateKeplerThird() {
+            keplerThirdRunning = !keplerThirdRunning;
+            const btn = document.getElementById('keplerThirdBtn');
+            
+            if (keplerThirdRunning) {
+                btn.textContent = 'إيقاف ⏸️';
+                runKeplerThird();
+            } else {
+                btn.textContent = 'عرض حركة الكواكب ▶️';
+                if (keplerAnimationId) cancelAnimationFrame(keplerAnimationId);
+            }
+        }
+
+        function runKeplerThird() {
+            const canvas = document.getElementById('keplerThirdCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            const planets = [
+                { name: 'عطارد', a: 0.15, T: 87.97, color: '#95a5a6', angle: 0 },
+                { name: 'الزهرة', a: 0.2, T: 224.7, color: '#f1c40f', angle: 0 },
+                { name: 'الأرض', a: 0.25, T: 365.25, color: '#3498db', angle: 0 },
+                { name: 'المريخ', a: 0.3, T: 687, color: '#e74c3c', angle: 0 }
+            ];
+            
+            const scale = Math.min(canvas.width, canvas.height) * 0.8;
+            
+            function animate() {
+                if (!keplerThirdRunning) return;
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw Sun
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 25, 0, 2 * Math.PI);
+                const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 25);
+                gradient.addColorStop(0, '#ffff00');
+                gradient.addColorStop(1, '#ff9900');
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                // Draw orbits and planets
+                planets.forEach(planet => {
+                    const radius = planet.a * scale;
+                    
+                    // Draw orbit
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    
+                    // Calculate planet position
+                    const x = centerX + radius * Math.cos(planet.angle);
+                    const y = centerY + radius * Math.sin(planet.angle);
+                    
+                    // Draw planet
+                    ctx.beginPath();
+                    ctx.arc(x, y, 6, 0, 2 * Math.PI);
+                    ctx.fillStyle = planet.color;
+                    ctx.fill();
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    
+                    // Update angle based on period
+                    planet.angle += (2 * Math.PI) / (planet.T * 2);
+                });
+                
+                keplerAnimationId = requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+
+        // Initialize
+        updateBodyParameters();
+        updateHeight();
+        updateEccentricity();
+        updateSimHeight();
+        updateSimSpeed();
+        updateKeplerFirst();
+        updateKeplerSecond();
+        
+        // Add event listeners for dropdowns
+        document.getElementById('celestialBody').addEventListener('change', function() {
+            updateBodyParameters();
+        });
+        
+        document.getElementById('keplerLaw').addEventListener('change', function() {
+            switchKeplerLaw();
+        });
+    </script>
+</body>
+</html>

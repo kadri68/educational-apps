@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اللعبة المميزة لسفيان قادري</title>
+    <style>
+        :root {
+            --bg: #0a0a14;
+            --surface: #141428;
+            --surface-light: #1a1a35;
+            --gold: #d4a843;
+            --gold-light: #f0d078;
+            --gold-dark: #8b6914;
+            --text: #e8e8f0;
+            --text-muted: #a0a0b8;
+            --correct: #2ecc71;
+            --wrong: #e74c3c;
+            --accent: #5b8def;
+            --border: #2a2a45;
+            --shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Tajawal', 'Cairo', 'Almarai', sans-serif;
+            background: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 50% 0%, rgba(212, 168, 67, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(91, 141, 239, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 70%, rgba(212, 168, 67, 0.04) 0%, transparent 50%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            direction: rtl;
+            padding: 20px;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Starfield background */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--dur) ease-in-out infinite;
+            animation-delay: var(--delay);
+            opacity: 0;
+        }
+        @keyframes twinkle {
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.9;
+                transform: scale(1.8);
+            }
+        }
+
+        /* Main container */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 650px;
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 35px 30px 30px;
+            box-shadow: var(--shadow), 0 0 0 1px var(--border), 0 0 80px rgba(212, 168, 67, 0.06);
+            border: 1px solid var(--border);
+        }
+
+        /* Title */
+        .title-section {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .title-ornament {
+            display: inline-block;
+            font-size: 28px;
+            animation: floatOrnament 3s ease-in-out infinite;
+        }
+        .title-ornament.left {
+            animation-delay: 0s;
+        }
+        .title-ornament.right {
+            animation-delay: 1.5s;
+        }
+        @keyframes floatOrnament {
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-6px) rotate(5deg);
+            }
+            75% {
+                transform: translateY(-3px) rotate(-3deg);
+            }
+        }
+        .game-title {
+            font-size: 6.2em;
+            font-weight: 900;
+            background: linear-gradient(180deg, #f7df94 0%, #d4a843 30%, #8b6914 70%, #6b4f10 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            letter-spacing: 1px;
+            margin: 0 10px;
+            display: inline-block;
+            text-shadow: none;
+            filter: drop-shadow(0 2px 4px rgba(212, 168, 67, 0.4));
+            line-height: 1.3;
+        }
+        .subtitle {
+            display: block;
+            font-size: 0.45em;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: var(--gold-light);
+            -webkit-text-fill-color: #e0c878;
+            margin-top: 2px;
+            opacity: 0.9;
+        }
+        .title-line {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 8px auto 0;
+            border-radius: 10px;
+        }
+
+        /* Difficulty Panel */
+        .difficulty-panel {
+            background: var(--surface-light);
+            border-radius: var(--radius-sm);
+            padding: 18px 20px;
+            margin-bottom: 22px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        .difficulty-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .difficulty-label {
+            font-weight: 700;
+            font-size: 1em;
+            color: var(--gold-light);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .preset-buttons {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .preset-btn {
+            padding: 7px 14px;
+            border-radius: 20px;
+            border: 1.5px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 600;
+            transition: var(--transition);
+            white-space: nowrap;
+            font-family: inherit;
+        }
+        .preset-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold-light);
+            background: rgba(212, 168, 67, 0.08);
+        }
+        .preset-btn.active {
+            background: rgba(212, 168, 67, 0.18);
+            border-color: var(--gold);
+            color: var(--gold-light);
+            box-shadow: 0 0 16px rgba(212, 168, 67, 0.2);
+        }
+        .slider-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: flex-end;
+        }
+        .slider-item {
+            flex: 1;
+            min-width: 130px;
+        }
+        .slider-item label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8em;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .slider-item label span.val {
+            color: var(--gold-light);
+            font-weight: 700;
+            font-size: 1.1em;
+            background: rgba(212, 168, 67, 0.12);
+            padding: 2px 10px;
+            border-radius: 10px;
+            min-width: 35px;
+            text-align: center;
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 10px;
+            background: var(--border);
+            outline: none;
+            cursor: pointer;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+            border: 3px solid var(--bg);
+            box-shadow: 0 0 12px rgba(212, 168, 67, 0.5);
+            transition: var(--transition);
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 20px rgba(212, 168, 67, 0.7);
+        }
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .toggle-label {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+        .toggle-switch {
+            position: relative;
+            width: 46px;
+            height: 26px;
+            background: var(--border);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        .toggle-switch.active {
+            background: var(--gold-dark);
+            box-shadow: 0 0 10px rgba(212, 168, 67, 0.35);
+        }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        .toggle-switch.active::after {
+            right: 23px;
+            background: var(--gold-light);
+        }
+
+        /* Game Board */
+        .game-board {
+            background: var(--surface-light);
+            border-radius: var(--radius-sm);
+            padding: 25px 20px;
+            text-align: center;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .game-board.shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        .game-board.glow-green {
+            box-shadow: 0 0 40px rgba(46, 204, 113, 0.35), 0 0 0 1px var(--border);
+        }
+        .game-board.glow-red {
+            box-shadow: 0 0 40px rgba(231, 76, 60, 0.35), 0 0 0 1px var(--border);
+        }
+        @keyframes shake {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            15% {
+                transform: translateX(-8px);
+            }
+            30% {
+                transform: translateX(8px);
+            }
+            45% {
+                transform: translateX(-6px);
+            }
+            60% {
+                transform: translateX(4px);
+            }
+            75% {
+                transform: translateX(-2px);
+            }
+        }
+
+        .phase-indicator {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 1px;
+            min-height: 22px;
+            transition: var(--transition);
+        }
+        .phase-indicator.memorize {
+            color: #f0d078;
+            animation: pulseText 1s ease-in-out infinite;
+        }
+        .phase-indicator.recall {
+            color: var(--accent);
+        }
+        @keyframes pulseText {
+            0%,
+            100% {
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .countdown-display {
+            font-size: 5em;
+            font-weight: 900;
+            color: var(--gold-light);
+            animation: countPulse 0.9s ease-out;
+            line-height: 1;
+        }
+        @keyframes countPulse {
+            0% {
+                transform: scale(1.8);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(0.9);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Timer bar */
+        .timer-bar-container {
+            width: 100%;
+            height: 5px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .timer-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), #f7df94);
+            border-radius: 10px;
+            width: 100%;
+            transition: width linear;
+        }
+        .timer-bar.warning {
+            background: linear-gradient(90deg, #e74c3c, #f39c12);
+        }
+
+        /* Boxes container */
+        .boxes-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            direction: ltr;
+            padding: 8px 0;
+        }
+        .digit-box {
+            width: 52px;
+            height: 62px;
+            border-radius: 12px;
+            border: 2.5px solid var(--border);
+            background: var(--surface);
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: 800;
+            color: var(--text);
+            outline: none;
+            transition: all 0.2s ease;
+            caret-color: var(--gold);
+            font-family: 'Courier New', 'Consolas', 'Tajawal', monospace;
+            direction: ltr;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        .digit-box:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 168, 67, 0.4);
+            transform: translateY(-3px);
+            background: #1e1e38;
+            z-index: 2;
+        }
+        .digit-box.filled {
+            border-color: #5b8def;
+            background: #1a1e30;
+            box-shadow: 0 0 10px rgba(91, 141, 239, 0.25);
+        }
+        .digit-box.display-mode {
+            border-color: var(--gold-dark);
+            background: rgba(212, 168, 67, 0.1);
+            color: var(--gold-light);
+            cursor: default;
+            pointer-events: none;
+            box-shadow: 0 0 14px rgba(212, 168, 67, 0.2);
+            animation: glowBox 1.5s ease-in-out infinite;
+        }
+        @keyframes glowBox {
+            0%,
+            100% {
+                box-shadow: 0 0 10px rgba(212, 168, 67, 0.15);
+            }
+            50% {
+                box-shadow: 0 0 22px rgba(212, 168, 67, 0.4);
+            }
+        }
+        .digit-box.correct-result {
+            border-color: var(--correct) !important;
+            background: rgba(46, 204, 113, 0.2) !important;
+            color: var(--correct) !important;
+            animation: popCorrect 0.4s ease-out;
+            box-shadow: 0 0 18px rgba(46, 204, 113, 0.4) !important;
+        }
+        .digit-box.wrong-result {
+            border-color: var(--wrong) !important;
+            background: rgba(231, 76, 60, 0.2) !important;
+            color: var(--wrong) !important;
+            animation: shakeBox 0.4s ease-out;
+            box-shadow: 0 0 18px rgba(231, 76, 60, 0.35) !important;
+        }
+        @keyframes popCorrect {
+            0% {
+                transform: scale(1);
+            }
+            40% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        @keyframes shakeBox {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-5px);
+            }
+            50% {
+                transform: translateX(5px);
+            }
+            75% {
+                transform: translateX(-3px);
+            }
+        }
+
+        /* Buttons */
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 16px;
+        }
+        .btn {
+            padding: 13px 28px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            font-family: inherit;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #d4a843, #b8912e);
+            color: #1a1a10;
+            box-shadow: 0 6px 20px rgba(212, 168, 67, 0.35);
+            font-size: 1.1em;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 168, 67, 0.5);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 12px rgba(212, 168, 67, 0.3);
+        }
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text);
+        }
+        .btn-secondary:hover {
+            border-color: var(--gold);
+            color: var(--gold-light);
+            background: rgba(212, 168, 67, 0.05);
+        }
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .btn .icon {
+            margin: 0 5px;
+        }
+
+        /* Stats */
+        .stats-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 16px;
+        }
+        .stat-card {
+            background: var(--surface-light);
+            border-radius: 16px;
+            padding: 12px 16px;
+            text-align: center;
+            min-width: 70px;
+            border: 1px solid var(--border);
+            flex: 1;
+            transition: var(--transition);
+        }
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: 900;
+            color: var(--gold-light);
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.7em;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+        .stat-card.highlight {
+            border-color: var(--gold-dark);
+            background: rgba(212, 168, 67, 0.06);
+            animation: highlightPulse 2s ease-in-out infinite;
+        }
+        @keyframes highlightPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 0px rgba(212, 168, 67, 0);
+            }
+            50% {
+                box-shadow: 0 0 18px rgba(212, 168, 67, 0.2);
+            }
+        }
+
+        /* Particles */
+        .particles-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: particleFly 1s ease-out forwards;
+            pointer-events: none;
+        }
+        @keyframes particleFly {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Hint button */
+        .hint-btn {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1em;
+            transition: var(--transition);
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hint-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold-light);
+            background: rgba(212, 168, 67, 0.12);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .main-container {
+                padding: 22px 14px 20px;
+                border-radius: 16px;
+            }
+            .game-title {
+                font-size: 1.5em;
+            }
+            .digit-box {
+                width: 40px;
+                height: 50px;
+                font-size: 1.4em;
+                border-radius: 10px;
+                border-width: 2px;
+            }
+            .boxes-container {
+                gap: 6px;
+            }
+            .btn {
+                padding: 11px 20px;
+                font-size: 0.9em;
+            }
+            .slider-group {
+                gap: 10px;
+            }
+            .slider-item {
+                min-width: 100px;
+            }
+            .stat-card {
+                padding: 10px 12px;
+                min-width: 55px;
+            }
+            .stat-value {
+                font-size: 1.2em;
+            }
+            .preset-btn {
+                padding: 5px 10px;
+                font-size: 0.75em;
+            }
+        }
+        @media (max-width: 380px) {
+            .digit-box {
+                width: 34px;
+                height: 44px;
+                font-size: 1.2em;
+                border-radius: 8px;
+            }
+            .boxes-container {
+                gap: 4px;
+            }
+            .game-title {
+                font-size: 1.25em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Stars background -->
+    <div class="stars-container" id="starsContainer"></div>
+
+    <!-- Particles layer -->
+    <div class="particles-layer" id="particlesLayer"></div>
+
+    <!-- Main Game Container -->
+    <div class="main-container" id="mainContainer">
+        <!-- Title -->
+        <div class="title-section">
+            <span class="title-ornament left">💎</span>
+            <span class="game-title">
+                اللعبة المميزة
+                <span class="subtitle">لسفيان قادري</span>
+            </span>
+            <span class="title-ornament right">💎</span>
+            <div class="title-line"></div>
+        </div>
+
+        <!-- Difficulty Panel -->
+        <div class="difficulty-panel" id="difficultyPanel">
+            <div class="difficulty-header">
+                <span class="difficulty-label">⚙️ إعدادات الصعوبة</span>
+                <div class="preset-buttons">
+                    <button class="preset-btn" data-preset="easy">😊 سهل</button>
+                    <button class="preset-btn active" data-preset="medium">🤔 متوسط</button>
+                    <button class="preset-btn" data-preset="hard">💪 صعب</button>
+                    <button class="preset-btn" data-preset="expert">🔥 خبير</button>
+                </div>
+            </div>
+            <div class="slider-group">
+                <div class="slider-item">
+                    <label>عدد الأرقام <span class="val" id="digitCountVal">6</span></label>
+                    <input type="range" id="digitCountSlider" min="3" max="12" value="6" step="1">
+                </div>
+                <div class="slider-item">
+                    <label>مدة العرض (ثانية) <span class="val" id="displayTimeVal">4</span></label>
+                    <input type="range" id="displayTimeSlider" min="1" max="15" value="4" step="0.5">
+                </div>
+            </div>
+            <div class="toggle-row">
+                <span class="toggle-label" id="reverseToggleLabel" style="cursor:pointer;">
+                    <span class="toggle-switch" id="reverseToggle"></span>
+                    🔄 الوضع العكسي (تذكر الأرقام بالعكس)
+                </span>
+            </div>
+        </div>
+
+        <!-- Game Board -->
+        <div class="game-board" id="gameBoard">
+            <div class="phase-indicator" id="phaseIndicator">جاهز للبدء 🎯</div>
+            <div id="gameContent">
+                <div class="boxes-container" id="boxesContainer"></div>
+            </div>
+            <div class="timer-bar-container" id="timerBarContainer" style="display:none;">
+                <div class="timer-bar" id="timerBar"></div>
+            </div>
+            <button class="hint-btn" id="hintBtn" style="display:none;" title="تلميح (يخصم نقاط)">👁️</button>
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-row">
+            <button class="btn btn-primary" id="startBtn">
+                <span class="icon">🚀</span> ابدأ اللعبة
+            </button>
+            <button class="btn btn-secondary" id="resetStatsBtn">
+                <span class="icon">🔄</span> تصفير الإحصائيات
+            </button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card highlight">
+                <div class="stat-value" id="bestStreakStat">0</div>
+                <div class="stat-label">🏆 أفضل سلسلة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="currentStreakStat">0</div>
+                <div class="stat-label">🔥 السلسلة الحالية</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="accuracyStat">-%</div>
+                <div class="stat-label">📊 الدقة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="gamesPlayedStat">0</div>
+                <div class="stat-label">🎮 عدد الجولات</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ─────────────────────────────────────
+            // DOM Elements
+            // ─────────────────────────────────────
+            const gameBoard = document.getElementById('gameBoard');
+            const phaseIndicator = document.getElementById('phaseIndicator');
+            const boxesContainer = document.getElementById('boxesContainer');
+            const timerBarContainer = document.getElementById('timerBarContainer');
+            const timerBar = document.getElementById('timerBar');
+            const startBtn = document.getElementById('startBtn');
+            const resetStatsBtn = document.getElementById('resetStatsBtn');
+            const hintBtn = document.getElementById('hintBtn');
+            const digitCountSlider = document.getElementById('digitCountSlider');
+            const displayTimeSlider = document.getElementById('displayTimeSlider');
+            const digitCountVal = document.getElementById('digitCountVal');
+            const displayTimeVal = document.getElementById('displayTimeVal');
+            const reverseToggle = document.getElementById('reverseToggle');
+            const reverseToggleLabel = document.getElementById('reverseToggleLabel');
+            const particlesLayer = document.getElementById('particlesLayer');
+            const starsContainer = document.getElementById('starsContainer');
+            const presetBtns = document.querySelectorAll('.preset-btn');
+
+            // Stats DOM
+            const bestStreakStat = document.getElementById('bestStreakStat');
+            const currentStreakStat = document.getElementById('currentStreakStat');
+            const accuracyStat = document.getElementById('accuracyStat');
+            const gamesPlayedStat = document.getElementById('gamesPlayedStat');
+
+            // ─────────────────────────────────────
+            // Game State
+            // ─────────────────────────────────────
+            const state = {
+                phase: 'idle', // idle | countdown | display | recall | result
+                digits: [],
+                userDigits: [],
+                digitCount: 6,
+                displayTime: 4,
+                reverseMode: false,
+                currentStreak: 0,
+                bestStreak: 0,
+                gamesPlayed: 0,
+                totalCorrectDigits: 0,
+                totalDigitsAttempted: 0,
+                autoSubmitTimeout: null,
+                hintUsed: false,
+                hintPenalty: 0,
+                isTransitioning: false,
+            };
+
+            // Load from localStorage
+            function loadStats() {
+                try {
+                    const saved = JSON.parse(localStorage.getItem('soufianeMemoryGame_stats'));
+                    if (saved) {
+                        state.bestStreak = saved.bestStreak || 0;
+                        state.gamesPlayed = saved.gamesPlayed || 0;
+                        state.totalCorrectDigits = saved.totalCorrectDigits || 0;
+                        state.totalDigitsAttempted = saved.totalDigitsAttempted || 0;
+                        state.digitCount = saved.digitCount || 6;
+                        state.displayTime = saved.displayTime || 4;
+                        state.reverseMode = saved.reverseMode || false;
+                    }
+                } catch (e) { /* ignore */ }
+            }
+
+            function saveStats() {
+                try {
+                    localStorage.setItem('soufianeMemoryGame_stats', JSON.stringify({
+                        bestStreak: state.bestStreak,
+                        gamesPlayed: state.gamesPlayed,
+                        totalCorrectDigits: state.totalCorrectDigits,
+                        totalDigitsAttempted: state.totalDigitsAttempted,
+                        digitCount: state.digitCount,
+                        displayTime: state.displayTime,
+                        reverseMode: state.reverseMode,
+                    }));
+                } catch (e) { /* ignore */ }
+            }
+
+            function updateStatsDisplay() {
+                bestStreakStat.textContent = state.bestStreak;
+                currentStreakStat.textContent = state.currentStreak;
+                gamesPlayedStat.textContent = state.gamesPlayed;
+                const accuracy = state.totalDigitsAttempted > 0 ?
+                    Math.round((state.totalCorrectDigits / state.totalDigitsAttempted) * 100) :
+                    0;
+                accuracyStat.textContent = accuracy + '%';
+            }
+
+            // ─────────────────────────────────────
+            // Stars Background
+            // ─────────────────────────────────────
+            function createStars() {
+                starsContainer.innerHTML = '';
+                const count = 70;
+                for (let i = 0; i < count; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('star');
+                    const size = Math.random() * 2.5 + 0.8;
+                    star.style.width = size + 'px';
+                    star.style.height = size + 'px';
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    star.style.setProperty('--dur', (Math.random() * 3 + 2) + 's');
+                    star.style.setProperty('--delay', (Math.random() * 5) + 's');
+                    starsContainer.appendChild(star);
+                }
+            }
+            createStars();
+
+            // ─────────────────────────────────────
+            // Particles / Celebration
+            // ─────────────────────────────────────
+            function spawnParticles(x, y, count = 30) {
+                const colors = ['#f0d078', '#d4a843', '#f7df94', '#ffd700', '#ffaa00', '#ffffff', '#5b8def',
+                '#2ecc71'];
+                for (let i = 0; i < count; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    particle.style.left = x + 'px';
+                    particle.style.top = y + 'px';
+                    particle.style.width = (Math.random() * 10 + 4) + 'px';
+                    particle.style.height = particle.style.width;
+                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * 180 + 40;
+                    particle.style.setProperty('--dx', Math.cos(angle) * distance + 'px');
+                    particle.style.setProperty('--dy', Math.sin(angle) * distance + 'px');
+                    particle.style.animationDuration = (Math.random() * 0.8 + 0.6) + 's';
+                    particlesLayer.appendChild(particle);
+                    setTimeout(() => particle.remove(), 1200);
+                }
+            }
+
+            function celebrateAtCenter() {
+                const rect = gameBoard.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                spawnParticles(cx, cy, 45);
+            }
+
+            // ─────────────────────────────────────
+            // UI Helpers
+            // ─────────────────────────────────────
+            function clearAutoSubmit() {
+                if (state.autoSubmitTimeout) {
+                    clearTimeout(state.autoSubmitTimeout);
+                    state.autoSubmitTimeout = null;
+                }
+            }
+
+            function setPhase(phase) {
+                state.phase = phase;
+                gameBoard.classList.remove('shake', 'glow-green', 'glow-red');
+                timerBarContainer.style.display = 'none';
+                hintBtn.style.display = 'none';
+                phaseIndicator.classList.remove('memorize', 'recall');
+                clearAutoSubmit();
+
+                switch (phase) {
+                    case 'idle':
+                        phaseIndicator.textContent = 'جاهز للبدء 🎯';
+                        startBtn.disabled = false;
+                        startBtn.innerHTML = '<span class="icon">🚀</span> ابدأ اللعبة';
+                        renderEmptyBoxes();
+                        break;
+                    case 'countdown':
+                        phaseIndicator.textContent = 'استعد...';
+                        startBtn.disabled = true;
+                        break;
+                    case 'display':
+                        phaseIndicator.textContent = '🔍 احفظ الأرقام جيداً!';
+                        phaseIndicator.classList.add('memorize');
+                        startBtn.disabled = true;
+                        hintBtn.style.display = 'none';
+                        break;
+                    case 'recall':
+                        phaseIndicator.textContent = '✍️ أدخل الأرقام التي تتذكرها';
+                        phaseIndicator.classList.add('recall');
+                        startBtn.disabled = true;
+                        hintBtn.style.display = 'inline-flex';
+                        state.hintUsed = false;
+                        state.hintPenalty = 0;
+                        break;
+                    case 'result':
+                        phaseIndicator.textContent = '';
+                        startBtn.disabled = false;
+                        startBtn.innerHTML = '<span class="icon">🔁</span> جولة جديدة';
+                        hintBtn.style.display = 'none';
+                        break;
+                }
+            }
+
+            function renderEmptyBoxes() {
+                boxesContainer.innerHTML = '';
+                for (let i = 0; i < state.digitCount; i++) {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.inputMode = 'numeric';
+                    input.pattern = '[0-9]';
+                    input.maxLength = 1;
+                    input.classList.add('digit-box');
+                    input.dataset.index = i;
+                    input.readOnly = true;
+                    input.value = '';
+                    input.placeholder = '';
+                    input.addEventListener('input', handleBoxInput);
+                    input.addEventListener('keydown', handleBoxKeydown);
+                    input.addEventListener('focus', handleBoxFocus);
+                    input.addEventListener('click', handleBoxClick);
+                    boxesContainer.appendChild(input);
+                }
+            }
+
+            function getBoxes() {
+                return boxesContainer.querySelectorAll('.digit-box');
+            }
+
+            function renderDisplayDigits() {
+                boxesContainer.innerHTML = '';
+                const displayOrder = state.reverseMode ? [...state.digits].reverse() : state.digits;
+                for (let i = 0; i < state.digits.length; i++) {
+                    const div = document.createElement('div');
+                    div.classList.add('digit-box', 'display-mode');
+                    div.textContent = state.digits[i];
+                    div.dataset.index = i;
+                    boxesContainer.appendChild(div);
+                }
+            }
+
+            function renderRecallBoxes() {
+                boxesContainer.innerHTML = '';
+                state.userDigits = new Array(state.digitCount).fill('');
+                for (let i = 0; i < state.digitCount; i++) {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.inputMode = 'numeric';
+                    input.pattern = '[0-9]';
+                    input.maxLength = 1;
+                    input.classList.add('digit-box');
+                    input.dataset.index = i;
+                    input.readOnly = false;
+                    input.value = '';
+                    input.placeholder = '';
+                    input.addEventListener('input', handleBoxInput);
+                    input.addEventListener('keydown', handleBoxKeydown);
+                    input.addEventListener('focus', handleBoxFocus);
+                    input.addEventListener('click', handleBoxClick);
+                    boxesContainer.appendChild(input);
+                }
+                // Focus first box
+                setTimeout(() => {
+                    const first = boxesContainer.querySelector('.digit-box');
+                    if (first) first.focus();
+                }, 200);
+            }
+
+            // ─────────────────────────────────────
+            // Box Event Handlers
+            // ─────────────────────────────────────
+            function handleBoxInput(e) {
+                if (state.phase !== 'recall') return;
+                const input = e.target;
+                const rawValue = input.value;
+
+                // Filter: keep only the last digit entered
+                const digitsOnly = rawValue.replace(/[^0-9]/g, '');
+                if (digitsOnly.length > 0) {
+                    const lastDigit = digitsOnly[digitsOnly.length - 1];
+                    input.value = lastDigit;
+                    const index = parseInt(input.dataset.index);
+                    state.userDigits[index] = lastDigit;
+                    input.classList.add('filled');
+                    // Auto-advance to next box
+                    const nextBox = boxesContainer.querySelector(`.digit-box[data-index="${index + 1}"]`);
+                    if (nextBox) {
+                        nextBox.focus();
+                        nextBox.select();
+                    } else {
+                        // Last box filled - auto-submit
+                        input.blur();
+                        clearAutoSubmit();
+                        state.autoSubmitTimeout = setTimeout(() => {
+                            if (allBoxesFilled()) {
+                                checkAnswer();
+                            }
+                        }, 350);
+                    }
+                } else {
+                    // Empty after deletion
+                    const index = parseInt(input.dataset.index);
+                    state.userDigits[index] = '';
+                    input.classList.remove('filled');
+                    clearAutoSubmit();
+                }
+            }
+
+            function handleBoxKeydown(e) {
+                if (state.phase !== 'recall') return;
+                const input = e.target;
+                const index = parseInt(input.dataset.index);
+
+                if (e.key === 'Backspace' || e.key === 'Delete') {
+                    if (input.value === '') {
+                        // Move to previous box and clear it
+                        e.preventDefault();
+                        const prevBox = boxesContainer.querySelector(`.digit-box[data-index="${index - 1}"]`);
+                        if (prevBox) {
+                            prevBox.value = '';
+                            state.userDigits[index - 1] = '';
+                            prevBox.classList.remove('filled');
+                            prevBox.focus();
+                            prevBox.select();
+                            clearAutoSubmit();
+                        }
+                    } else {
+                        // Will be handled by input event
+                        clearAutoSubmit();
+                    }
+                }
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    const prevBox = boxesContainer.querySelector(`.digit-box[data-index="${index - 1}"]`);
+                    if (prevBox) { prevBox.focus();
+                        prevBox.select(); }
+                }
+                if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    const nextBox = boxesContainer.querySelector(`.digit-box[data-index="${index + 1}"]`);
+                    if (nextBox) { nextBox.focus();
+                        nextBox.select(); }
+                }
+                if (e.key === 'Enter') {
+                    if (allBoxesFilled()) {
+                        clearAutoSubmit();
+                        checkAnswer();
+                    }
+                }
+            }
+
+            function handleBoxFocus(e) {
+                if (state.phase !== 'recall') return;
+                e.target.select();
+            }
+
+            function handleBoxClick(e) {
+                if (state.phase !== 'recall') return;
+                e.target.select();
+            }
+
+            function allBoxesFilled() {
+                const boxes = getBoxes();
+                for (const box of boxes) {
+                    if (box.value === '' || box.value === undefined) return false;
+                }
+                return true;
+            }
+
+            function collectUserDigits() {
+                const boxes = getBoxes();
+                const result = [];
+                boxes.forEach(box => {
+                    result.push(box.value || '');
+                });
+                return result;
+            }
+
+            // ─────────────────────────────────────
+            // Hint System
+            // ─────────────────────────────────────
+            hintBtn.addEventListener('click', () => {
+                if (state.phase !== 'recall' || state.isTransitioning) return;
+                if (state.hintUsed) return;
+                state.hintUsed = true;
+                state.hintPenalty = Math.ceil(state.digitCount / 2);
+                hintBtn.style.opacity = '0.4';
+                hintBtn.style.pointerEvents = 'none';
+
+                // Briefly flash the digits
+                const boxes = getBoxes();
+                const displayOrder = state.reverseMode ? [...state.digits].reverse() : state.digits;
+
+                // Show digits in boxes briefly
+                boxes.forEach((box, i) => {
+                    box.value = state.digits[i];
+                    box.classList.add('display-mode');
+                    box.readOnly = true;
+                });
+
+                setTimeout(() => {
+                    boxes.forEach((box, i) => {
+                        box.value = state.userDigits[i] || '';
+                        box.classList.remove('display-mode');
+                        box.readOnly = false;
+                    });
+                    // Refocus first empty box
+                    const firstEmpty = boxesContainer.querySelector('.digit-box:not(.filled)');
+                    if (firstEmpty) firstEmpty.focus();
+                }, 800);
+            });
+
+            // ─────────────────────────────────────
+            // Game Logic
+            // ─────────────────────────────────────
+            function generateDigits() {
+                state.digits = [];
+                for (let i = 0; i < state.digitCount; i++) {
+                    state.digits.push(Math.floor(Math.random() * 10));
+                }
+            }
+
+            async function startGame() {
+                if (state.isTransitioning) return;
+                state.isTransitioning = true;
+                clearAutoSubmit();
+                gameBoard.classList.remove('shake', 'glow-green', 'glow-red');
+
+                // Read settings from UI
+                state.digitCount = parseInt(digitCountSlider.value);
+                state.displayTime = parseFloat(displayTimeSlider.value);
+                state.reverseMode = reverseToggle.classList.contains('active');
+
+                generateDigits();
+                state.userDigits = new Array(state.digitCount).fill('');
+                state.hintUsed = false;
+                state.hintPenalty = 0;
+
+                // Countdown phase
+                setPhase('countdown');
+                const countdownEl = document.createElement('div');
+                countdownEl.classList.add('countdown-display');
+                boxesContainer.innerHTML = '';
+                boxesContainer.appendChild(countdownEl);
+
+                for (let i = 3; i >= 1; i--) {
+                    countdownEl.textContent = i;
+                    countdownEl.style.animation = 'none';
+                    void countdownEl.offsetWidth;
+                    countdownEl.style.animation = 'countPulse 0.9s ease-out';
+                    await delay(850);
+                }
+                countdownEl.textContent = '👀';
+                countdownEl.style.animation = 'none';
+                void countdownEl.offsetWidth;
+                countdownEl.style.animation = 'countPulse 0.9s ease-out';
+                await delay(600);
+
+                // Display phase
+                setPhase('display');
+                renderDisplayDigits();
+                timerBarContainer.style.display = 'block';
+                timerBar.style.transition = 'none';
+                timerBar.style.width = '100%';
+                timerBar.classList.remove('warning');
+                void timerBar.offsetWidth;
+
+                // Animate timer bar
+                const displayMs = state.displayTime * 1000;
+                timerBar.style.transition = `width ${displayMs}ms linear`;
+                timerBar.style.width = '0%';
+
+                // Add warning class near the end
+                const warningTime = Math.max(displayMs * 0.65, 1000);
+                setTimeout(() => {
+                    if (state.phase === 'display') {
+                        timerBar.classList.add('warning');
+                    }
+                }, warningTime);
+
+                await delay(displayMs);
+
+                // Transition to recall
+                if (state.phase !== 'display') { state.isTransitioning = false; return; }
+                setPhase('recall');
+                renderRecallBoxes();
+                timerBarContainer.style.display = 'none';
+                hintBtn.style.display = 'inline-flex';
+                hintBtn.style.opacity = '1';
+                hintBtn.style.pointerEvents = 'auto';
+                state.isTransitioning = false;
+            }
+
+            function checkAnswer() {
+                if (state.phase !== 'recall') return;
+                if (state.isTransitioning) return;
+                state.isTransitioning = true;
+                clearAutoSubmit();
+                setPhase('result');
+
+                const userDigits = collectUserDigits();
+                state.userDigits = userDigits;
+                const correctDigits = state.digits; // The original order
+                const boxes = getBoxes();
+
+                let allCorrect = true;
+                const resultPerBox = [];
+
+                for (let i = 0; i < state.digitCount; i++) {
+                    const userVal = parseInt(userDigits[i]);
+                    const correctVal = state.reverseMode ?
+                        correctDigits[state.digitCount - 1 - i] :
+                        correctDigits[i];
+                    const isCorrect = (!isNaN(userVal) && userVal === correctVal);
+                    resultPerBox.push(isCorrect);
+                    if (!isCorrect) allCorrect = false;
+                }
+
+                // Apply hint penalty
+                let effectiveAllCorrect = allCorrect;
+                if (state.hintUsed && allCorrect) {
+                    effectiveAllCorrect = false; // Using hint reduces perfection
+                }
+
+                // Animate boxes
+                boxes.forEach((box, i) => {
+                    box.readOnly = true;
+                    box.classList.remove('display-mode', 'filled');
+                    if (resultPerBox[i]) {
+                        box.classList.add('correct-result');
+                        box.value = userDigits[i] || '';
+                    } else {
+                        box.classList.add('wrong-result');
+                        box.value = userDigits[i] || '';
+                        // Show correct value after delay
+                        const correctForThisBox = state.reverseMode ?
+                            correctDigits[state.digitCount - 1 - i] :
+                            correctDigits[i];
+                        setTimeout(() => {
+                            box.value = correctForThisBox;
+                            box.style.fontSize = '0.7em';
+                            box.style.color = '#aaa';
+                            box.title = 'الإجابة الصحيحة: ' + correctForThisBox;
+                        }, 600);
+                    }
+                });
+
+                // Update stats
+                state.gamesPlayed++;
+                let correctCount = resultPerBox.filter(Boolean).length;
+                state.totalCorrectDigits += correctCount;
+                state.totalDigitsAttempted += state.digitCount;
+
+                if (effectiveAllCorrect && !state.hintUsed) {
+                    state.currentStreak++;
+                    if (state.currentStreak > state.bestStreak) {
+                        state.bestStreak = state.currentStreak;
+                    }
+                    gameBoard.classList.add('glow-green');
+                    phaseIndicator.textContent = '✅ ممتاز! كل الأرقام صحيحة!';
+                    phaseIndicator.style.color = '#2ecc71';
+                    setTimeout(() => celebrateAtCenter(), 150);
+                } else if (allCorrect && state.hintUsed) {
+                    // All correct but hint was used
+                    state.currentStreak = 0;
+                    gameBoard.classList.add('glow-green');
+                    phaseIndicator.textContent =
+                        '✅ الأرقام صحيحة! (لكن تم استخدام تلميح - السلسلة انتهت)';
+                    phaseIndicator.style.color = '#f0d078';
+                    setTimeout(() => celebrateAtCenter(), 150);
+                } else {
+                    state.currentStreak = 0;
+                    gameBoard.classList.add('shake');
+                    gameBoard.classList.add('glow-red');
+                    phaseIndicator.textContent =
+                        `❌ ${correctCount} من ${state.digitCount} صحيح. حظ أوفر!`;
+                    phaseIndicator.style.color = '#e74c3c';
+                }
+
+                // Show correct answer text below boxes if wrong
+                if (!allCorrect) {
+                    const answerDisplay = document.createElement('div');
+                    answerDisplay.style.marginTop = '10px';
+                    answerDisplay.style.fontSize = '0.85em';
+                    answerDisplay.style.color = '#a0a0b8';
+                    answerDisplay.style.direction = 'ltr';
+                    answerDisplay.textContent = 'الإجابة الصحيحة: ' + correctDigits.join(' ');
+                    answerDisplay.id = 'correctAnswerDisplay';
+                    // Remove old one if exists
+                    const old = document.getElementById('correctAnswerDisplay');
+                    if (old) old.remove();
+                    boxesContainer.parentElement.appendChild(answerDisplay);
+                } else {
+                    const old = document.getElementById('correctAnswerDisplay');
+                    if (old) old.remove();
+                }
+
+                saveStats();
+                updateStatsDisplay();
+                state.isTransitioning = false;
+            }
+
+            function resetGame() {
+                clearAutoSubmit();
+                state.isTransitioning = false;
+                gameBoard.classList.remove('shake', 'glow-green', 'glow-red');
+                timerBarContainer.style.display = 'none';
+                hintBtn.style.display = 'none';
+                phaseIndicator.style.color = '';
+                const oldAnswer = document.getElementById('correctAnswerDisplay');
+                if (oldAnswer) oldAnswer.remove();
+                setPhase('idle');
+                renderEmptyBoxes();
+                state.userDigits = [];
+            }
+
+            // ─────────────────────────────────────
+            // Event Listeners
+            // ─────────────────────────────────────
+            startBtn.addEventListener('click', async () => {
+                if (state.isTransitioning) return;
+                if (state.phase === 'idle' || state.phase === 'result') {
+                    if (state.phase === 'result') {
+                        resetGame();
+                        await delay(300);
+                    }
+                    startGame();
+                }
+            });
+
+            resetStatsBtn.addEventListener('click', () => {
+                if (state.isTransitioning) return;
+                if (confirm('هل أنت متأكد من تصفير جميع الإحصائيات؟')) {
+                    state.bestStreak = 0;
+                    state.currentStreak = 0;
+                    state.gamesPlayed = 0;
+                    state.totalCorrectDigits = 0;
+                    state.totalDigitsAttempted = 0;
+                    saveStats();
+                    updateStatsDisplay();
+                    resetGame();
+                }
+            });
+
+            digitCountSlider.addEventListener('input', () => {
+                state.digitCount = parseInt(digitCountSlider.value);
+                digitCountVal.textContent = state.digitCount;
+                updatePresetHighlight();
+                if (state.phase === 'idle') {
+                    renderEmptyBoxes();
+                }
+                saveStats();
+            });
+
+            displayTimeSlider.addEventListener('input', () => {
+                state.displayTime = parseFloat(displayTimeSlider.value);
+                displayTimeVal.textContent = state.displayTime;
+                updatePresetHighlight();
+                saveStats();
+            });
+
+            reverseToggleLabel.addEventListener('click', () => {
+                reverseToggle.classList.toggle('active');
+                state.reverseMode = reverseToggle.classList.contains('active');
+                saveStats();
+                if (state.phase === 'idle') {
+                    renderEmptyBoxes();
+                }
+            });
+
+            // Preset buttons
+            presetBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (state.isTransitioning && state.phase !== 'idle') return;
+                    const preset = btn.dataset.preset;
+                    applyPreset(preset);
+                    updatePresetHighlight();
+                    if (state.phase === 'idle' || state.phase === 'result') {
+                        resetGame();
+                    }
+                });
+            });
+
+            function applyPreset(preset) {
+                switch (preset) {
+                    case 'easy':
+                        digitCountSlider.value = 3;
+                        displayTimeSlider.value = 6;
+                        reverseToggle.classList.remove('active');
+                        break;
+                    case 'medium':
+                        digitCountSlider.value = 6;
+                        displayTimeSlider.value = 4;
+                        reverseToggle.classList.remove('active');
+                        break;
+                    case 'hard':
+                        digitCountSlider.value = 8;
+                        displayTimeSlider.value = 2.5;
+                        reverseToggle.classList.remove('active');
+                        break;
+                    case 'expert':
+                        digitCountSlider.value = 10;
+                        displayTimeSlider.value = 1.5;
+                        reverseToggle.classList.add('active');
+                        break;
+                }
+                state.digitCount = parseInt(digitCountSlider.value);
+                state.displayTime = parseFloat(displayTimeSlider.value);
+                state.reverseMode = reverseToggle.classList.contains('active');
+                digitCountVal.textContent = state.digitCount;
+                displayTimeVal.textContent = state.displayTime;
+                saveStats();
+            }
+
+            function updatePresetHighlight() {
+                const dc = parseInt(digitCountSlider.value);
+                const dt = parseFloat(displayTimeSlider.value);
+                const rv = reverseToggle.classList.contains('active');
+
+                presetBtns.forEach(btn => btn.classList.remove('active'));
+
+                if (dc === 3 && dt === 6 && !rv) presetBtns[0].classList.add('active');
+                else if (dc === 6 && dt === 4 && !rv) presetBtns[1].classList.add('active');
+                else if (dc === 8 && dt === 2.5 && !rv) presetBtns[2].classList.add('active');
+                else if (dc === 10 && dt === 1.5 && rv) presetBtns[3].classList.add('active');
+            }
+
+            // Keyboard shortcut for starting game
+            document.addEventListener('keydown', (e) => {
+                if (e.key === ' ' && (state.phase === 'idle' || state.phase === 'result') && !state
+                    .isTransitioning) {
+                    e.preventDefault();
+                    if (document.activeElement && document.activeElement.tagName === 'INPUT' && state
+                        .phase === 'result') {
+                        // Don't trigger if user is typing in a box (shouldn't happen in result phase but
+                        // just in case)
+                        return;
+                    }
+                    startBtn.click();
+                }
+            });
+
+            // ─────────────────────────────────────
+            // Utility
+            // ─────────────────────────────────────
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            // ─────────────────────────────────────
+            // Initialization
+            // ─────────────────────────────────────
+            function init() {
+                loadStats();
+                updateStatsDisplay();
+
+                // Apply loaded settings to UI
+                digitCountSlider.value = state.digitCount;
+                displayTimeSlider.value = state.displayTime;
+                digitCountVal.textContent = state.digitCount;
+                displayTimeVal.textContent = state.displayTime;
+                if (state.reverseMode) {
+                    reverseToggle.classList.add('active');
+                } else {
+                    reverseToggle.classList.remove('active');
+                }
+                updatePresetHighlight();
+
+                // Initial render
+                setPhase('idle');
+                renderEmptyBoxes();
+                updateStatsDisplay();
+            }
+
+            init();
+
+            console.log('🎯 اللعبة المميزة لسفيان قادري - جاهزة!');
+            console.log('💡 اضغط على زر "ابدأ اللعبة" أو استخدم مفتاح المسافة للبدء');
+            console.log('📊 ' + (state.gamesPlayed > 0 ?
+                `سجلت ${state.gamesPlayed} جولة سابقة - أفضل سلسلة: ${state.bestStreak}` :
+                'ابدأ رحلتك في تحدي الذاكرة!'));
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+/* style.css */
+
+body {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem;
+}
+h1, h2, h3, h4, label, button, select, input, p, li, footer, .modal-content p, .modal-content li, .modal-content h3, .modal-content h4 {
+    font-size: 1.125rem;
+}
+@media (min-width: 768px) {
+    body { font-size: 1.125rem; }
+    h1, h2, h3, h4, label, button, select, input, p, li, footer, .modal-content p, .modal-content li, .modal-content h3, .modal-content h4 { font-size: 1.375rem; }
+    h1 { font-size: 1.875rem; }
+    h2 { font-size: 1.625rem; }
+}
+select, input[type="number"] {
+    padding: 0.4rem;
+}
+.manual-reaction-grid select, .manual-reaction-grid input {
+    font-size: 0.95rem;
+}
+@media (min-width: 768px) {
+    .manual-reaction-grid select, .manual-reaction-grid input {
+        font-size: 1.05rem;
+    }
+}
+.modal-result-section h3, .modal-result-section h4 {
+     color: #cbd5e1;
+     margin-bottom: 0.5rem;
+}
+.modal-result-section ul {
+    padding-right: 1.1rem;
+    margin-bottom: 0.75rem;
+}
+.modal-result-section li {
+    color: #e2e8f0;
+    margin-bottom: 0.35rem;
+}
+.tab-button {
+    transition: background-color 0.3s, color 0.3s;
+}
+.tab-button.active {
+    background-color: #14b8a6;
+    color: white;
+}
+.tab-button:not(.active) {
+    background-color: #334155;
+    color: #9ca3af;
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+select option {
+    font-size: 0.95rem !important;
+}
+@media (min-width: 768px) {
+    select option {
+        font-size: 1.05rem !important;
+    }
+}
+ input[type="number"] {
+    -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.developer-credit { /* For "تطوير: أ. محمد قادري" */
+    text-align: center;
+    color: #9ca3af;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem; /* mb-1 */
+}
+ @media (min-width: 768px) {
+    .developer-credit { font-size: 1rem; }
+}
+ .about-me-button {
+    background-color: transparent;
+    color: #5eead4; /* teal-300 */
+    border: 1px solid #5eead4;
+    padding: 0.25rem 0.75rem; /* p-1 px-3 */
+    border-radius: 0.375rem; /* rounded-md */
+    font-size: 0.85rem; /* Slightly smaller than main text */
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    display: block;
+    margin: 0.25rem auto 0; /* mt-1 mx-auto mb-0 */
+}
+.about-me-button:hover {
+    background-color: #5eead4;
+    color: #1f2937; /* gray-800 for text on hover */
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+    padding-top: 15px;
+}
+.modal-content {
+    background-color: #1f2937;
+    margin: 1.5% auto;
+    padding: 16px;
+    border: 1px solid #4b5563;
+    width: 90%;
+    max-width: 700px;
+    border-radius: 0.5rem;
+    color: #e5e7eb;
+    font-size: 1.125rem;
+}
+.modal-content * {
+     font-size: inherit !important;
+}
+.modal-bottom-close-button {
+    background-color: #4b5563;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    font-size: 1.05rem;
+    transition: background-color 0.2s;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+}
+.modal-bottom-close-button:hover {
+    background-color: #6b7280;
+}
+
+.calc-button {
+    background-color: #0d9488;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.375rem;
+    font-weight: bold;
+    margin-top: 0.4rem;
+    font-size: 1.05rem;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+.calc-button:hover {
+    background-color: #0f766e;
+}
+.calc-button:disabled {
+    background-color: #4b5563;
+    cursor: not-allowed;
+}
+
+.main-container > div:not(:last-child),
+.main-container > button:not(:last-child) {
+    margin-bottom: 1rem;
+}
+.tab-content > div:not(:last-child),
+.tab-content > button:not(:last-child) {
+     margin-bottom: 0.75rem;
+}
+.section-block {
+    padding: 0.6rem;
+    border: 1px solid #374151;
+    border-radius: 0.375rem;
+}
+.manual-reaction-grid {
+    gap: 0.4rem;
+}
+.manual-reaction-grid .grid {
+    gap: 0.2rem;
+}
+.nucleus-details {
+    margin-top: 0.3rem;
+    margin-bottom: 0.6rem;
+}
+.nucleus-details p {
+    font-size: 0.9em;
+    margin-bottom: 0.15rem;
+}
+.isotope-info-block { margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed #4b5563;}
+.isotope-info-block p { font-size: 0.95em; margin-bottom: 0.2rem;}
+.modal-equation-label {
+    font-weight: bold;
+    color: #9ca3af;
+    margin-bottom: 0.25rem;
+    display: block;
+}
+.modal-equation-display {
+    margin-bottom: 0.75rem;
+    padding: 0.5rem;
+    background-color: #374151;
+    border-radius: 0.25rem;
+    text-align: center;
+}
+/* Styles for About Me Modal Content */
+#aboutMeModalContent .info-line {
+    font-size: 1.1em; /* Slightly larger for readability in modal */
+    margin-bottom: 0.4rem;
+}
+#aboutMeModalContent .contact-line {
+    font-size: 1.1em;
+    margin-top: 0.5rem;
+}
+ #aboutMeModalContent .contact-item a {
+    color: #81e6d9; /* Lighter teal for links in modal */
+}
+

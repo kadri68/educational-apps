@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هندسة الأنواع الكيميائية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* استخدام الخطوط الافتراضية/القياسية (تم تصغيرها) */
+        body {
+            font-family: 'Cairo', 'Inter', sans-serif;
+            background-color: #f3f4f6; /* bg-gray-100 */
+            /* الأحجام الافتراضية لـ Tailwind (text-base, text-lg, etc.) هي الآن الحجم القياسي */
+        }
+        
+        .topic-content {
+            display: none;
+        }
+
+        .topic-toggle {
+            transition: background-color 0.2s ease-in-out;
+        }
+        
+        /* تصغير أيقونة + / - قليلاً */
+        .toggle-icon {
+            transition: transform 0.2s ease-in-out;
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 300; /* font-light */
+        }
+        
+        .topic-toggle.active .toggle-icon {
+            transform: rotate(45deg);
+        }
+
+        .svg-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1.5rem auto;
+            max-width: 500px;
+        }
+        .svg-container svg {
+            width: 100%;
+            height: auto;
+            max-height: 350px; 
+            border: 1px solid #e5e7eb; 
+            border-radius: 0.5rem; 
+        }
+    </style>
+</head>
+<body class="text-gray-900">
+
+    <div id="app" class="min-h-screen">
+
+        <header class="bg-blue-700 text-white p-6 shadow-md mb-8">
+            <h1 class="text-2xl md:text-3xl font-bold text-center">
+                تطبيق وب تعليمي: بنية وهندسة الأنواع الكيميائية
+            </h1>
+        </header>
+
+        <main class="max-w-5xl mx-auto p-4">
+
+            <div class="topic-item bg-white rounded-lg shadow-md overflow-hidden mb-4">
+                <button class="topic-toggle w-full p-5 text-right flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                    <h2 class="text-xl font-bold text-blue-700">1. بنية الذرة</h2>
+                    <span class="toggle-icon text-blue-700">+</span>
+                </button>
+                <div class="topic-content p-6 border-t border-gray-200">
+                    <p class="mb-4 text-base leading-relaxed">تتكون الذرة، وهي الوحدة الأساسية للمادة، من نواة مركزية وإلكترونات تدور حولها.</p>
+                    <ul class="list-disc list-inside space-y-3 mr-6 mb-4 text-base">
+                        <li><b>النواة (Nucleus):</b> تتركز فيها معظم كتلة الذرة، وتتكون من:
+                            <ul class="list-circle list-inside space-y-2 mr-8 mt-2">
+                                <li><b>البروتونات (Protons, p+):</b> جسيمات موجبة الشحنة. (Z).</li>
+                                <li><b>النيوترونات (Neutrons, n):</b> جسيمات متعادلة الشحنة. (N).</li>
+                            </ul>
+                        </li>
+                        <li><b>الإلكترونات (Electrons, e-):</b> جسيمات خفيفة جداً وسالبة الشحنة، تدور حول النواة في مستويات طاقة محددة (مدارات أو سحابات إلكترونية).</li>
+                    </ul>
+                    
+                    <div class="svg-container bg-white p-4">
+                        <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" aria-label="نموذج مبسط للذرة">
+                            <title>نموذج مبسط للذرة</title>
+                            <circle cx="100" cy="80" r="20" fill="#f87171" stroke="#b91c1c" stroke-width="2"/>
+                            <circle cx="95" cy="75" r="5" fill="#ef4444"/>
+                            <circle cx="105" cy="75" r="5" fill="#ef4444"/>
+                            <circle cx="100" cy="85" r="5" fill="#ef4444"/>
+                            <circle cx="90" cy="85" r="5" fill="#a3a3a3"/>
+                            <circle cx="110" cy="85" r="5" fill="#a3a3a3"/>
+                            <ellipse cx="100" cy="80" rx="50" ry="25" fill="none" stroke="#3b82f6" stroke-width="2"/>
+                            <ellipse cx="100" cy="80" rx="80" ry="50" fill="none" stroke="#3b82f6" stroke-width="2"/>
+                            <ellipse cx="100" cy="80" rx="40" ry="70" fill="none" stroke="#3b82f6" stroke-width="2" transform="rotate(60 100 80)"/>
+                            <circle cx="100" cy="30" r="4" fill="#1d4ed8"/>
+                            <circle cx="50" cy="67.5" r="4" fill="#1d4ed8"/>
+                            <circle cx="150" cy="92.5" r="4" fill="#1d4ed8"/>
+                            <circle cx="100" cy="150" r="4" fill="#1d4ed8"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic-item bg-white rounded-lg shadow-md overflow-hidden mb-4">
+                <button class="topic-toggle w-full p-5 text-right flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                    <h2 class="text-xl font-bold text-blue-700">2. التوزيع الالكتروني</h2>
+                    <span class="toggle-icon text-blue-700">+</span>
+                </button>
+                <div class="topic-content p-6 border-t border-gray-200">
+                    <p class="mb-4 text-base leading-relaxed">هو وصف لكيفية توزع إلكترونات الذرة على مختلف مستويات الطاقة. هناك نموذجان رئيسيان لوصف ذلك:</p>
+                    
+                    <h3 class="font-bold text-lg mb-4 mt-6 text-blue-800">أ) التوزيع البسيط (نموذج بور K, L, M)</h3>
+                    <p class="mb-4 text-base">يستخدم هذا النموذج لوصف الذرات الـ 18 (أو الـ 20) الأولى. يفترض أن الإلكترونات تتوزع على طبقات (مدارات) رئيسية حول النواة:</p>
+                    <ul class="list-disc list-inside space-y-2 mr-6 mb-4 text-base">
+                        <li>الطبقة الأولى <b>(K)</b>: تتسع لـ 2 إلكترون كحد أقصى.</li>
+                        <li>الطبقة الثانية <b>(L)</b>: تتسع لـ 8 إلكترونات كحد أقصى.</li>
+                        <li>الطبقة الثالثة <b>(M)</b>: تتسع لـ 18 إلكترون (لكنها تُملأ بـ 8 أولاً قبل الانتقال للطبقة N، وفقاً لقواعد الاستقرار).</li>
+                    </ul>
+                    
+                    <h4 class="font-bold text-lg mb-4 mt-8 text-blue-700">تجربة سريعة: مستكشف التوزيع (K L M)</h4>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <label for="klm-slider" class="block text-base font-bold mb-2">اختر العدد الذري (Z) من 1 إلى 18:</label>
+                        <div class="flex items-center space-x-4 space-x-reverse mb-4">
+                            <input type="range" id="klm-slider" min="1" max="18" value="1" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                            <span id="klm-z-value" class="font-bold text-lg text-blue-700 w-12 text-center" dir="ltr">Z=1</span>
+                        </div>
+                        <div id="klm-result-element" class="text-xl font-bold text-center text-blue-800 mb-4"></div>
+                        
+                        <div class="flex justify-start text-center space-x-4 md:space-x-8" dir="ltr">
+                            <div>
+                                <div id="klm-k" class="w-20 h-20 rounded-full border-4 border-blue-500 flex items-center justify-center text-2xl font-bold bg-blue-50"></div>
+                                <p class="mt-2 text-base font-bold">K</p>
+                            </div>
+                            <div>
+                                <div id="klm-l" class="w-20 h-20 rounded-full border-4 border-green-500 flex items-center justify-center text-2xl font-bold bg-green-50"></div>
+                                <p class="mt-2 text-base font-bold">L</p>
+                            </div>
+                            <div>
+                                <div id="klm-m" class="w-20 h-20 rounded-full border-4 border-red-500 flex items-center justify-center text-2xl font-bold bg-red-50"></div>
+                                <p class="mt-2 text-base font-bold">M</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="font-bold text-lg mb-4 mt-10 pt-6 border-t text-blue-800">ب) التوزيع الكمي (s, p, d, f)</h3>
+                    <p class="mb-4 text-base leading-relaxed">هو النموذج الأدق ويصف توزع الإلكترونات على المستويات الفرعية (s, p, d, f) بناءً على ثلاث قواعد:</p>
+                    <ul class="list-decimal list-inside space-y-3 mr-6 mb-4 text-base">
+                        <li><b>مبدأ أوفباو (Aufbau):</b> تُملأ المدارات ذات الطاقة الأقل أولاً (1s, 2s, 2p, 3s, 3p, 4s, 3d...).</li>
+                        <li><b>مبدأ باولي للاستبعاد:</b> كل مدار (غرفة) لا يتسع لأكثر من إلكترونين متعاكسين في الاتجاه (Spin).</li>
+                        <li><b>قاعدة هوند:</b> تُملأ المدارات الفرعية المتساوية في الطاقة (مثل p) فرادى أولاً قبل أن تزدوج.</li>
+                    </ul>
+
+                    <h4 class="font-bold text-lg mb-4 mt-8 text-blue-700">تجربة سريعة: مولد التوزيع (1s² 2s²...)</h4>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="mb-4">أدخل العدد الذري (Z) للحصول على التوزيع الالكتروني الكمي.</p>
+                        <div class="flex items-center space-x-4 space-x-reverse">
+                            <label for="atomic-number" class="text-base">العدد الذري (Z):</label>
+                            <input type="number" id="atomic-number-input" min="1" max="118" class="border-2 border-blue-300 rounded-lg p-2 w-24 text-base text-center" value="1">
+                            <button id="generate-config-btn" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-bold hover:bg-blue-700 transition-all text-sm">
+                                عرض التوزيع
+                            </button>
+                        </div>
+                        <div id="config-result" class="mt-4 p-4 bg-blue-50 border-2 border-blue-200 rounded-lg text-lg font-mono text-center text-blue-800"
+                             dir="ltr" style="min-height: 60px;">
+                            </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="topic-item bg-white rounded-lg shadow-md overflow-hidden mb-4">
+                <button class="topic-toggle w-full p-5 text-right flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                    <h2 class="text-xl font-bold text-blue-700">3. الجدول الدوري</h2>
+                    <span class="toggle-icon text-blue-700">+</span>
+                </button>
+                <div class="topic-content p-6 border-t border-gray-200">
+                    <p class="mb-4 text-base leading-relaxed">هو تنظيم منهجي لجميع العناصر الكيميائية المعروفة، مرتبة تصاعدياً حسب العدد الذري (Z). هذا الترتيب يكشف عن دورية (تكرار) في خواص العناصر.</p>
+                    <ul class="list-disc list-inside space-y-3 mr-6 mb-4 text-base">
+                        <li><b>الأعمدة (المجموعات - Groups):</b> العناصر في نفس المجموعة لها نفس عدد إلكترونات التكافؤ (السطحية)، وبالتالي تتشابه خواصها الكيميائية.</li>
+                        <li><b>الأسطر (الأدوار - Periods):</b> العناصر في نفس الدور لها نفس عدد مستويات الطاقة (الطبقات) الرئيسية (n).</li>
+                        <li><b>القطاعات (Blocks):</b> يُقسم الجدول إلى قطاعات (s, p, d, f) بناءً على المدار الفرعي الأخير الذي يُملأ بالإلكترونات.</li>
+                    </ul>
+                    <div class="svg-container bg-white p-4">
+                        <svg viewBox="0 0 180 105" xmlns="http://www.w3.org/2000/svg" aria-label="شكل تخطيطي للجدول الدوري">
+                            <title>شكل تخطيطي للجدول الدوري</title>
+                            <style>
+                                .block-s { fill: #fecaca; stroke: #b91c1c; }
+                                .block-p { fill: #fed7aa; stroke: #c2410c; }
+                                .block-d { fill: #bfdbfe; stroke: #1d4ed8; }
+                                .block-f { fill: #d1fae5; stroke: #047857; }
+                                .block-text { font-size: 10px; font-family: Cairo, sans-serif; text-anchor: middle; }
+                            </style>
+                            <rect x="5" y="5" width="20" height="70" class="block-s" />
+                            <rect x="5" y="5" width="20" height="10" class="block-s" /> 
+                            <rect x="155" y="5" width="10" height="10" class="block-s" />
+                            <text x="15" y="45" class="block-text">s</text>
+                            <rect x="125" y="15" width="40" height="60" class="block-p" />
+                            <text x="145" y="45" class="block-text">p</text>
+                            <rect x="35" y="35" width="80" height="40" class="block-d" />
+                            <text x="75" y="55" class="block-text">d</text>
+                            <rect x="35" y="80" width="110" height="20" class="block-f" />
+                            <text x="90" y="94" class="block-text">f</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic-item bg-white rounded-lg shadow-md overflow-hidden mb-4">
+                <button class="topic-toggle w-full p-5 text-right flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                    <h2 class="text-xl font-bold text-blue-700">4. ميل الذرات (القواعد الثمانية والثنائية)</h2>
+                    <span class="toggle-icon text-blue-700">+</span>
+                </button>
+                <div class="topic-content p-6 border-t border-gray-200">
+                     <p class="mb-4 text-base leading-relaxed">
+                        باستثناء الغازات الخاملة (النبيلة) المستقرة بطبيعتها، تسعى بقية الذرات للوصول إلى حالة أكثر استقراراً (طاقة أقل) عن طريق التفاعل. يتم هذا غالباً عبر الوصول إلى توزيع إلكتروني مشابه لأقرب غاز خامل.
+                    </p>
+                    <ul class="list-disc list-inside space-y-3 mr-6 mb-4 text-base">
+                        <li><b>القاعدة الثمانية (Octet Rule):</b> أغلب الذرات تميل إلى أن تحيط طبقتها السطحية (التكافؤ) بـ 8 إلكترونات (s²p⁶)، إما عن طريق فقدان، أو اكتساب، أو مشاركة الإلكترونات.</li>
+                        <li><b>القاعدة الثنائية (Duet Rule):</b> الذرات الخفيفة جداً (خاصة الهيدروجين H، الليثيوم Li، والبيريليوم Be) تسعى لملء طبقتها السطحية الأولى بإلكترونين فقط (1s²)، لتشبه الهيليوم (He).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-item bg-white rounded-lg shadow-md overflow-hidden mb-4">
+                <button class="topic-toggle w-full p-5 text-right flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                    <h2 class="text-xl font-bold text-blue-700">5. تمثيل لويس للذرات</h2>
+                    <span class="toggle-icon text-blue-700">+</span>
+                </button>
+                <div class="topic-content p-6 border-t border-gray-200">
+                    <p class="mb-4 text-base leading-relaxed">هو تمثيل رمزي بسيط يوضح رمز العنصر الكيميائي محاطاً بنقاط تمثل إلكترونات التكافؤ (إلكترونات الطبقة السطحية) فقط. هذه هي الإلكترونات التي تشارك في تكوين الروابط الكيميائية.</p>
+                    <p class="mb-4 text-base"><b>أمثلة على عناصر الدور الثاني:</b></p>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-center border border-gray-300">
+                            <thead class="bg-gray-100">
+                                <tr class="text-sm">
+                                    <th class="p-3 border">المجموعة 1</th>
+                                    <th class="p-3 border">المجموعة 2</th>
+                                    <th class="p-3 border">المجموعة 13</th>
+                                    <th class="p-3 border">المجموعة 14</th>
+                                    <th class="p-3 border">المجموعة 15</th>
+                                    <th class="p-3 border">المجموعة 16</th>
+                                    <th class="p-3 border">المجموعة 17</th>
+                                    <th class="p-3 border">المجموعة 18</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="text-xl font-mono" dir="ltr">
+                                    <td class="p-3 border">Li•</td>
+                                    <td class="p-3 border">•Be•</td>
+                                    <td class="p-3 border" style="letter-spacing: 0.3em;">•B•</td>
+                                    <td class="p-3 border" style="letter-spacing: 0.3em;">•C•</td>
+                                    <td class="p-3 border" style="letter-spacing: 0.3em;">•N:</td>
+                                    <td class="p-3 border" style="letter-spacing: 0.3em;">:O:</td>
+                                    <td class="p-3 border" style="letter-spacing: 0.3em;">:F:</td>
+                                    <td class="p-3 border" style="letter-spacing: 0.3em;">:Ne:</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic-item bg-white rounded-lg shadow-md overflow-hidden mb-4">
+                 <button class="topic-toggle w-full p-5 text-right flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                    <h2 class="text-xl font-bold text-blue-700">6. تمثيل لويس للجزيئات</h2>
+                    <span class="toggle-icon text-blue-700">+</span>
+                </button>
+                <div class="topic-content p-6 border-t border-gray-200">
+                    <p class="mb-4 text-base leading-relaxed">يُظهر تمثيل لويس للجزيئات كيفية ترابط الذرات ومشاركة الإلكترونات لتحقيق القاعدة الثمانية (أو الثنائية). يوضح هذا التمثيل الأزواج الإلكترونية الرابطة (التي تكون الروابط) والأزواج غير الرابطة (الحرة).</p>
+                    <h4 class="text-lg font-bold mt-6 mb-3 text-blue-800">خطوات رسم تمثيل لويس (مثال: CO₂):</h4>
+                    <ol class="list-decimal list-inside space-y-3 mr-6 mb-4 text-base" dir="ltr">
+                        <li class="text-right" dir="rtl"><b>حساب إجمالي إلكترونات التكافؤ:</b> C (4e⁻) + 2 * O (6e⁻) = 16 إلكترون تكافؤ.</li>
+                        <li class="text-right" dir="rtl"><b>تحديد الذرة المركزية:</b> C (الأقل كهرسلبية). ونرسم: O - C - O.</li>
+                        <li class="text-right" dir="rtl"><b>توزيع الإلكترونات (الروابط):</b> نستخدم 4e⁻ للرابطتين. (متبقي 12e⁻).</li>
+                        <li class="text-right" dir="rtl"><b>تحقيق الثمانيات للذرات الطرفية:</b> نوزع الـ 12e⁻ المتبقية على ذرتي الأكسجين (6 لكل واحدة).</li>
+                        <li class="text-right" dir="rtl"><b>تحقيق الثمانية للذرة المركزية:</b> الكربون C لديه 4e⁻ فقط.</li>
+                        <li class="text-right" dir="rtl"><b>تكوين روابط متعددة:</b> نأخذ زوجاً حراً من كل ذرة أكسجين ونحوله إلى رابطة إضافية مع الكربون.</li>
+                        <li class="text-right" dir="rtl"><b>التحقق النهائي:</b> O=C=O (مع زوجين حرين على كل O). كل الذرات تحقق الثمانية.</li>
+                    </ol>
+                    <div class="text-2xl font-mono text-center p-4 bg-gray-100 rounded" dir="ltr">
+                        :Ö = C = Ö:
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic-item bg-white rounded-lg shadow-md overflow-hidden mb-4">
+                <button class="topic-toggle w-full p-5 text-right flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                    <h2 class="text-xl font-bold text-blue-700">7. الصيغة المنشورة (المفصلة)</h2>
+                    <span class="toggle-icon text-blue-700">+</span>
+                </button>
+                <div class="topic-content p-6 border-t border-gray-200">
+                    <p class="mb-4 text-base leading-relaxed">هي تمثيل ثنائي الأبعاد يوضح جميع الذرات الموجودة في الجزيء وجميع الروابط التساهمية بينها بشكل صريح.</p>
+                    <h4 class="text-lg font-bold mt-6 mb-3 text-blue-800">أنواع الصيغ (مثال: البوتان C₄H₁₀):</h4>
+                    
+                    <p class="mb-2 text-base"><b>1. الصيغة المفصلة:</b></p>
+                    <div class="text-base font-mono text-center p-4 bg-gray-100 rounded" dir="ltr">
+                   H      H     H     H<br>
+                     |       |      |       |<br>
+               H - C - C - C  - C - H<br>
+                      |       |      |      |. <br>
+                      H   H     H     H
+                    </div>
+
+                    <p class="mt-6 mb-2 text-base"><b>2. الصيغة نصف المفصلة:</b></p>
+                    <div class="text-xl font-mono text-center p-4 bg-gray-100 rounded" dir="ltr">
+                        CH₃ - CH₂ - CH₂ - CH₃
+                    </div>
+                    
+                    <p class="mt-6 mb-2 text-base"><b>3. الصيغة الهيكلية (Skeletal):</b></p>
+                    <div class="svg-container bg-white p-4" style="max-height: 150px;">
+                        <svg viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg" aria-label="الصيغة الهيكلية للبوتان">
+                             <title>الصيغة الهيكلية للبوتان</title>
+                             <path d="M 10 30 L 30 10 L 50 30 L 70 10" stroke="black" stroke-width="2" fill="none" />
+                             <text x="5" y="15" font-size="8px" font-family="Cairo" fill="#555" dir="ltr">(CH₃)</text>
+                             <text x="25" y="8" font-size="8px" font-family="Cairo" fill="#555" dir="ltr">(CH₂)</text>
+                             <text x="45" y="38" font-size="8px" font-family="Cairo" fill="#555" dir="ltr">(CH₂)</text>
+                             <text x="65" y="8" font-size="8px" font-family="Cairo" fill="#555" dir="ltr">(CH₃)</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic-item bg-white rounded-lg shadow-md overflow-hidden mb-4">
+                 <button class="topic-toggle w-full p-5 text-right flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                    <h2 class="text-xl font-bold text-blue-700">8. المتماكبات (Isomers)</h2>
+                    <span class="toggle-icon text-blue-700">+</span>
+                </button>
+                <div class="topic-content p-6 border-t border-gray-200">
+                    <p class="mb-4 text-base leading-relaxed">المتماكبات (أو المصاوغات) هي مركبات كيميائية مختلفة لها **نفس الصيغة الجزيئية الإجمالية**، ولكنها تختلف في **طريقة ارتباط الذرات** أو في **توزعها الفراغي**.</p>
+                    <h4 class="text-lg font-bold mt-6 mb-3 text-blue-800">الأنواع الرئيسية للمتماكبات:</h4>
+                    <ul class="list-disc list-inside space-y-3 mr-6 mb-4 text-base">
+                        <li><b>المتماكبات البنائية (Structural Isomers):</b> تختلف في ترتيب اتصال الذرات.
+                            <ul class="list-circle list-inside space-y-2 mr-8 mt-2" dir="ltr">
+                                <li class="text-right" dir="rtl"><b>متماكبات السلسلة:</b> (C₄H₁₀) البوتان (مستقيم) والأيزوبيوتان (متفرع).</li>
+                                <li class="text-right" dir="rtl"><b>متماكبات الموضع:</b> (C₃H₇OH) بروبان-1-ول (OH طرفي) وبروبان-2-ول (OH وسطي).</li>
+                                <li class="text-right" dir="rtl"><b>متماكبات الزمرة الوظيفية:</b> (C₂H₆O) الإيثانول (كحول CH₃CH₂OH) وثنائي ميثيل إيثر (إيثر CH₃OCH₃).</li>
+                            </ul>
+                        </li>
+                        <li><b>المتماكبات الفراغية (Stereoisomers):</b> لها نفس ترتيب الروابط لكن تختلف في الترتيب الفراغي (3D).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-item bg-white rounded-lg shadow-md overflow-hidden mb-4">
+                <button class="topic-toggle w-full p-5 text-right flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                    <h2 class="text-xl font-bold text-blue-700">9. الرابطة الهيدروجينية</h2>
+                    <span class="toggle-icon text-blue-700">+</span>
+                </button>
+                <div class="topic-content p-6 border-t border-gray-200">
+                    <p class="mb-4 text-base leading-relaxed">
+                        هي أقوى أنواع **القوى بين الجزيئية**. تحدث عندما تقع ذرة هيدروجين (H) مرتبطة تساهمياً بذرة ذات كهرسلبية عالية (N, O, F)، بالقرب من ذرة أخرى (N, O, F) في جزيء مجاور.
+                    </p>
+                    <ul class="list-disc list-inside space-y-3 mr-6 mb-4 text-base">
+                        <li>تصبح الرابطة (مثل O-H) عالية القطبية (δ+H و δ-O).</li>
+                        <li>ينجذب الهيدروجين (δ+) بقوة إلى الزوج الحر على ذرة (O, N, F) في جزيء آخر.</li>
+                    </ul>
+                    <p class="mb-4 text-base leading-relaxed">
+                        هذه الرابطة مسؤولة عن الخواص الفريدة للماء (ارتفاع درجة غليانه، تمدده عند التجمد) وهي أساسية في بنية الـ DNA والبروتينات.
+                    </p>
+                    <div class="svg-container bg-white p-4">
+                        <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" aria-label="رابطة هيدروجينية بين جزيئي ماء">
+                            <title>رابطة هيدروجينية بين جزيئي ماء</title>
+                            <style>
+                                .atom-o { fill: #ef4444; }
+                                .atom-h { fill: #f1f5f9; stroke: #64748b; }
+                                .text-label { font-size: 10px; font-family: Cairo, sans-serif; }
+                            </style>
+                            <circle cx="50" cy="50" r="15" class="atom-o" />
+                            <circle cx="35" cy="35" r="8" class="atom-h" />
+                            <line x1="47" y1="47" x2="37" y2="37" stroke="#333" stroke-width="2" />
+                            <circle cx="65" cy="35" r="8" class="atom-h" />
+                            <line x1="53" y1="47" x2="63" y2="37" stroke="#333" stroke-width="2" />
+                            <text x="45" y="55" class="text-label" dir="ltr">O (δ-)</text>
+                            <text x="66" y="32" class="text-label" dir="ltr">H (δ+)</text>
+                            <circle cx="150" cy="60" r="15" class="atom-o" />
+                            <circle cx="135" cy="45" r="8" class="atom-h" />
+                            <line x1="147" y1="57" x2="137" y2="47" stroke="#333" stroke-width="2" />
+                            <circle cx="165" cy="45" r="8" class="atom-h" />
+                            <line x1="153" y1="57" x2="163" y2="47" stroke="#333" stroke-width="2" />
+                            <text x="145" y="65" class="text-label" dir="ltr">O (δ-)</text>
+                            <line x1="65" y1="35" x2="150" y2="60" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4 4" />
+                            <text x="90" y="40" class="text-label" fill="#3b82f6">رابطة هيدروجينية</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic-item bg-white rounded-lg shadow-md overflow-hidden mb-4">
+                <button class="topic-toggle w-full p-5 text-right flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                    <h2 class="text-xl font-bold text-blue-700">10. تمثيل جليسبي (VSEPR)</h2>
+                    <span class="toggle-icon text-blue-700">+</span>
+                </button>
+                <div class="topic-content p-6 border-t border-gray-200">
+                    <p class="mb-4 text-base leading-relaxed">
+                        نموذج تنافر أزواج إلكترونات التكافؤ (VSEPR) هو نموذج لتوقع الشكل الهندسي الفراغي للجزيئات.
+                    </p>
+                    <p class="mb-4 text-base leading-relaxed">
+                        <b>المبدأ الأساسي:</b> الأزواج الإلكترونية (الرابطة والحرة) حول الذرة المركزية تتنافر وتترتب في الفراغ لتكون أبعد ما يمكن عن بعضها، لتقليل التنافر.
+                    </p>
+
+                    <h3 class="font-bold text-lg mb-4 mt-8 text-blue-700">تجربة سريعة: مستكشف أشكال VSEPR</h3>
+                    <div class="bg-gray-50 p-6 rounded-lg border-2 border-gray-200">
+                        <label for="vsepr-selector" class="block text-lg font-bold mb-4">اختر صيغة VSEPR (A=مركزية, X=مرتبطة, E=زوج حر):</label>
+                        <select id="vsepr-selector" class="w-full p-3 text-base border-2 border-blue-300 rounded-lg" dir="ltr">
+                            <option value="AX2">AX₂ (مثل CO₂)</option>
+                            <option value="AX3">AX₃ (مثل BF₃)</option>
+                            <option value="AX4">AX₄ (مثل CH₄)</option>
+                            <option value="AX2E1">AX₂E₁ (مثل SO₂)</option>
+                            <option value="AX3E1">AX₃E₁ (مثل NH₃)</option>
+                            <option value="AX2E2">AX₂E₂ (مثل H₂O)</option>
+                            <option value="AX5">AX₅ (مثل PCl₅)</option>
+                            <option value="AX6">AX₆ (مثل SF₆)</option>
+                        </select>
+                        
+                        <div id="vsepr-result" class="mt-6 text-center">
+                            <h4 id="vsepr-shape" class="text-xl font-bold text-blue-800"></h4>
+                            <p id="vsepr-angle" class="text-base text-gray-700" dir="ltr"></p>
+                            
+                            <div id="vsepr-svg-container" class="svg-container bg-white p-4">
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic-item bg-white rounded-lg shadow-md overflow-hidden mb-4">
+                <button class="topic-toggle w-full p-5 text-right flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                    <h2 class="text-xl font-bold text-blue-700">11. تمثيل كرام (Cram Representation)</h2>
+                    <span class="toggle-icon text-blue-700">+</span>
+                </button>
+                <div class="topic-content p-6 border-t border-gray-200">
+                    <p class="mb-4 text-base leading-relaxed">
+                        هو طريقة لتمثيل الجزيئات ثلاثية الأبعاد (3D) على ورقة ثنائية الأبعاد (2D).
+                    </p>
+                    <p class="mb-4 text-base leading-relaxed">يستخدم هذا التمثيل ثلاثة أنواع من الخطوط (الروابط) حول ذرة مركزية:</p>
+                    <ul class="list-disc list-inside space-y-3 mr-6 mb-4 text-base">
+                        <li><b>الخط العادي (—):</b> رابطة في مستوى الورقة/الشاشة.</li>
+                        <li><b>المثلث المملوء (◄):</b> رابطة بارزة نحو الأمام (نحو المشاهد).</li>
+                        <li><b>الخط المتقطع (---):</b> رابطة غائرة نحو الخلف (بعيداً عن المشاهد).</li>
+                    </ul>
+                    <p class="mb-4 text-base"><b>مثال (الميثان CH₄) بالشكل رباعي الأوجه:</b></p>
+                    
+                    <div class="svg-container bg-white p-4" style="max-height: 250px;">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="تمثيل كرام لجزيء الميثان">
+                            <title>تمثيل كرام (الميثان CH₄)</title>
+                            <style>
+                                .atom-c { fill: #555; }
+                                .atom-h { fill: #eee; stroke: #555; }
+                                .bond-plane { stroke: #333; stroke-width: 2; }
+                                .bond-front { fill: #333; }
+                                .bond-back { stroke: #333; stroke-width: 2; stroke-dasharray: 4 2; }
+                                .text-label { font-size: 10px; font-family: Cairo, sans-serif; }
+                            </style>
+                            <circle cx="50" cy="50" r="10" class="atom-c" />
+                            <circle cx="50" cy="20" r="8" class="atom-h" />
+                            <circle cx="20" cy="60" r="8" class="atom-h" />
+                            <circle cx="80" cy="60" r="8" class="atom-h" />
+                            <circle cx="50" cy="85" r="8" class="atom-h" />
+                            <text x="48" y="54" class="text-label" fill="white">C</text>
+                            <line x1="50" y1="50" x2="50" y2="20" class="bond-plane" />
+                            <line x1="50" y1="50" x2="20" y2="60" class="bond-plane" />
+                            <polygon points="50,50 75,58 85,62 80,60" class="bond-front" />
+                            <line x1="50" y1="50" x2="50" y2="85" class="bond-back" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic-item bg-white rounded-lg shadow-md overflow-hidden mb-4">
+                 <button class="topic-toggle w-full p-5 text-right flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                    <h2 class="text-xl font-bold text-blue-700">12. تجارب افتراضية (مدمجة)</h2>
+                    <span class="toggle-icon text-blue-700">+</span>
+                </button>
+                <div class="topic-content p-6 border-t border-gray-200">
+                    <p class="mb-4 text-base leading-relaxed">التجارب التفاعلية تساعد على ترسيخ المفاهيم. لقد تم دمج بعض التجارب البسيطة في هذا التطبيق:</p>
+                    <ul class="list-disc list-inside space-y-3 mr-6 mb-4 text-base">
+                        <li>
+                            <b>مستكشف التوزيع (K L M):</b> موجود في <a href="#" onclick="openTopic(event, 1); return false;" class="text-blue-600 hover:underline font-bold">"2. التوزيع الالكتروني"</a>.
+                        </li>
+                        <li>
+                            <b>مولد التوزيع (1s²...):</b> موجود أيضاً في <a href="#" onclick="openTopic(event, 1); return false;" class="text-blue-600 hover:underline font-bold">"2. التوزيع الالكتروني"</a>.
+                        </li>
+                        <li>
+                            <b>مستكشف أشكال VSEPR:</b> موجود في <a href="#" onclick="openTopic(event, 9); return false;" class="text-blue-600 hover:underline font-bold">"10. تمثيل جليسبي (VSEPR)"</a>.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-item bg-white rounded-lg shadow-md overflow-hidden mb-4">
+                <button class="topic-toggle w-full p-5 text-right flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                    <h2 class="text-xl font-bold text-blue-700">13. روابط خارجية لتجارب دقيقة</h2>
+                    <span class="toggle-icon text-blue-700">+</span>
+                </button>
+                <div class="topic-content p-6 border-t border-gray-200">
+                    <p class="mb-4 text-base leading-relaxed">للحصول على تجارب تفاعلية أكثر دقة وتفصيلاً، نوصي بزيارة المواقع التالية الرائدة في مجال المحاكاة التعليمية:</p>
+                    <div class="space-y-6">
+                        <div class="bg-blue-50 p-6 rounded-lg border-2 border-blue-200">
+                            <h3 class="font-bold text-xl mb-3 text-blue-700">PhET Interactive Simulations</h3>
+                            <a href="https://phet.colorado.edu/ar/simulations/category/chemistry" target="_blank" rel="noopener noreferrer" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition-all text-sm">
+                                زيارة PhET (قسم الكيمياء)
+                            </a>
+                        </div>
+                        <div class="bg-green-50 p-6 rounded-lg border-2 border-green-200">
+                            <h3 class="font-bold text-xl mb-3 text-green-700">MolView</h3>
+                            <a href="https://molview.org/" target="_blank" rel="noopener noreferrer" class="inline-block bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-700 transition-all text-sm">
+                                زيارة MolView
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="bg-gray-800 text-gray-200 p-8 mt-12 text-center">
+            <h3 class="text-xl font-bold mb-6">المطور (الأستاذ المشرف)</h3>
+            <p class="text-base mb-2 font-bold">الأستاذ محمد قادري</p>
+            <p class="text-sm mb-2">أستاذ مادة الفيزياء</p>
+            <p class="text-sm mb-2">ثانوية محمد الأخضر فيلالي</p>
+            <p class="text-sm mb-6">ولاية غرداية - الجزائر</p>
+            <div class="flex flex-col md:flex-row justify-center items-center md:space-x-6 md:space-x-reverse text-sm space-y-2 md:space-y-0">
+                <span>Email: <a href="mailto:kadri68@gmail.com" class="text-blue-300 hover:text-blue-200" dir="ltr">kadri68@gmail.com</a></span>
+                <span>Phone: <a href="tel:0662692987" class="text-blue-300 hover:text-blue-200" dir="ltr">0662692987</a></span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const allToggles = document.querySelectorAll('.topic-toggle');
+            
+            allToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const content = toggle.nextElementSibling;
+                    const icon = toggle.querySelector('.toggle-icon');
+                    const isActive = toggle.classList.toggle('active');
+
+                    if (isActive) {
+                        content.style.display = 'block';
+                        icon.textContent = '−';
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        content.style.display = 'none';
+                        icon.textContent = '+';
+                        icon.style.transform = 'rotate(0deg)';
+                    }
+                });
+            });
+
+            window.openTopic = (event, index) => {
+                event.preventDefault(); 
+                const targetToggle = allToggles[index];
+                if (targetToggle && !targetToggle.classList.contains('active')) {
+                    targetToggle.click(); 
+                }
+                targetToggle.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            };
+
+            // --- التفاعلات الخاصة ---
+
+            // 1. مولد التوزيع (1s² 2s²...)
+            const generateConfigBtn = document.getElementById('generate-config-btn');
+            const atomicNumberInput = document.getElementById('atomic-number-input');
+            const configResult = document.getElementById('config-result');
+
+            generateConfigBtn.addEventListener('click', () => {
+                const z = parseInt(atomicNumberInput.value);
+                generateElectronConfiguration(z);
+            });
+            
+            function generateElectronConfiguration(z) {
+                if (z < 1 || z > 118 || isNaN(z)) {
+                    configResult.innerHTML = "عدد ذري غير صالح.";
+                    return;
+                }
+                const orbitals = [
+                    { name: '1s', capacity: 2 }, { name: '2s', capacity: 2 }, { name: '2p', capacity: 6 },
+                    { name: '3s', capacity: 2 }, { name: '3p', capacity: 6 }, { name: '4s', capacity: 2 },
+                    { name: '3d', capacity: 10}, { name: '4p', capacity: 6 }, { name: '5s', capacity: 2 },
+                    { name: '4d', capacity: 10}, { name: '5p', capacity: 6 }, { name: '6s', capacity: 2 },
+                    { name: '4f', capacity: 14}, { name: '5d', capacity: 10}, { name: '6p', capacity: 6 },
+                    { name: '7s', capacity: 2 }, { name: '5f', capacity: 14}, { name: '6d', capacity: 10},
+                    { name: '7p', capacity: 6 }
+                ];
+                let electronsRemaining = z;
+                let configuration = [];
+                for (const orbital of orbitals) {
+                    if (electronsRemaining <= 0) break;
+                    let electronsInOrbital = Math.min(electronsRemaining, orbital.capacity);
+                    configuration.push(`${orbital.name}<sup>${electronsInOrbital}</sup>`);
+                    electronsRemaining -= electronsInOrbital;
+                }
+                configResult.innerHTML = configuration.join(' ');
+            }
+             generateConfigBtn.click(); 
+
+            // 2. مستكشف VSEPR (مع SVG)
+            const vseprSelector = document.getElementById('vsepr-selector');
+            const vseprShape = document.getElementById('vsepr-shape');
+            const vseprAngle = document.getElementById('vsepr-angle');
+            const vseprSvgContainer = document.getElementById('vsepr-svg-container');
+
+            const vseprSvgs = {
+                'AX2': `
+                    <svg viewBox="0 0 100 50" aria-label="شكل خطي">
+                        <line x1="10" y1="25" x2="90" y2="25" stroke="#9ca3af" stroke-width="2"/>
+                        <circle cx="50" cy="25" r="8" fill="#3b82f6"/>
+                        <circle cx="10" cy="25" r="6" fill="#9ca3af"/>
+                        <circle cx="90" cy="25" r="6" fill="#9ca3af"/>
+                    </svg>`,
+                'AX3': `
+                    <svg viewBox="0 0 100 100" aria-label="شكل مثلثي مستوي">
+                        <line x1="50" y1="50" x2="50" y2="15" stroke="#9ca3af" stroke-width="2"/>
+                        <line x1="50" y1="50" x2="80" y2="70" stroke="#9ca3af" stroke-width="2"/>
+                        <line x1="50" y1="50" x2="20" y2="70" stroke="#9ca3af" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="8" fill="#3b82f6"/>
+                        <circle cx="50" cy="15" r="6" fill="#9ca3af"/>
+                        <circle cx="80" cy="70" r="6" fill="#9ca3af"/>
+                        <circle cx="20" cy="70" r="6" fill="#9ca3af"/>
+                    </svg>`,
+                'AX4': `
+                    <svg viewBox="0 0 100 100" aria-label="شكل رباعي الأوجه">
+                        <line x1="50" y1="45" x2="50" y2="15" stroke="#9ca3af" stroke-width="2"/>
+                        <line x1="50" y1="45" x2="20" y2="70" stroke="#9ca3af" stroke-width="2"/>
+                        <polygon points="50,45 80,70 75,75" fill="#9ca3af"/>
+                        <line x1="50" y1="45" x2="40" y2="85" stroke="#9ca3af" stroke-width="2" stroke-dasharray="3 3"/>
+                        <circle cx="50" cy="45" r="8" fill="#3b82f6"/>
+                        <circle cx="50" cy="15" r="6" fill="#9ca3af"/>
+                        <circle cx="20" cy="70" r="6" fill="#9ca3af"/>
+                        <circle cx="80" cy="70" r="6" fill="#9ca3af"/>
+                        <circle cx="40" cy="85" r="6" fill="#9ca3af"/>
+                    </svg>`,
+                'AX2E1': `
+                    <svg viewBox="0 0 100 100" aria-label="شكل منحني (AX2E1)">
+                        <ellipse cx="50" cy="25" rx="12" ry="8" fill="#fcd34d" opacity="0.7"/>
+                        <line x1="50" y1="50" x2="80" y2="70" stroke="#9ca3af" stroke-width="2"/>
+                        <line x1="50" y1="50" x2="20" y2="70" stroke="#9ca3af" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="8" fill="#3b82f6"/>
+                        <circle cx="80" cy="70" r="6" fill="#9ca3af"/>
+                        <circle cx="20" cy="70" r="6" fill="#9ca3af"/>
+                    </svg>`,
+                'AX3E1': `
+                    <svg viewBox="0 0 100 100" aria-label="شكل هرمي مثلثي">
+                        <ellipse cx="50" cy="20" rx="12" ry="8" fill="#fcd34d" opacity="0.7"/>
+                        <line x1="50" y1="45" x2="20" y2="70" stroke="#9ca3af" stroke-width="2"/>
+                        <polygon points="50,45 80,70 75,75" fill="#9ca3af"/>
+                        <line x1="50" y1="45" x2="40" y2="85" stroke="#9ca3af" stroke-width="2" stroke-dasharray="3 3"/>
+                        <circle cx="50" cy="45" r="8" fill="#3b82f6"/>
+                        <circle cx="20" cy="70" r="6" fill="#9ca3af"/>
+                        <circle cx="80" cy="70" r="6" fill="#9ca3af"/>
+                        <circle cx="40" cy="85" r="6" fill="#9ca3af"/>
+                    </svg>`,
+                'AX2E2': `
+                    <svg viewBox="0 0 100 100" aria-label="شكل منحني (AX2E2)">
+                        <ellipse cx="40" cy="25" rx="12" ry="8" fill="#fcd34d" opacity="0.7"/>
+                        <ellipse cx="60" cy="25" rx="12" ry="8" fill="#fcd34d" opacity="0.7"/>
+                        <line x1="50" y1="50" x2="80" y2="70" stroke="#9ca3af" stroke-width="2"/>
+                        <line x1="50" y1="50" x2="20" y2="70" stroke="#9ca3af" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="8" fill="#3b82f6"/>
+                        <circle cx="80" cy="70" r="6" fill="#9ca3af"/>
+                        <circle cx="20" cy="70" r="6" fill="#9ca3af"/>
+                    </svg>`,
+                'AX5': `
+                    <svg viewBox="0 0 100 100" aria-label="شكل ثنائي الهرم المثلثي">
+                        <line x1="50" y1="50" x2="50" y2="15" stroke="#9ca3af" stroke-width="2"/> 
+                        <line x1="50" y1="50" x2="50" y2="85" stroke="#9ca3af" stroke-width="2"/> 
+                        <line x1="50" y1="50" x2="10" y2="50" stroke="#9ca3af" stroke-width="2"/> 
+                        <polygon points="50,50 85,50 80,53" fill="#9ca3af"/> 
+                        <line x1="50" y1="50" x2="70" y2="60" stroke="#9ca3af" stroke-width="2" stroke-dasharray="3 3"/> 
+                        <circle cx="50" cy="50" r="8" fill="#3b82f6"/>
+                        <circle cx="50" cy="15" r="6" fill="#9ca3af"/>
+                        <circle cx="50" cy="85" r="6" fill="#9ca3af"/>
+                        <circle cx="10" cy="50" r="6" fill="#9ca3af"/>
+                        <circle cx="85" cy="50" r="6" fill="#9ca3af"/>
+                        <circle cx="70" cy="60" r="6" fill="#9ca3af"/>
+                    </svg>`,
+                'AX6': `
+                    <svg viewBox="0 0 100 100" aria-label="شكل ثماني الأوجه">
+                        <line x1="50" y1="50" x2="50" y2="15" stroke="#9ca3af" stroke-width="2"/>
+                        <line x1="50" y1="50" x2="50" y2="85" stroke="#9ca3af" stroke-width="2"/>
+                        <polygon points="50,50 85,50 80,53" fill="#9ca3af"/>
+                        <line x1="50" y1="50" x2="30" y2="60" stroke="#9ca3af" stroke-width="2" stroke-dasharray="3 3"/>
+                        <line x1="50" y1="50" x2="15" y2="50" stroke="#9ca3af" stroke-width="2"/>
+                        <line x1="50" y1="50" x2="70" y2="40" stroke="#9ca3af" stroke-width="2" stroke-dasharray="3 3"/>
+                        <circle cx="50" cy="50" r="8" fill="#3b82f6"/>
+                        <circle cx="50" cy="15" r="6" fill="#9ca3af"/>
+                        <circle cx="50" cy="85" r="6" fill="#9ca3af"/>
+                        <circle cx="85" cy="50" r="6" fill="#9ca3af"/>
+                        <circle cx="30" cy="60" r="6" fill="#9ca3af"/>
+                        <circle cx="15" cy="50" r="6" fill="#9ca3af"/>
+                        <circle cx="70" cy="40" r="6" fill="#9ca3af"/>
+                    </svg>`,
+            };
+
+            const vseprData = {
+                'AX2': { shape: 'خطي (Linear)', angle: '180°' },
+                'AX3': { shape: 'مثلثي مستوي (Trigonal Planar)', angle: '120°' },
+                'AX4': { shape: 'رباعي الأوجه (Tetrahedral)', angle: '109.5°' },
+                'AX5': { shape: 'ثنائي الهرم المثلثي (Trigonal Bipyramidal)', angle: '90°, 120°' },
+                'AX6': { shape: 'ثماني الأوجه (Octahedral)', angle: '90°' },
+                'AX2E1': { shape: 'منحني (Bent / V-shape)', angle: '< 120°' },
+                'AX3E1': { shape: 'هرمي مثلثي (Trigonal Pyramidal)', angle: '< 109.5° (مثل 107°)' },
+                'AX2E2': { shape: 'منحني (Bent / V-shape)', angle: '< 109.5° (مثل 104.5°)' },
+            };
+
+            function updateVseprDisplay() {
+                const selectedKey = vseprSelector.value;
+                const data = vseprData[selectedKey];
+                const svgCode = vseprSvgs[selectedKey];
+                
+                if (data) {
+                    vseprShape.textContent = data.shape;
+                    vseprAngle.textContent = `الزاوية (الزوايا) التقريبية: ${data.angle}`;
+                    vseprSvgContainer.innerHTML = svgCode || '<p>لا يتوفر رسم لهذا الشكل</p>';
+                }
+            }
+            vseprSelector.addEventListener('change', updateVseprDisplay);
+            updateVseprDisplay(); 
+
+            // 3. مستكشف (K L M)
+            const klmSlider = document.getElementById('klm-slider');
+            const klmZValue = document.getElementById('klm-z-value');
+            const klmResultElement = document.getElementById('klm-result-element');
+            const klmK = document.getElementById('klm-k');
+            const klmL = document.getElementById('klm-l');
+            const klmM = document.getElementById('klm-m');
+
+            const elements18 = [
+                {z: 1, sym: 'H', name: 'هيدروجين'}, {z: 2, sym: 'He', name: 'هيليوم'},
+                {z: 3, sym: 'Li', name: 'ليثيوم'}, {z: 4, sym: 'Be', name: 'بيريليوم'},
+                {z: 5, sym: 'B', name: 'بورون'}, {z: 6, sym: 'C', name: 'كربون'},
+                {z: 7, sym: 'N', name: 'نيتروجين'}, {z: 8, sym: 'O', name: 'أكسجين'},
+                {z: 9, sym: 'F', name: 'فلور'}, {z: 10, sym: 'Ne', name: 'نيون'},
+                {z: 11, sym: 'Na', name: 'صوديوم'}, {z: 12, sym: 'Mg', name: 'مغنيسيوم'},
+                {z: 13, sym: 'Al', name: 'ألومنيوم'}, {z: 14, sym: 'Si', name: 'سيليكون'},
+                {z: 15, sym: 'P', name: 'فوسفور'}, {z: 16, sym: 'S', name: 'كبريت'},
+                {z: 17, sym: 'Cl', name: 'كلور'}, {z: 18, sym: 'Ar', name: 'أرغون'},
+            ];
+
+            function updateKLMDisplay() {
+                const z = parseInt(klmSlider.value);
+                klmZValue.textContent = `Z=${z}`;
+
+                const element = elements18[z - 1];
+                klmResultElement.textContent = `${element.name} (${element.sym})`;
+
+                let zRemaining = z;
+                
+                let k = Math.min(zRemaining, 2);
+                zRemaining -= k;
+                
+                let l = Math.min(zRemaining, 8);
+                zRemaining -= l;
+                
+                let m = zRemaining;
+
+                klmK.textContent = k;
+                klmL.textContent = l;
+                klmM.textContent = m;
+            }
+
+            klmSlider.addEventListener('input', updateKLMDisplay);
+            updateKLMDisplay(); 
+
+        });
+    </script>
+
+</body>
+</html>

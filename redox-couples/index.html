@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Chemistry App - التطبيق الكيميائي المتقدم</title>
+    <!-- ربط ملف الأنماط CSS الخارجي -->
+    <link rel="stylesheet" href="style.css">
+    <!-- ربط مكتبة Font Awesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="ar">
+    <div class="container">
+        <header>
+            <div class="header-controls">
+                <button class="lang-btn active" data-lang="ar">
+                    <i class="fas fa-language"></i> العربية
+                </button>
+                <button class="lang-btn" data-lang="fr">
+                    <i class="fas fa-language"></i> Français
+                </button>
+                <button class="lang-btn" data-lang="en">
+                    <i class="fas fa-language"></i> English
+                </button>
+                <button class="help-btn" id="helpBtn">
+                    <i class="fas fa-question-circle"></i> <span id="help-label">المساعدة</span>
+                </button>
+            </div>
+            
+            <h1><i class="fas fa-flask"></i> <span id="app-title">التطبيق الكيميائي المتقدم</span></h1>
+            <p id="app-description">ابحث في قاعدة بيانات تحتوي على أكثر من 60 ثنائية أكسدة-إرجاع و30 حمض وقاعدة مع تفاصيلها الكيميائية الكاملة</p>
+        </header>
+        
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="all">
+                <i class="fas fa-layer-group"></i> <span class="tab-label">الكل</span>
+            </button>
+            <button class="tab-btn" data-tab="redox">
+                <i class="fas fa-bolt"></i> <span class="tab-label">الأكسدة والإرجاع</span>
+            </button>
+            <button class="tab-btn" data-tab="acid-base">
+                <i class="fas fa-vial"></i> <span class="tab-label">الأحماض والقواعد</span>
+            </button>
+        </div>
+        
+        <div class="search-section">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-box" id="searchInput" placeholder="ابحث باسم الثنائية أو الحمض أو القاعدة أو أحد العناصر...">
+            </div>
+            <button class="show-all-btn" id="showAllBtn">
+                <i class="fas fa-list-alt"></i> <span id="show-all-label">عرض الكل</span>
+            </button>
+        </div>
+        
+        <div class="results-container" id="resultsContainer">
+            <!-- النتائج أو رسالة التعليمات الأولية ستعرض هنا -->
+        </div>
+        
+        <div class="footer">
+            <p id="footer-text">تم تطوير هذا التطبيق لتقديم معلومات كيميائية دقيقة - جميع البيانات قابلة للتحديث والتوسيع</p>
+            <button class="developer-btn" id="developerBtn">
+                <i class="fas fa-user-tie"></i> <span id="developer-label">معلومات المطور</span>
+            </button>
+            <p>© 2023 <span id="copyright-text">التطبيق الكيميائي المتقدم</span></p>
+        </div>
+    </div>
+
+    <!-- نافذة معلومات المطور المنبثقة (Modal) -->
+    <div class="modal-overlay" id="developerModal">
+        <div class="modal-content">
+            <button class="modal-close-btn" data-modal="developerModal">&times;</button>
+            <h3><span id="modal-dev-info-title">معلومات المطور</span></h3>
+            <p><strong id="modal-dev-name-label">المطور:</strong> الأستاذ محمد قادري</p>
+            <p><strong id="modal-dev-job-label">الوظيفة:</strong> أستاذ بثانوية محمد الأخضر فيلالي، ولاية غرداية، الجزائر</p>
+            <p><strong id="modal-dev-subject-label">التخصص:</strong> مدرس مادة الفيزياء</p>
+            <p><strong id="modal-dev-contact-label">الاتصال:</strong></p>
+            <div class="contact-info">
+                <i class="fas fa-envelope"></i>
+                <span id="modal-dev-email-label">البريد الإلكتروني: <a href="mailto:kadri68@gmail.com" style="color: #3498db;">kadri68@gmail.com</a></span>
+            </div>
+            <div class="contact-info">
+                <i class="fas fa-phone"></i>
+                <span id="modal-dev-phone-label">الهاتف: <a href="tel:0662692987" style="color: #3498db;">0662692987</a></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة المساعدة المنبثقة (Modal) -->
+    <div class="modal-overlay" id="helpModal">
+        <div class="modal-content">
+            <button class="modal-close-btn" data-modal="helpModal">&times;</button>
+            <h3><span id="modal-help-info-title">خدمات التطبيق</span></h3>
+            <p id="help-intro-text">يقدم هذا التطبيق معلومات مفصلة عن ثنائيات الأكسدة-الإرجاع والأحماض والقواعد. إليك كيفية استخدامه:</p>
+            <ul>
+                <li id="help-search-text">**البحث:** استخدم حقل البحث العلوي للعثور على المواد الكيميائية بالاسم أو الرمز.</li>
+                <li id="help-tabs-text">**التصفية بالتبويبات:** استخدم الأزرار "الكل"، "الأكسدة والإرجاع"، "الأحماض والقواعد" لتصفية النتائج حسب النوع.</li>
+                <li id="help-show-all-text">**عرض الكل:** انقر على زر "عرض الكل" لعرض جميع المواد في قاعدة البيانات.</li>
+                <li id="help-direct-search-text">**البحث المباشر:** يمكنك النقر على أي بطاقة نتيجة لملء حقل البحث باسم المادة وعرض تفاصيلها مباشرة.</li>
+                <li id="help-lang-text">**تغيير اللغة:** استخدم أزرار اللغة في الزاوية العلوية لتغيير لغة واجهة التطبيق.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ربط ملف JavaScript الخارجي -->
+    <script src="script.js"></script>
+</body>
+</html>
+

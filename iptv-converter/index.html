@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPTV Link Converter & Checker Pro</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+/* إعدادات الخطوط الصغيرة المناسبة للهواتف */
+*{ margin:0; padding:0; box-sizing:border-box; font-fam9ily:Tahoma, Arial, sans-serif; } ف لاحد في الجزائر في الوقت الحالي في body{ background:#121212; color:white; min-height:100vh; display:flex; justify-content:center; align-items:flex-start; padding:15px; }
+.container{ width:100%; max-width:900px; background:#1b1b1b; border-radius:12px; padding:20px; box-shadow:0 0 20px rgba(0,0,0,0.5); margin-top: 10px; }
+.title{ text-align:center; color:#00ffcc; font-size:18px; margin-bottom:15px; font-weight:bold; }
+.lang-box{ display:flex; justify-content:center; align-items:center; gap:8px; margin-bottom:15px; flex-wrap:wrap; }
+select{ padding:6px; border:none; border-radius:6px; background:#2b2b2b; color:white; font-size:11px; outline:none; }
+
+/* نظام التبويبات */
+.tabs { display: flex; justify-content: center; margin-bottom: 20px; border-bottom: 1px solid #333; flex-wrap: wrap; }
+.tab-btn { background: none; color: #888; border: none; padding: 10px 15px; cursor: pointer; font-size: 13px; font-weight: bold; transition: 0.3s; }
+.tab-btn.active { color: #00ffcc; border-bottom: 2px solid #00ffcc; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+label{ display:block; margin-bottom:6px; font-size:12px; color: #ccc; }
+.input-group { display: flex; gap: 8px; margin-bottom: 12px; }
+.input-group input, .input-group textarea { flex: 1; width: 100%; padding:8px; border:1px solid #333; border-radius:6px; background:#2b2b2b; color:white; font-size:11px; outline:none; }
+.input-group textarea { resize: vertical; min-height: 60px; }
+.input-group textarea.large { min-height: 120px; }
+
+button{ padding:8px 12px; border:none; border-radius:6px; background:#00b894; color:white; font-size:11px; cursor:pointer; transition:0.3s; font-weight:bold; }
+button:hover{ filter: brightness(1.1); transform:scale(1.02); }
+button:disabled { background: #555; cursor: not-allowed; transform: none; color: #999; }
+button.primary { flex: 1; background: #00b894; }
+button.action-btn { background: #0984e3; white-space: nowrap; flex: 0 0 auto; }
+button.danger-btn { background: #d63031; }
+button.outline-btn { background: transparent; border: 1px solid #00ffcc; color: #00ffcc; }
+
+.buttons{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:15px; }
+
+/* شبكة التفاصيل */
+.details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 15px; background: #222; padding: 10px; border-radius: 8px; border: 1px solid #333; }
+.detail-item { display: flex; flex-direction: column; gap: 5px; }
+.detail-item span { color: #00ffcc; font-size: 11px; }
+.detail-input-group { display: flex; gap: 5px; }
+.detail-input-group input { flex: 1; padding: 6px; font-size: 10px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; }
+.detail-input-group button { padding: 6px; font-size: 10px; background: #444; }
+
+/* صندوق المعلومات */
+.info-box { background: #2d3436; border-radius: 8px; padding: 12px; margin-top: 15px; display: none; font-size: 12px; line-height: 1.8; border-right: 3px solid #00ffcc; }
+.info-box.ar-dir { border-left: none; border-right: 3px solid #00ffcc; }
+.info-box.en-dir { border-right: none; border-left: 3px solid #00ffcc; }
+.info-row { display: flex; justify-content: space-between; border-bottom: 1px dashed #444; padding-bottom: 5px; margin-bottom: 5px; }
+.info-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.info-row span.val { color: #00ffcc; font-weight: bold; }
+
+/* مؤشر التحميل */
+.loader { border: 3px solid #333; border-top: 3px solid #00ffcc; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 5px; margin-left: 5px; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* QR و السجل */
+.qr-container { display: flex; flex-direction: column; align-items: center; margin-top: 15px; display: none; background: #fff; padding: 10px; border-radius: 8px; width: max-content; margin-left: auto; margin-right: auto; }
+.history-box { margin-bottom: 15px; }
+.history-box select { width: 100%; padding: 8px; margin-bottom: 5px; }
+
+/* تنسيق قسم المساعدة */
+.help-section { padding: 10px; line-height: 1.8; font-size: 11px; color: #ddd; }
+.help-section h3 { color: #00ffcc; margin-bottom: 10px; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+.help-section h4 { color: #00b894; margin-top: 15px; margin-bottom: 5px; font-size: 12px; }
+.help-section ul { margin-inline-start: 20px; margin-bottom: 10px; }
+.help-section li { margin-bottom: 4px; }
+.help-section strong { color: #fff; }
+
+.footer{ margin-top:20px; text-align:center; color:#999; line-height:1.6; font-size:10px; border-top: 1px solid #333; padding-top: 15px; }
+.message{ text-align:center; margin-top:5px; color:#00ff88; font-size:11px; min-height: 16px; }
+
+@media(max-width:700px){
+    .input-group { flex-direction: column; }
+    button.action-btn { width: 100%; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="title" id="title">محول روابط IPTV الاحترافي</div>
+
+    <div class="lang-box">
+        <label>اللغة / Language :</label>
+        <select id="language" onchange="changeLanguage()">
+            <option value="ar">العربية</option>
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+        </select>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('single')" id="tabSingle">حساب مفرد</button>
+        <button class="tab-btn" onclick="switchTab('batch')" id="tabBatch">مجموعة (تحويل وفحص)</button>
+        <button class="tab-btn" onclick="switchTab('help')" id="tabHelp">مساعدة</button>
+    </div>
+
+    <div id="single-tab" class="tab-content active">
+        
+        <div class="history-box" id="historyContainer" style="display:none;">
+            <label id="historyLabel">الروابط السابقة (سجل):</label>
+            <div class="input-group">
+                <select id="historySelect" onchange="loadFromHistory()"></select>
+                <button class="action-btn danger-btn" onclick="clearHistory()" id="clearHistoryBtn">مسح السجل</button>
+            </div>
+        </div>
+
+        <label id="inputLabel">أدخل الرابط أو بيانات الحساب:</label>
+        <div class="input-group">
+            <textarea id="inputUrl" placeholder="الصق الرابط أو بيانات الحساب (Host, User, Pass) هنا..."></textarea>
+        </div>
+
+        <div class="buttons">
+            <button class="primary" onclick="pasteFromClipboard('inputUrl')" id="pasteBtn">لصق من الذاكرة</button>
+            <button class="outline-btn" onclick="clearAll()" id="clearBtn">تفريغ الحقول</button>
+            <button class="primary" onclick="convertLink()" id="convertBtn">تحويل وجلب البيانات</button>
+        </div>
+
+        <div class="details-grid" id="detailsGrid" style="display:none;">
+            <div class="detail-item">
+                <span id="lblHost">السيرفر (Host):</span>
+                <div class="detail-input-group">
+                    <input type="text" id="outHost" readonly>
+                    <button onclick="copyResult('outHost')" id="btnCopyHost">نسخ</button>
+                </div>
+            </div>
+            <div class="detail-item">
+                <span id="lblUser">المستخدم (User):</span>
+                <div class="detail-input-group">
+                    <input type="text" id="outUser" readonly>
+                    <button onclick="copyResult('outUser')" id="btnCopyUser">نسخ</button>
+                </div>
+            </div>
+            <div class="detail-item">
+                <span id="lblPass">كلمة المرور (Pass):</span>
+                <div class="detail-input-group">
+                    <input type="text" id="outPass" readonly>
+                    <button onclick="copyResult('outPass')" id="btnCopyPass">نسخ</button>
+                </div>
+            </div>
+        </div>
+
+        <label id="m3uLabel">رابط M3U (قائمة القنوات):</label>
+        <div class="input-group">
+            <input type="text" id="resultM3u" readonly style="color:#00ff88; background:#111;">
+            <button class="action-btn" onclick="copyResult('resultM3u')" id="copyM3uBtn">نسخ</button>
+            <button class="action-btn outline-btn" onclick="downloadM3u()" id="downloadM3uBtn">تحميل</button>
+        </div>
+
+        <label id="apiLabel">رابط Player API (تطبيقات الاكستريم):</label>
+        <div class="input-group">
+            <input type="text" id="resultApi" readonly style="color:#00ff88; background:#111;">
+            <button class="action-btn" onclick="copyResult('resultApi')" id="copyApiBtn">نسخ</button>
+        </div>
+
+        <div class="info-box ar-dir" id="accountInfo">
+            <div class="info-row"><span id="txtStatus">حالة الحساب:</span> <span id="statusVal" class="val">...</span></div>
+            <div class="info-row"><span id="txtExpiry">تاريخ الانتهاء:</span> <span id="expiryVal" class="val">...</span></div>
+            <div class="info-row"><span id="txtActive">المتصلين حالياً:</span> <span id="activeVal" class="val">...</span></div>
+            <div class="info-row"><span id="txtMax">الحد الأقصى للاتصالات:</span> <span id="maxVal" class="val">...</span></div>
+        </div>
+
+        <div class="qr-container" id="qrcodeBox">
+            <div id="qrcode"></div>
+            <span style="color:#333; font-size:10px; margin-top:5px; font-weight:bold;" id="qrText">امسح الكود بالكاميرا</span>
+        </div>
+    </div>
+
+    <div id="batch-tab" class="tab-content">
+        <label id="lblUpload">اختر ملف (txt, m3u) أو انسخ مجموعة روابط هنا:</label>
+        <div class="input-group">
+            <input type="file" id="fileInput" accept=".txt,.m3u,.m3u8" onchange="handleFileUpload(event)">
+        </div>
+        <div class="input-group">
+            <textarea id="batchInput" class="large" placeholder="الصق الروابط أو الحسابات هنا..."></textarea>
+        </div>
+        
+        <div class="buttons">
+            <button class="outline-btn" onclick="pasteFromClipboard('batchInput')" id="pasteBatchBtn">لصق من الذاكرة</button>
+            <button class="primary" onclick="convertBatchOnly()" id="btnConvertBatch">1. استخراج وتحويل</button>
+            <button class="action-btn" onclick="checkBatchLinks()" id="btnCheckBatch">2. فحص الحسابات</button>
+            <button class="danger-btn" onclick="clearBatch()" id="btnClearBatch">تفريغ</button>
+        </div>
+
+        <label id="lblBatchResult">النتيجة والروابط المستخرجة (معلومات الفحص المباشرة):</label>
+        <div class="input-group">
+            <textarea id="batchOutput" class="large" style="color:#00ff88; background:#111;"></textarea>
+        </div>
+        <div class="buttons">
+            <button class="action-btn" onclick="copyResult('batchOutput')" id="btnCopyBatch">نسخ الكل</button>
+            <button class="action-btn outline-btn" onclick="downloadBatchFile()" id="btnDownBatch">تحميل النتيجة (TXT)</button>
+        </div>
+    </div>
+
+    <div id="help-tab" class="tab-content help-section">
+        </div>
+
+    <div class="message" id="message"></div>
+
+    <div class="footer">
+        الأستاذ محمد قادري<br>
+        أستاذ مادة الفيزياء<br>
+        ثانوية محمد الأخضر فيلالي<br>
+        ولاية غرداية - الجزائر<br>
+        Email: kadri68@gmail.com<br>
+        Phone: 0662692987
+    </div>
+</div>
+
+<script>
+// --- التراجم الشاملة ---
+const translations = {
+    ar: {
+        title: "محول روابط IPTV الاحترافي",
+        tabSingle: "حساب مفرد", tabBatch: "مجموعة (تحويل وفحص)", tabHelp: "مساعدة",
+        input: "أدخل الرابط أو بيانات الحساب:", paste: "لصق من الذاكرة", clear: "تفريغ الحقول", convert: "تحويل وجلب البيانات",
+        lblHost: "السيرفر (Host):", lblUser: "المستخدم (User):", lblPass: "كلمة المرور (Pass):",
+        m3u: "رابط M3U (قائمة القنوات):", api: "رابط Player API (تطبيقات الاكستريم):",
+        copy: "نسخ", download: "تحميل",
+        txtStatus: "الحالة:", txtExpiry: "تاريخ الانتهاء:", txtActive: "الاتصالات:", txtMax: "الحد الأقصى:",
+        qrText: "امسح الكود بالكاميرا",
+        lblUpload: "اختر ملف (txt, m3u) أو انسخ مجموعة روابط هنا:", 
+        btnConvertBatch: "1. استخراج وتحويل", btnCheckBatch: "2. فحص الحسابات", btnClearBatch: "تفريغ",
+        lblBatchResult: "النتيجة والروابط المستخرجة (معلومات الفحص المباشرة):", btnCopyBatch: "نسخ الكل", btnDownBatch: "تحميل النتيجة (TXT)",
+        historyLabel: "الروابط السابقة (سجل):", clearHistoryBtn: "مسح السجل",
+        copied: "تم النسخ بنجاح!", empty: "الرجاء إدخال أو استخراج بيانات أولاً", error: "غير صالح أو ينقصه بيانات", corsMsg: "تعذر الجلب (حماية السيرفر)", active: "فعال", expired: "منتهي", fetching: "جاري الفحص...", unlimited: "غير محدود", pasteBatchBtn: "لصق من الذاكرة", btnCopyHost: "نسخ", btnCopyUser: "نسخ", btnCopyPass: "نسخ", copyM3uBtn: "نسخ", downloadM3uBtn: "تحميل", copyApiBtn: "نسخ", successBatchMsg: "تم انتهاء الفحص بنجاح", accountStr: "حساب",
+        helpContent: `
+        <h3>📖 دليل الاستخدام الشامل للتطبيق</h3>
+        <p>هذا التطبيق هو أداة ذكية ومتقدمة صُممت خصيصاً لمعالجة، تحويل، وفحص روابط وحسابات IPTV بمرونة تامة وبضغطة زر.</p>
+        <h4>1️⃣ قسم "حساب مفرد" (المعالجة الذكية)</h4>
+        <ul>
+            <li><strong>الاستخراج الذكي:</strong> يمكنك لصق الرابط بشكله التقليدي، أو مبعثراً، وسيتم التعرف عليه تلقائياً.</li>
+            <li><strong>فحص حالة الحساب:</strong> يتصل التطبيق بسيرفر الحساب ليجلب لك حالة الحساب وتاريخ الانتهاء.</li>
+        </ul>
+        <h4>2️⃣ قسم "مجموعة (تحويل وفحص)"</h4>
+        <ul>
+            <li><strong>الفصل بين العمليات:</strong> اضغط "استخراج وتحويل" أولاً لترتيب الروابط، ثم اضغط "فحص الحسابات" لمعرفة حالتها سطراً بسطر.</li>
+            <li><strong>المتابعة المباشرة:</strong> يظهر لك التطبيق حالة السيرفر مباشرة تحت كل حساب أثناء الفحص.</li>
+        </ul>`
+    },
+    en: {
+        title: "IPTV Link Converter Pro",
+        tabSingle: "Single Account", tabBatch: "Batch (Convert & Check)", tabHelp: "Help & Guide",
+        input: "Enter URL or Account details:", paste: "Paste", clear: "Clear All", convert: "Convert & Check",
+        lblHost: "Host URL:", lblUser: "Username:", lblPass: "Password:",
+        m3u: "M3U Link (Channels):", api: "Player API Link:",
+        copy: "Copy", download: "Download",
+        txtStatus: "Status:", txtExpiry: "Expiry:", txtActive: "Conn:", txtMax: "Max:",
+        qrText: "Scan with Camera",
+        lblUpload: "Select file (txt, m3u) or paste links:", 
+        btnConvertBatch: "1. Extract & Convert", btnCheckBatch: "2. Check Accounts", btnClearBatch: "Clear",
+        lblBatchResult: "Result & Extracted Links (Live Check Info):", btnCopyBatch: "Copy All", btnDownBatch: "Download Result (TXT)",
+        historyLabel: "Recent Links (History):", clearHistoryBtn: "Clear History",
+        copied: "Copied successfully!", empty: "Please enter or extract data first", error: "Invalid data", corsMsg: "Blocked (CORS)", active: "Active", expired: "Expired", fetching: "Checking...", unlimited: "Unlimited", pasteBatchBtn: "Paste", btnCopyHost: "Copy", btnCopyUser: "Copy", btnCopyPass: "Copy", copyM3uBtn: "Copy", downloadM3uBtn: "Download", copyApiBtn: "Copy", successBatchMsg: "Checking completed successfully", accountStr: "accounts",
+        helpContent: `
+        <h3>📖 Comprehensive User Guide</h3>
+        <p>This app is a smart, advanced tool designed to seamlessly process, convert, and verify IPTV links and accounts.</p>
+        <h4>1️⃣ "Single Account" Section</h4>
+        <ul>
+            <li><strong>Smart Extraction:</strong> Paste the link or scattered data, the regex algorithm identifies it.</li>
+            <li><strong>Account Verification:</strong> Connects to the server to fetch live status and expiration.</li>
+        </ul>
+        <h4>2️⃣ "Batch Section"</h4>
+        <ul>
+            <li><strong>Separated Process:</strong> Click "Extract & Convert" first to parse links, then click "Check Accounts".</li>
+            <li><strong>Live Tracking:</strong> Prints the server status right under each link as it checks them line by line.</li>
+        </ul>`
+    },
+    fr: {
+        title: "Convertisseur IPTV Pro",
+        tabSingle: "Compte Unique", tabBatch: "Lot (Convertir & Vérifier)", tabHelp: "Aide et Guide",
+        input: "Entrer l'URL ou les détails du compte:", paste: "Coller", clear: "Effacer tout", convert: "Convertir et Vérifier",
+        lblHost: "Serveur (Host):", lblUser: "Utilisateur:", lblPass: "Mot de passe:",
+        m3u: "Lien M3U (Chaînes):", api: "Lien Player API:",
+        copy: "Copier", download: "Télécharger",
+        txtStatus: "Statut:", txtExpiry: "Expiration:", txtActive: "Conn:", txtMax: "Max:",
+        qrText: "Scanner avec l'appareil",
+        lblUpload: "Choisir fichier (txt, m3u) ou coller liens:", 
+        btnConvertBatch: "1. Extraire & Convertir", btnCheckBatch: "2. Vérifier les comptes", btnClearBatch: "Effacer",
+        lblBatchResult: "Résultats et Liens Extraits (Infos de vérification en direct):", btnCopyBatch: "Tout copier", btnDownBatch: "Télécharger Résultat (TXT)",
+        historyLabel: "Liens récents:", clearHistoryBtn: "Effacer l'historique",
+        copied: "Copié avec succès!", empty: "Veuillez entrer ou extraire des données", error: "Données invalides", corsMsg: "Bloqué (CORS)", active: "Actif", expired: "Expiré", fetching: "Vérification...", unlimited: "Illimité", pasteBatchBtn: "Coller", btnCopyHost: "Copier", btnCopyUser: "Copier", btnCopyPass: "Copier", copyM3uBtn: "Copier", downloadM3uBtn: "Télécharger", copyApiBtn: "Copier", successBatchMsg: "Vérification terminée avec succès", accountStr: "comptes",
+        helpContent: `
+        <h3>📖 Guide d'Utilisation Complet</h3>
+        <p>Cette application est un outil intelligent conçu pour traiter, convertir et vérifier vos liens et comptes IPTV avec une grande flexibilité.</p>
+        <h4>1️⃣ Section "Compte Unique"</h4>
+        <ul>
+            <li><strong>Extraction Intelligente:</strong> L'algorithme identifie vos liens même s'ils sont désordonnés.</li>
+            <li><strong>Vérification:</strong> Se connecte au serveur pour récupérer le statut et la date d'expiration.</li>
+        </ul>
+        <h4>2️⃣ Section "Traitement par Lot"</h4>
+        <ul>
+            <li><strong>Processus Séparé:</strong> Cliquez d'abord sur "Extraire" puis sur "Vérifier".</li>
+            <li><strong>Suivi en direct:</strong> Affiche le statut du serveur directement sous chaque lien pendant la vérification ligne par ligne.</li>
+        </ul>`
+    }
+};
+
+let currentLang = "ar";
+let qrcodeInstance = null;
+
+window.onload = function() {
+    updateHistoryUI();
+    changeLanguage(); // لتطبيق لغة البداية
+};
+
+function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById(tab + '-tab').classList.add('active');
+    
+    if(tab === 'single') document.getElementById('tabSingle').classList.add('active');
+    else if(tab === 'batch') document.getElementById('tabBatch').classList.add('active');
+    else document.getElementById('tabHelp').classList.add('active');
+}
+
+function changeLanguage() {
+    currentLang = document.getElementById("language").value;
+    const t = translations[currentLang];
+    
+    for (let id in t) {
+        let el = document.getElementById(id);
+        if(el) {
+            if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = t[id];
+            else if(id !== 'helpContent') el.innerText = t[id];
+        }
+    }
+    
+    document.getElementById("help-tab").innerHTML = t.helpContent;
+    
+    const infoBox = document.getElementById("accountInfo");
+    if(currentLang === "ar"){
+        document.documentElement.dir = "rtl"; document.documentElement.lang = "ar";
+        infoBox.classList.remove("en-dir"); infoBox.classList.add("ar-dir");
+    } else {
+        document.documentElement.dir = "ltr"; document.documentElement.lang = currentLang;
+        infoBox.classList.remove("ar-dir"); infoBox.classList.add("en-dir");
+    }
+    updateHistoryUI();
+}
+
+function showMessage(msg) {
+    const el = document.getElementById("message");
+    el.innerText = msg;
+    setTimeout(() => el.innerText = "", 4000);
+}
+
+async function pasteFromClipboard(targetId) {
+    try {
+        const text = await navigator.clipboard.readText();
+        if (text) document.getElementById(targetId).value = text;
+    } catch (err) { alert("Auto-paste failed."); }
+}
+
+function clearAll() {
+    document.getElementById("inputUrl").value = "";
+    document.getElementById("resultM3u").value = "";
+    document.getElementById("resultApi").value = "";
+    document.getElementById("outHost").value = "";
+    document.getElementById("outUser").value = "";
+    document.getElementById("outPass").value = "";
+    document.getElementById("detailsGrid").style.display = "none";
+    document.getElementById("accountInfo").style.display = "none";
+    document.getElementById("qrcodeBox").style.display = "none";
+    document.getElementById("historySelect").selectedIndex = 0;
+}
+
+// دالة الاستخراج الذكية (Regex) المعدلة والمحسنة للحفاظ على المنفذ (Port)
+function extractDataFromText(input) {
+    // تم التعديل هنا: التعبير النمطي الآن يلتقط الهوست والمنفذ معاً بشكل مضمون
+    // يتوقف عند أول مسافة أو علامة (/) وبذلك يضمن أن يقرأ البورت بالكامل إذا وُجد
+    const hostRegex = /(http[s]?:\/\/[^\/\s]+)/i;
+    const userRegexQuery = /(?:username|user)=([^&\s\n]+)/i;
+    const passRegexQuery = /(?:password|pass)=([^&\s\n]+)/i;
+
+    const hostMatch = input.match(hostRegex);
+    const userMatchQuery = input.match(userRegexQuery);
+    const passMatchQuery = input.match(passRegexQuery);
+
+    if (hostMatch && userMatchQuery && passMatchQuery) {
+        return {
+            host: hostMatch[1], // يحتوي الآن على الدومين والمنفذ معاً بشكل دقيق
+            user: userMatchQuery[1],
+            pass: passMatchQuery[1]
+        };
+    }
+
+    try {
+        const urlMatch = input.match(/(http[s]?:\/\/[^\s]+)/i);
+        if (!urlMatch) return null;
+        
+        // استخراج الهوست مع المنفذ من النص مباشرة لمنع كائن الـ URL من التخلص من المنافذ الافتراضية مثل :80
+        const hostBaseMatch = urlMatch[1].match(/(http[s]?:\/\/[^\/\s]+)/i);
+        const base = hostBaseMatch ? hostBaseMatch[1] : new URL(urlMatch[1]).origin;
+
+        const urlObj = new URL(urlMatch[1]);
+        const parts = urlObj.pathname.split("/").filter(Boolean);
+        if(parts.length < 2) return null;
+
+        let username = "", password = "";
+        const markers = ["live", "movie", "series", "play", "vod"];
+        
+        if(markers.includes(parts[0].toLowerCase())) {
+            if(parts.length < 3) return null;
+            username = parts[1]; password = parts[2];
+        } else {
+            username = parts[0]; password = parts[1];
+        }
+        return { host: base, user: username, pass: password };
+    } catch(e) { 
+        return null; 
+    }
+}
+
+function convertLink() {
+    const input = document.getElementById("inputUrl").value.trim();
+    const t = translations[currentLang];
+    
+    if(!input) { alert(t.empty); return; }
+    
+    const data = extractDataFromText(input);
+    if(!data) { alert(t.error); return; }
+
+    const m3uUrl = `${data.host}/get.php?username=${data.user}&password=${data.pass}&type=m3u_plus&output=ts`;
+    const apiUrl = `${data.host}/player_api.php?username=${data.user}&password=${data.pass}`;
+
+    document.getElementById("outHost").value = data.host;
+    document.getElementById("outUser").value = data.user;
+    document.getElementById("outPass").value = data.pass;
+    document.getElementById("resultM3u").value = m3uUrl;
+    document.getElementById("resultApi").value = apiUrl;
+    
+    document.getElementById("detailsGrid").style.display = "grid";
+
+    document.getElementById("qrcodeBox").style.display = "flex";
+    document.getElementById("qrcode").innerHTML = "";
+    if(!qrcodeInstance) {
+        qrcodeInstance = new QRCode(document.getElementById("qrcode"), { text: m3uUrl, width: 128, height: 128 });
+    } else {
+        qrcodeInstance.clear();
+        qrcodeInstance.makeCode(m3uUrl);
+    }
+
+    saveToHistory(input.replace(/\n/g, ' '));
+
+    const infoBox = document.getElementById("accountInfo");
+    infoBox.style.display = "block";
+    const spinner = `<span class="loader"></span> ${t.fetching}`;
+    document.getElementById("statusVal").innerHTML = spinner;
+    document.getElementById("expiryVal").innerHTML = spinner;
+    document.getElementById("activeVal").innerHTML = spinner;
+    document.getElementById("maxVal").innerHTML = spinner;
+
+    fetchAccountData(apiUrl, t);
+}
+
+async function fetchAccountData(apiUrl, t) {
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        if(data && data.user_info) {
+            const ui = data.user_info;
+            document.getElementById("statusVal").innerText = ui.status === "Active" ? t.active : (ui.status || "---");
+            
+            if(ui.exp_date && ui.exp_date !== "null") {
+                const dateObj = new Date(ui.exp_date * 1000);
+                document.getElementById("expiryVal").innerText = dateObj.toLocaleDateString('en-GB') + ' ' + dateObj.toLocaleTimeString('en-GB', {hour: '2-digit', minute:'2-digit'});
+            } else {
+                document.getElementById("expiryVal").innerText = t.unlimited;
+            }
+
+            document.getElementById("activeVal").innerText = ui.active_cons || "0";
+            document.getElementById("maxVal").innerText = ui.max_connections || t.unlimited;
+        }
+    } catch (error) {
+        document.getElementById("statusVal").innerText = "---";
+        document.getElementById("expiryVal").innerText = t.corsMsg;
+        document.getElementById("activeVal").innerText = "---";
+        document.getElementById("maxVal").innerText = "---";
+    }
+}
+
+// --- نظام السجل ---
+function saveToHistory(text) {
+    let history = JSON.parse(localStorage.getItem('iptv_history')) || [];
+    history = history.filter(item => item !== text);
+    history.unshift(text);
+    if(history.length > 10) history.pop();
+    localStorage.setItem('iptv_history', JSON.stringify(history));
+    updateHistoryUI();
+}
+
+function updateHistoryUI() {
+    let history = JSON.parse(localStorage.getItem('iptv_history')) || [];
+    const container = document.getElementById('historyContainer');
+    const select = document.getElementById('historySelect');
+    
+    if(history.length === 0) {
+        container.style.display = 'none';
+        return;
+    }
+    
+    container.style.display = 'block';
+    select.innerHTML = `<option value="">-- اختر من السجل --</option>`;
+    history.forEach(txt => {
+        let opt = document.createElement('option');
+        opt.value = txt;
+        opt.innerText = txt.length > 50 ? txt.substring(0, 47) + "..." : txt;
+        select.appendChild(opt);
+    });
+}
+
+function loadFromHistory() {
+    const val = document.getElementById('historySelect').value;
+    if(val) {
+        document.getElementById('inputUrl').value = val;
+        convertLink();
+    }
+}
+
+function clearHistory() {
+    localStorage.removeItem('iptv_history');
+    updateHistoryUI();
+}
+
+// --- قسم المعالجة المتعددة (مفصول: تحويل ثم فحص) ---
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById("batchInput").value = e.target.result;
+    };
+    reader.readAsText(file);
+}
+
+function clearBatch() {
+    document.getElementById("fileInput").value = "";
+    document.getElementById("batchInput").value = "";
+    document.getElementById("batchOutput").value = "";
+    document.getElementById("btnCheckBatch").innerText = translations[currentLang].btnCheckBatch;
+}
+
+// الخطوة 1: استخراج وتحويل فقط (بدون فحص)
+function convertBatchOnly() {
+    const text = document.getElementById("batchInput").value;
+    const t = translations[currentLang];
+    if(!text.trim()) { alert(t.empty); return; }
+
+    const blocks = text.split(/(?=http[s]?:\/\/)/i).filter(Boolean);
+    let results = [];
+    
+    blocks.forEach(block => {
+        const data = extractDataFromText(block);
+        if(data) {
+            results.push(`${data.host}/get.php?username=${data.user}&password=${data.pass}&type=m3u_plus&output=ts`);
+        }
+    });
+
+    if(results.length === 0) { alert(t.error); return; }
+
+    // إضافة مسافة مزدوجة بين الروابط لتكون جاهزة لاستقبال تفاصيل الفحص
+    document.getElementById("batchOutput").value = results.join("\n\n");
+    showMessage(`تم استخراج ${results.length} ${t.accountStr} وجاهز للفحص.`);
+}
+
+// الخطوة 2: فحص الروابط المستخرجة سطراً بسطر
+async function checkBatchLinks() {
+    const outputBox = document.getElementById("batchOutput");
+    const t = translations[currentLang];
+    
+    // تنظيف المخرجات من أي سطور [INFO] سابقة في حال تم ضغط الفحص مرة أخرى
+    let lines = outputBox.value.split('\n').filter(l => l.trim() !== '' && !l.startsWith('[INFO]'));
+
+    if(lines.length === 0) { alert(t.empty); return; }
+
+    const btn = document.getElementById("btnCheckBatch");
+    btn.disabled = true;
+    
+    let processedText = "";
+
+    for (let i = 0; i < lines.length; i++) {
+        let line = lines[i];
+        
+        // تحديث الواجهة: طباعة السطر الحالي مع رسالة "جاري الفحص..."
+        btn.innerText = `${t.fetching} (${i + 1}/${lines.length})`;
+        outputBox.value = processedText + line + `\n[INFO] ⏳ ${t.fetching}\n\n` + lines.slice(i + 1).join('\n\n');
+        
+        // التمرير التلقائي للأسفل لرؤية السطر الذي يتم فحصه
+        outputBox.scrollTop = outputBox.scrollHeight;
+
+        // السماح للمتصفح بتحديث الشاشة
+        await new Promise(r => setTimeout(r, 50));
+
+        const data = extractDataFromText(line);
+        let serverInfoLine = "";
+        
+        if(data) {
+            let apiUrl = `${data.host}/player_api.php?username=${data.user}&password=${data.pass}`;
+            try {
+                const response = await fetch(apiUrl);
+                const apiData = await response.json();
+                
+                if(apiData && apiData.user_info) {
+                    const ui = apiData.user_info;
+                    let statusStr = ui.status === "Active" ? t.active : (ui.status || "---");
+                    
+                    let expStr = t.unlimited;
+                    if(ui.exp_date && ui.exp_date !== "null") {
+                        const dateObj = new Date(ui.exp_date * 1000);
+                        expStr = dateObj.toLocaleDateString('en-GB') + ' ' + dateObj.toLocaleTimeString('en-GB', {hour: '2-digit', minute:'2-digit'});
+                    }
+                    
+                    let act = ui.active_cons || "0";
+                    let max = ui.max_connections || t.unlimited;
+
+                    serverInfoLine = `[INFO] ✅ ${t.txtStatus} ${statusStr} | ${t.txtExpiry} ${expStr} | ${t.txtActive} ${act}/${max}`;
+                } else {
+                    serverInfoLine = `[INFO] ❌ ${t.error}`;
+                }
+            } catch (error) {
+                serverInfoLine = `[INFO] ⚠️ ${t.corsMsg}`;
+            }
+        } else {
+            serverInfoLine = `[INFO] ❌ ${t.error}`;
+        }
+
+        // إضافة النتيجة للسطر الحالي وتحديث مربع النص
+        processedText += line + "\n" + serverInfoLine + "\n\n";
+        outputBox.value = processedText + lines.slice(i + 1).join('\n\n');
+        outputBox.scrollTop = outputBox.scrollHeight;
+    }
+
+    // إعادة الزر لشكله الطبيعي
+    btn.innerText = t.btnCheckBatch;
+    btn.disabled = false;
+    showMessage(t.successBatchMsg);
+}
+
+function downloadBatchFile() {
+    const text = document.getElementById("batchOutput").value;
+    const t = translations[currentLang];
+    if(!text.trim()) { alert(t.empty); return; }
+    
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Checked_IPTV_Accounts.txt";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function copyResult(inputId){
+    const result = document.getElementById(inputId);
+    if(result.value){
+        result.select();
+        result.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(result.value);
+        showMessage(translations[currentLang].copied);
+    }
+}
+
+function downloadM3u() {
+    const url = document.getElementById("resultM3u").value;
+    if(url) window.open(url, '_blank');
+    else alert(translations[currentLang].empty);
+}
+</script>
+</body>
+</html>

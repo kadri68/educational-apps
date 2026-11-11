@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حاسبة التقاعد - الجزائر</title>
+
+<style>
+body{
+    font-family: 'Tahoma', sans-serif;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    color:white;
+}
+.container{
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding:25px;
+    border-radius:20px;
+    width:420px;
+    box-shadow:0 0 25px rgba(0,0,0,0.4);
+    text-align:center;
+}
+h2{ color:#ffd700; }
+label{
+    display:block;
+    margin-top:12px;
+    text-align:right;
+    font-weight:bold;
+}
+input, select{
+    width:100%;
+    padding:8px;
+    margin-top:5px;
+    border-radius:10px;
+    border:none;
+    font-size:15px;
+    text-align:center;
+}
+button{
+    margin-top:15px;
+    padding:10px;
+    border:none;
+    border-radius:15px;
+    cursor:pointer;
+    font-size:16px;
+    width:100%;
+}
+.calc-btn{ background:#28a745; color:white; }
+.info-btn{ background:#ffc107; color:black; }
+
+.result{
+    margin-top:15px;
+    font-size:16px;
+    background:rgba(0,0,0,0.4);
+    padding:10px;
+    border-radius:10px;
+}
+.modal{
+    display:none;
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.7);
+    justify-content:center;
+    align-items:center;
+}
+.modal-content{
+    background:white;
+    color:black;
+    padding:20px;
+    border-radius:15px;
+    width:320px;
+    text-align:center;
+}
+.close{ background:red; color:white; margin-top:10px; }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>حاسبة أجر التقاعد</h2>
+
+    <label>متوسط الأجر المرجعي (دج)</label>
+    <input type="number" id="salary">
+
+    <label>عدد سنوات العمل</label>
+    <input type="number" id="years">
+
+    <label>عدد الأولاد</label>
+    <input type="number" id="children">
+
+    <label>الحالة الخاصة</label>
+    <select id="specialStatus">
+        <option value="none">لا يوجد</option>
+        <option value="martyr">ابن شهيد</option>
+        <option value="mujahid">ابن مجاهد</option>
+    </select>
+
+    <label>قيمة منحة الحالة الخاصة (دج)</label>
+    <input type="number" id="specialAmount" placeholder="أدخل القيمة إن وجدت">
+
+    <button class="calc-btn" onclick="calculate()">احسب المعاش</button>
+
+    <div class="result" id="output"></div>
+
+    <button class="info-btn" onclick="showInfo()">معلومات المطور</button>
+</div>
+
+<div class="modal" id="developerModal">
+    <div class="modal-content">
+        <h3>معلومات المطور</h3>
+        <p><strong>الأستاذ محمد قادري</strong></p>
+        <p>أستاذ مادة الفيزياء</p>
+        <p>ثانوية محمد الأخضر فيلالي</p>
+        <p>ولاية غرداية - الجزائر</p>
+        <p>Email: kadri68@gmail.com</p>
+        <p>Phone: 0662692987</p>
+        <button class="close" onclick="closeInfo()">إغلاق</button>
+    </div>
+</div>
+
+<script>
+function calculate(){
+    let salary = parseFloat(document.getElementById("salary").value);
+    let years = parseFloat(document.getElementById("years").value);
+    let children = parseFloat(document.getElementById("children").value);
+    let specialAmount = parseFloat(document.getElementById("specialAmount").value);
+
+    if(isNaN(salary) || isNaN(years) || salary<=0 || years<=0){
+        document.getElementById("output").innerHTML = "يرجى إدخال بيانات صحيحة.";
+        return;
+    }
+
+    if(isNaN(children) || children < 0) children = 0;
+    if(isNaN(specialAmount) || specialAmount < 0) specialAmount = 0;
+
+    let percentage = years * 2.5;
+    if(percentage > 80) percentage = 80;
+
+    let pension = salary * (percentage/100);
+
+    // منحة الأولاد حسب الشرط الجديد
+    let allowancePerChild = (pension <= 30000) ? 600 : 300;
+    let childAllowance = children * allowancePerChild;
+
+    let total = pension + childAllowance + specialAmount;
+
+    document.getElementById("output").innerHTML =
+        "نسبة التقاعد: " + percentage.toFixed(2) + "%<br>" +
+        "المعاش الأساسي: " + pension.toLocaleString() + " دج<br>" +
+        "منحة الأولاد (" + allowancePerChild + " دج لكل طفل): " + childAllowance.toLocaleString() + " دج<br>" +
+        "منحة الحالة الخاصة: " + specialAmount.toLocaleString() + " دج<br><hr>" +
+        "<strong>المجموع النهائي: " + total.toLocaleString() + " دج</strong>";
+}
+
+function showInfo(){
+    document.getElementById("developerModal").style.display="flex";
+}
+function closeInfo(){
+    document.getElementById("developerModal").style.display="none";
+}
+</script>
+
+</body>
+</html>

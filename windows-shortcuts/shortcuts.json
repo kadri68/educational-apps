@@ -1,0 +1,949 @@
+[
+  {
+    "category": "General",
+    "key": "Ctrl + C",
+    "description_ar": "نسخ العنصر المحدد",
+    "description_en": "Copy selected item"
+  },
+  {
+    "category": "General",
+    "key": "Ctrl + V",
+    "description_ar": "لصق العنصر المنسوخ",
+    "description_en": "Paste copied item"
+  },
+  {
+    "category": "General",
+    "key": "Ctrl + X",
+    "description_ar": "قص العنصر المحدد",
+    "description_en": "Cut selected item"
+  },
+  {
+    "category": "General",
+    "key": "Ctrl + Z",
+    "description_ar": "التراجع عن آخر عملية",
+    "description_en": "Undo last action"
+  },
+  {
+    "category": "General",
+    "key": "Ctrl + Y",
+    "description_ar": "إعادة العملية الأخيرة",
+    "description_en": "Redo last action"
+  },
+  {
+    "category": "General",
+    "key": "Ctrl + A",
+    "description_ar": "تحديد الكل",
+    "description_en": "Select all"
+  },
+  {
+    "category": "General",
+    "key": "Ctrl + F",
+    "description_ar": "فتح البحث",
+    "description_en": "Find"
+  },
+  {
+    "category": "General",
+    "key": "Ctrl + P",
+    "description_ar": "فتح نافذة الطباعة",
+    "description_en": "Print"
+  },
+  {
+    "category": "General",
+    "key": "Ctrl + N",
+    "description_ar": "فتح نافذة جديدة",
+    "description_en": "Open new window"
+  },
+  {
+    "category": "General",
+    "key": "Ctrl + S",
+    "description_ar": "حفظ الملف الحالي",
+    "description_en": "Save current file"
+  },
+  {
+    "category": "General",
+    "key": "Ctrl + Shift + V",
+    "description_ar": "لصق بدون تنسيق",
+    "description_en": "Paste without formatting"
+  },
+
+  {
+    "category": "System",
+    "key": "Win",
+    "description_ar": "فتح قائمة ابدأ",
+    "description_en": "Open Start menu"
+  },
+  {
+    "category": "System",
+    "key": "Win + E",
+    "description_ar": "فتح مستكشف الملفات",
+    "description_en": "Open File Explorer"
+  },
+  {
+    "category": "System",
+    "key": "Win + L",
+    "description_ar": "قفل الجهاز بسرعة",
+    "description_en": "Lock the PC"
+  },
+  {
+    "category": "System",
+    "key": "Win + R",
+    "description_ar": "فتح نافذة Run",
+    "description_en": "Open Run dialog"
+  },
+  {
+    "category": "System",
+    "key": "Win + I",
+    "description_ar": "فتح الإعدادات",
+    "description_en": "Open Settings"
+  },
+  {
+    "category": "System",
+    "key": "Win + Pause",
+    "description_ar": "فتح خصائص النظام",
+    "description_en": "Open System Properties"
+  },
+  {
+    "category": "System",
+    "key": "Win + U",
+    "description_ar": "فتح مركز سهولة الوصول",
+    "description_en": "Open Ease of Access Center"
+  },
+  {
+    "category": "System",
+    "key": "Win + K",
+    "description_ar": "فتح إعدادات الاتصال بالأجهزة اللاسلكية",
+    "description_en": "Open Connect panel"
+  },
+  {
+    "category": "System",
+    "key": "Win + P",
+    "description_ar": "اختيار وضع العرض للشاشات",
+    "description_en": "Project screen options"
+  },
+  {
+    "category": "System",
+    "key": "Win + .",
+    "description_ar": "فتح لوحة الإيموجي والرموز",
+    "description_en": "Open emoji & symbols panel"
+  },
+  {
+    "category": "System",
+    "key": "Win + V",
+    "description_ar": "فتح سجل الحافظة",
+    "description_en": "Open clipboard history"
+  },
+  {
+    "category": "System",
+    "key": "Win + H",
+    "description_ar": "بدء الكتابة الصوتية",
+    "description_en": "Start voice typing"
+  },
+  {
+    "category": "System",
+    "key": "Win + Space",
+    "description_ar": "تبديل لغة لوحة المفاتيح",
+    "description_en": "Switch keyboard language"
+  },
+
+  {
+    "category": "Window Management",
+    "key": "Alt + Tab",
+    "description_ar": "التنقل بين النوافذ المفتوحة",
+    "description_en": "Switch between open apps"
+  },
+  {
+    "category": "Window Management",
+    "key": "Win + Tab",
+    "description_ar": "عرض المهام وسطح المكتب الافتراضي",
+    "description_en": "Open Task View"
+  },
+  {
+    "category": "Window Management",
+    "key": "Win + Arrow Left",
+    "description_ar": "تثبيت النافذة يسار الشاشة",
+    "description_en": "Snap window to left"
+  },
+  {
+    "category": "Window Management",
+    "key": "Win + Arrow Right",
+    "description_ar": "تثبيت النافذة يمين الشاشة",
+    "description_en": "Snap window to right"
+  },
+  {
+    "category": "Window Management",
+    "key": "Win + Arrow Up",
+    "description_ar": "تكبير النافذة",
+    "description_en": "Maximize window"
+  },
+  {
+    "category": "Window Management",
+    "key": "Win + Arrow Down",
+    "description_ar": "تصغير النافذة",
+    "description_en": "Minimize window"
+  },
+  {
+    "category": "Window Management",
+    "key": "Win + Home",
+    "description_ar": "تصغير جميع النوافذ ما عدا النشطة",
+    "description_en": "Minimize all except active window"
+  },
+
+  {
+    "category": "Desktop",
+    "key": "Win + D",
+    "description_ar": "إظهار/إخفاء سطح المكتب",
+    "description_en": "Show/Hide desktop"
+  },
+  {
+    "category": "Desktop",
+    "key": "Win + M",
+    "description_ar": "تصغير جميع النوافذ",
+    "description_en": "Minimize all windows"
+  },
+  {
+    "category": "Desktop",
+    "key": "Win + Shift + M",
+    "description_ar": "استعادة النوافذ المصغرة",
+    "description_en": "Restore minimized windows"
+  },
+  {
+    "category": "Desktop",
+    "key": "Win + ,",
+    "description_ar": "إلقاء نظرة سريعة على سطح المكتب",
+    "description_en": "Peek at desktop"
+  },
+
+  {
+    "category": "Virtual Desktop",
+    "key": "Win + Ctrl + D",
+    "description_ar": "إنشاء مكتب افتراضي جديد",
+    "description_en": "Add a new virtual desktop"
+  },
+  {
+    "category": "Virtual Desktop",
+    "key": "Win + Ctrl + F4",
+    "description_ar": "إغلاق المكتب الافتراضي الحالي",
+    "description_en": "Close current virtual desktop"
+  },
+  {
+    "category": "Virtual Desktop",
+    "key": "Win + Ctrl + Right Arrow",
+    "description_ar": "الانتقال إلى المكتب الافتراضي التالي",
+    "description_en": "Switch to next virtual desktop"
+  },
+  {
+    "category": "Virtual Desktop",
+    "key": "Win + Ctrl + Left Arrow",
+    "description_ar": "الانتقال إلى المكتب الافتراضي السابق",
+    "description_en": "Switch to previous virtual desktop"
+  },
+
+  {
+    "category": "File Explorer",
+    "key": "F2",
+    "description_ar": "إعادة تسمية الملف أو المجلد المحدد",
+    "description_en": "Rename selected file/folder"
+  },
+  {
+    "category": "File Explorer",
+    "key": "Alt + Enter",
+    "description_ar": "فتح خصائص العنصر المحدد",
+    "description_en": "Open properties of selected item"
+  },
+  {
+    "category": "File Explorer",
+    "key": "Alt + Up",
+    "description_ar": "الانتقال إلى المجلد الأعلى",
+    "description_en": "Go up one folder level"
+  },
+  {
+    "category": "File Explorer",
+    "key": "Ctrl + Shift + N",
+    "description_ar": "إنشاء مجلد جديد",
+    "description_en": "Create new folder"
+  },
+  {
+    "category": "File Explorer",
+    "key": "Ctrl + L",
+    "description_ar": "التركيز على شريط العنوان",
+    "description_en": "Focus address bar"
+  },
+  {
+    "category": "File Explorer",
+    "key": "F4",
+    "description_ar": "عرض قائمة شريط العنوان",
+    "description_en": "Display address bar list"
+  },
+  {
+    "category": "File Explorer",
+    "key": "Ctrl + W",
+    "description_ar": "إغلاق نافذة مستكشف الملفات الحالية",
+    "description_en": "Close current File Explorer window"
+  },
+
+  {
+    "category": "Browser",
+    "key": "Ctrl + T",
+    "description_ar": "فتح تبويب جديد",
+    "description_en": "Open new tab"
+  },
+  {
+    "category": "Browser",
+    "key": "Ctrl + W",
+    "description_ar": "إغلاق التبويب الحالي",
+    "description_en": "Close current tab"
+  },
+  {
+    "category": "Browser",
+    "key": "Ctrl + Shift + T",
+    "description_ar": "إعادة فتح آخر تبويب مغلق",
+    "description_en": "Reopen last closed tab"
+  },
+  {
+    "category": "Browser",
+    "key": "Ctrl + Tab",
+    "description_ar": "التنقل بين التبويبات",
+    "description_en": "Switch between tabs"
+  },
+  {
+    "category": "Browser",
+    "key": "Ctrl + H",
+    "description_ar": "فتح السجل",
+    "description_en": "Open history"
+  },
+  {
+    "category": "Browser",
+    "key": "Ctrl + Shift + N",
+    "description_ar": "فتح نافذة جديدة في وضع التصفح الخفي",
+    "description_en": "Open new incognito window"
+  },
+  {
+    "category": "Browser",
+    "key": "Ctrl + D",
+    "description_ar": "إضافة الصفحة الحالية إلى المفضلة",
+    "description_en": "Bookmark current page"
+  },
+  {
+    "category": "Browser",
+    "key": "Ctrl + L",
+    "description_ar": "التركيز على شريط العنوان",
+    "description_en": "Focus address bar"
+  },
+  {
+    "category": "Browser",
+    "key": "Alt + D",
+    "description_ar": "التركيز على شريط العنوان (بديل)",
+    "description_en": "Focus address bar (alternative)"
+  },
+  {
+    "category": "Browser",
+    "key": "Ctrl + Shift + B",
+    "description_ar": "إظهار/إخفاء شريط المفضلة",
+    "description_en": "Toggle bookmarks bar"
+  },
+  {
+    "category": "Browser",
+    "key": "Ctrl + J",
+    "description_ar": "فتح نافذة التنزيلات",
+    "description_en": "Open Downloads page"
+  },
+  {
+    "category": "Browser",
+    "key": "Ctrl + Shift + Delete",
+    "description_ar": "فتح خيارات مسح بيانات التصفح",
+    "description_en": "Open clear browsing data options"
+  },
+
+  {
+    "category": "Screenshots",
+    "key": "PrtScn",
+    "description_ar": "تصوير الشاشة كاملة إلى الحافظة",
+    "description_en": "Capture entire screen to clipboard"
+  },
+  {
+    "category": "Screenshots",
+    "key": "Alt + PrtScn",
+    "description_ar": "تصوير النافذة النشطة فقط",
+    "description_en": "Capture active window"
+  },
+  {
+    "category": "Screenshots",
+    "key": "Win + Shift + S",
+    "description_ar": "فتح أداة القص لتحديد جزء من الشاشة",
+    "description_en": "Open Snipping Tool overlay"
+  },
+  {
+    "category": "Screenshots",
+    "key": "Win + PrtScn",
+    "description_ar": "حفظ لقطة شاشة كاملة كملف",
+    "description_en": "Save full screenshot as file"
+  },
+
+  {
+    "category": "Accessibility",
+    "key": "Win + +",
+    "description_ar": "فتح المكبرة وتكبير الشاشة",
+    "description_en": "Open Magnifier and zoom in"
+  },
+  {
+    "category": "Accessibility",
+    "key": "Win + Esc",
+    "description_ar": "إغلاق المكبرة",
+    "description_en": "Close Magnifier"
+  },
+  {
+    "category": "Accessibility",
+    "key": "Win + Ctrl + Enter",
+    "description_ar": "تشغيل الراوي",
+    "description_en": "Start Narrator"
+  },
+  {
+    "category": "Accessibility",
+    "key": "Win + U",
+    "description_ar": "فتح مركز سهولة الوصول",
+    "description_en": "Open Ease of Access Center"
+  },
+  {
+    "category": "Accessibility",
+    "key": "Win + Ctrl + M",
+    "description_ar": "فتح إعدادات المكبرة",
+    "description_en": "Open Magnifier settings"
+  },
+  {
+    "category": "Accessibility",
+    "key": "Win + Alt + Enter",
+    "description_ar": "تشغيل وضع التباين العالي",
+    "description_en": "Toggle high contrast mode"
+  },
+
+  {
+    "category": "Media",
+    "key": "Win + G",
+    "description_ar": "فتح Xbox Game Bar",
+    "description_en": "Open Xbox Game Bar"
+  },
+  {
+    "category": "Media",
+    "key": "Win + Alt + R",
+    "description_ar": "بدء تسجيل الشاشة",
+    "description_en": "Start screen recording"
+  },
+  {
+    "category": "Media",
+    "key": "Spacebar",
+    "description_ar": "تشغيل/إيقاف مؤقت في مشغل الوسائط",
+    "description_en": "Play/Pause in media player"
+  },
+  {
+    "category": "Media",
+    "key": "Ctrl + Right Arrow",
+    "description_ar": "تخطي إلى المقطع التالي",
+    "description_en": "Skip to next track"
+  },
+  {
+    "category": "Media",
+    "key": "Ctrl + Left Arrow",
+    "description_ar": "العودة إلى المقطع السابق",
+    "description_en": "Go to previous track"
+  },
+
+  {
+    "category": "Security",
+    "key": "Ctrl + Alt + Del",
+    "description_ar": "فتح خيارات الأمان",
+    "description_en": "Open security options"
+  },
+  {
+    "category": "Security",
+    "key": "Win + Ctrl + L",
+    "description_ar": "قفل الشاشة فورًا",
+    "description_en": "Lock screen immediately"
+  },
+
+  {
+    "category": "Developer",
+    "key": "Ctrl + Shift + F",
+    "description_ar": "بحث في المشروع (VS Code)",
+    "description_en": "Search in project (VS Code)"
+  },
+  {
+    "category": "Developer",
+    "key": "Ctrl + `",
+    "description_ar": "فتح الطرفية المدمجة",
+    "description_en": "Open integrated terminal"
+  },
+  {
+    "category": "Developer",
+    "key": "F5",
+    "description_ar": "تشغيل/تصحيح البرنامج",
+    "description_en": "Run/Debug program"
+  },
+  {
+    "category": "Developer",
+    "key": "Ctrl + B",
+    "description_ar": "إظهار/إخفاء الشريط الجانبي",
+    "description_en": "Toggle sidebar"
+  },
+  {
+    "category": "Developer",
+    "key": "Ctrl + Shift + P",
+    "description_ar": "فتح لوحة الأوامر",
+    "description_en": "Open command palette"
+  },
+
+  {
+    "category": "Advanced",
+    "key": "Ctrl + Shift + Esc",
+    "description_ar": "فتح مدير المهام مباشرة",
+    "description_en": "Open Task Manager directly"
+  },
+  {
+    "category": "Advanced",
+    "key": "Win + X",
+    "description_ar": "فتح قائمة المستخدم المتقدم",
+    "description_en": "Open power user menu"
+  },
+  {
+    "category": "Advanced",
+    "key": "Win + Ctrl + Shift + B",
+    "description_ar": "إعادة تشغيل تعريف كرت الشاشة",
+    "description_en": "Restart graphics driver"
+  },
+  {
+    "category": "Advanced",
+    "key": "Win + Ctrl + F",
+    "description_ar": "البحث عن أجهزة الكمبيوتر على الشبكة",
+    "description_en": "Search for PCs on network"
+  },
+  {
+    "category": "Advanced",
+    "key": "Win + Ctrl + Q",
+    "description_ar": "تسجيل الخروج السريع",
+    "description_en": "Quick sign out"
+  },
+
+  {
+    "category": "Word",
+    "key": "Ctrl + N",
+    "description_ar": "إنشاء مستند جديد",
+    "description_en": "Create new document"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + O",
+    "description_ar": "فتح مستند موجود",
+    "description_en": "Open existing document"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + S",
+    "description_ar": "حفظ المستند",
+    "description_en": "Save document"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + P",
+    "description_ar": "طباعة المستند",
+    "description_en": "Print document"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + B",
+    "description_ar": "جعل النص غامق",
+    "description_en": "Bold text"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + I",
+    "description_ar": "إمالة النص",
+    "description_en": "Italic text"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + U",
+    "description_ar": "تسطير النص",
+    "description_en": "Underline text"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + Shift + L",
+    "description_ar": "إضافة تعداد نقطي",
+    "description_en": "Add bullet list"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + Shift + F",
+    "description_ar": "تغيير الخط",
+    "description_en": "Change font"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + Shift + P",
+    "description_ar": "تغيير حجم الخط",
+    "description_en": "Change font size"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + L",
+    "description_ar": "محاذاة النص إلى اليسار",
+    "description_en": "Align text left"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + R",
+    "description_ar": "محاذاة النص إلى اليمين",
+    "description_en": "Align text right"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + E",
+    "description_ar": "توسيط النص",
+    "description_en": "Center text"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + J",
+    "description_ar": "ضبط النص",
+    "description_en": "Justify text"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + Shift + >",
+    "description_ar": "زيادة حجم الخط",
+    "description_en": "Increase font size"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + Shift + <",
+    "description_ar": "تصغير حجم الخط",
+    "description_en": "Decrease font size"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + Shift + K",
+    "description_ar": "تنسيق الأحرف الصغيرة الكبيرة",
+    "description_en": "Small caps"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + Shift + A",
+    "description_ar": "تنسيق كل الحروف كبيرة",
+    "description_en": "All caps"
+  },
+  {
+    "category": "Word",
+    "key": "Ctrl + Shift + 8",
+    "description_ar": "إظهار/إخفاء علامات التنسيق",
+    "description_en": "Show/hide formatting marks"
+  },
+  {
+    "category": "Word",
+    "key": "F7",
+    "description_ar": "التدقيق الإملائي والنحوي",
+    "description_en": "Spelling & grammar check"
+  },
+
+  {
+    "category": "Excel",
+    "key": "Ctrl + N",
+    "description_ar": "إنشاء مصنف جديد",
+    "description_en": "Create new workbook"
+  },
+  {
+    "category": "Excel",
+    "key": "Ctrl + O",
+    "description_ar": "فتح مصنف موجود",
+    "description_en": "Open existing workbook"
+  },
+  {
+    "category": "Excel",
+    "key": "Ctrl + S",
+    "description_ar": "حفظ المصنف",
+    "description_en": "Save workbook"
+  },
+  {
+    "category": "Excel",
+    "key": "Ctrl + T",
+    "description_ar": "إنشاء جدول",
+    "description_en": "Create table"
+  },
+  {
+    "category": "Excel",
+    "key": "Ctrl + Shift + L",
+    "description_ar": "إضافة/إزالة عوامل التصفية",
+    "description_en": "Toggle filters"
+  },
+  {
+    "category": "Excel",
+    "key": "Ctrl + ;",
+    "description_ar": "إدراج التاريخ الحالي",
+    "description_en": "Insert current date"
+  },
+  {
+    "category": "Excel",
+    "key": "Ctrl + Shift + :",
+    "description_ar": "إدراج الوقت الحالي",
+    "description_en": "Insert current time"
+  },
+  {
+    "category": "Excel",
+    "key": "Alt + =",
+    "description_ar": "إدراج دالة الجمع التلقائي",
+    "description_en": "Insert AutoSum function"
+  },
+  {
+    "category": "Excel",
+    "key": "Ctrl + Arrow Keys",
+    "description_ar": "الانتقال إلى نهاية البيانات",
+    "description_en": "Move to end of data"
+  },
+  {
+    "category": "Excel",
+    "key": "Ctrl + Space",
+    "description_ar": "تحديد العمود بالكامل",
+    "description_en": "Select entire column"
+  },
+  {
+    "category": "Excel",
+    "key": "Shift + Space",
+    "description_ar": "تحديد الصف بالكامل",
+    "description_en": "Select entire row"
+  },
+  {
+    "category": "Excel",
+    "key": "F2",
+    "description_ar": "تحرير الخلية النشطة",
+    "description_en": "Edit active cell"
+  },
+  {
+    "category": "Excel",
+    "key": "Ctrl + Page Up",
+    "description_ar": "الانتقال إلى الورقة السابقة",
+    "description_en": "Go to previous sheet"
+  },
+  {
+    "category": "Excel",
+    "key": "Ctrl + Page Down",
+    "description_ar": "الانتقال إلى الورقة التالية",
+    "description_en": "Go to next sheet"
+  },
+  {
+    "category": "Excel",
+    "key": "Alt + Enter",
+    "description_ar": "بدء سطر جديد داخل الخلية",
+    "description_en": "Start a new line in a cell"
+  },
+  {
+    "category": "Excel",
+    "key": "Ctrl + Home",
+    "description_ar": "الانتقال إلى بداية الورقة (A1)",
+    "description_en": "Go to beginning of worksheet"
+  },
+  {
+    "category": "Excel",
+    "key": "Ctrl + End",
+    "description_ar": "الانتقال إلى آخر خلية مستخدمة",
+    "description_en": "Go to last used cell"
+  },
+
+  {
+    "category": "PowerPoint",
+    "key": "Ctrl + M",
+    "description_ar": "إضافة شريحة جديدة",
+    "description_en": "Add new slide"
+  },
+  {
+    "category": "PowerPoint",
+    "key": "Ctrl + D",
+    "description_ar": "تكرار الشريحة",
+    "description_en": "Duplicate slide"
+  },
+  {
+    "category": "PowerPoint",
+    "key": "Ctrl + Shift + C",
+    "description_ar": "نسخ التنسيق",
+    "description_en": "Copy formatting"
+  },
+  {
+    "category": "PowerPoint",
+    "key": "Ctrl + Shift + V",
+    "description_ar": "لصق التنسيق",
+    "description_en": "Paste formatting"
+  },
+  {
+    "category": "PowerPoint",
+    "key": "F5",
+    "description_ar": "بدء عرض الشرائح",
+    "description_en": "Start slideshow"
+  },
+  {
+    "category": "PowerPoint",
+    "key": "Shift + F5",
+    "description_ar": "بدء العرض من الشريحة الحالية",
+    "description_en": "Start slideshow from current slide"
+  },
+  {
+    "category": "PowerPoint",
+    "key": "B",
+    "description_ar": "تحويل الشاشة إلى اللون الأسود أثناء العرض",
+    "description_en": "Black screen during slideshow"
+  },
+  {
+    "category": "PowerPoint",
+    "key": "W",
+    "description_ar": "تحويل الشاشة إلى اللون الأبيض أثناء العرض",
+    "description_en": "White screen during slideshow"
+  },
+  {
+    "category": "PowerPoint",
+    "key": "Ctrl + P",
+    "description_ar": "تفعيل القلم أثناء العرض",
+    "description_en": "Activate pen during slideshow"
+  },
+  {
+    "category": "PowerPoint",
+    "key": "Ctrl + A",
+    "description_ar": "العودة إلى مؤشر السهم أثناء العرض",
+    "description_en": "Switch to arrow pointer during slideshow"
+  },
+
+  {
+    "category": "Outlook",
+    "key": "Ctrl + R",
+    "description_ar": "الرد على البريد الإلكتروني",
+    "description_en": "Reply to email"
+  },
+  {
+    "category": "Outlook",
+    "key": "Ctrl + Shift + R",
+    "description_ar": "الرد على الجميع",
+    "description_en": "Reply to all"
+  },
+  {
+    "category": "Outlook",
+    "key": "Ctrl + F",
+    "description_ar": "إعادة توجيه البريد الإلكتروني",
+    "description_en": "Forward email"
+  },
+  {
+    "category": "Outlook",
+    "key": "Ctrl + N",
+    "description_ar": "إنشاء رسالة جديدة",
+    "description_en": "New email message"
+  },
+  {
+    "category": "Outlook",
+    "key": "Ctrl + Enter",
+    "description_ar": "إرسال البريد الإلكتروني",
+    "description_en": "Send email"
+  },
+  {
+    "category": "Outlook",
+    "key": "Ctrl + Shift + K",
+    "description_ar": "إضافة مهمة جديدة",
+    "description_en": "Add new task"
+  },
+  {
+    "category": "Outlook",
+    "key": "Ctrl + Shift + A",
+    "description_ar": "إضافة موعد جديد",
+    "description_en": "Add new appointment"
+  },
+  {
+    "category": "Outlook",
+    "key": "Ctrl + Shift + M",
+    "description_ar": "إنشاء رسالة جديدة من أي مكان",
+    "description_en": "New email message from anywhere"
+  },
+  {
+    "category": "Outlook",
+    "key": "Ctrl + Shift + I",
+    "description_ar": "التبديل إلى علبة الوارد",
+    "description_en": "Switch to Inbox"
+  },
+  {
+    "category": "Outlook",
+    "key": "Ctrl + Shift + O",
+    "description_ar": "التبديل إلى علبة الصادر",
+    "description_en": "Switch to Outbox"
+  },
+  {
+    "category": "Outlook",
+    "key": "Ctrl + Q",
+    "description_ar": "تعيين الرسالة كمقروءة",
+    "description_en": "Mark email as read"
+  },
+  {
+    "category": "Outlook",
+    "key": "Ctrl + U",
+    "description_ar": "تعيين الرسالة كغير مقروءة",
+    "description_en": "Mark email as unread"
+  },
+
+  {
+    "category": "Teams",
+    "key": "Ctrl + Shift + M",
+    "description_ar": "كتم/إلغاء كتم الميكروفون",
+    "description_en": "Mute/Unmute microphone"
+  },
+  {
+    "category": "Teams",
+    "key": "Ctrl + Shift + O",
+    "description_ar": "تشغيل/إيقاف الكاميرا",
+    "description_en": "Toggle camera on/off"
+  },
+  {
+    "category": "Teams",
+    "key": "Ctrl + N",
+    "description_ar": "بدء محادثة جديدة",
+    "description_en": "Start new chat"
+  },
+  {
+    "category": "Teams",
+    "key": "Ctrl + 1",
+    "description_ar": "الانتقال إلى النشاط",
+    "description_en": "Go to Activity"
+  },
+  {
+    "category": "Teams",
+    "key": "Ctrl + 2",
+    "description_ar": "الانتقال إلى الدردشة",
+    "description_en": "Go to Chat"
+  },
+  {
+    "category": "Teams",
+    "key": "Ctrl + 3",
+    "description_ar": "الانتقال إلى الفرق",
+    "description_en": "Go to Teams"
+  },
+  {
+    "category": "Teams",
+    "key": "Ctrl + 4",
+    "description_ar": "الانتقال إلى المهام",
+    "description_en": "Go to Assignments"
+  },
+  {
+    "category": "Teams",
+    "key": "Ctrl + Shift + E",
+    "description_ar": "فتح الملفات",
+    "description_en": "Open Files"
+  },
+  {
+    "category": "Teams",
+    "key": "Ctrl + Shift + Space",
+    "description_ar": "رفع اليد (لطلب الكلمة)",
+    "description_en": "Raise hand"
+  },
+  {
+    "category": "Teams",
+    "key": "Ctrl + Shift + B",
+    "description_ar": "تمويه الخلفية",
+    "description_en": "Blur background"
+  },
+  {
+    "category": "Teams",
+    "key": "Ctrl + Shift + P",
+    "description_ar": "مشاركة الشاشة",
+    "description_en": "Share screen"
+  }
+]

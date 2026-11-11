@@ -1,0 +1,11 @@
+انشء لي .تطبيق ويب 
+لتحويل روابط مثل هذا 
+http://hsnower.shop:8080/
+8880
+034nazim1907
+19071907nazim
+الى رابط اكستريم مثل هذا 
+http://pro.netmos.ovh:7355/get.php?username=MMTVO89S7DY7CNV7SD&password=P7HIDSPCN580WXH90&type=m3u_plus&output=ts
+ا سواء ادخلت واحد او متعدد حولها كلها
+
+http://hsnower.shop:8080/get.php?username=034nazim1907&password=19071907nazim&type=m3u_plus&output=ts

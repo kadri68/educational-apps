@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق جدول تقدم التفاعل الكيميائي المتقدم</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(90deg, #2c3e50, #4a6491);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            border-bottom: 5px solid #e74c3c;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            gap: 30px;
+        }
+        
+        .reaction-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .reaction-selection {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quantities-input {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: #e74c3c;
+        }
+        
+        .reaction-control {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: white;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #e74c3c;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+        }
+        
+        button {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .reaction-equation {
+            background: #e3f2fd;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+            border: 2px solid #bbdefb;
+        }
+        
+        .equation {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 15px 0;
+            direction: ltr;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .progress-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            direction: ltr;
+        }
+        
+        .progress-table th {
+            background: linear-gradient(90deg, #2c3e50, #4a6491);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .progress-table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .progress-table tr:nth-child(even) {
+            background-color: #f5f7fa;
+        }
+        
+        .progress-table tr:hover {
+            background-color: #e3f2fd;
+        }
+        
+        .notes {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff8e1;
+            border-radius: 10px;
+            border-left: 5px solid #ffc107;
+        }
+        
+        .notes h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .notes ul {
+            padding-left: 25px;
+        }
+        
+        .notes li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 900px) {
+            .reaction-controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .equation {
+                font-size: 1.8rem;
+            }
+            
+            .reaction-info {
+                flex-direction: column;
+            }
+        }
+        
+        .reaction-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .info-box {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .info-label {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .info-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 10px 0;
+        }
+        
+        .reaction-type {
+            background: #4caf50;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .highlight {
+            background-color: #ffebee;
+            font-weight: bold;
+        }
+        
+        .stage-name {
+            font-weight: bold;
+            text-align: left;
+            padding-left: 15px;
+        }
+        
+        .chem-formula {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        
+        .developer-info {
+            background: #2c3e50;
+            color: white;
+            padding: 25px;
+            text-align: center;
+            margin-top: 30px;
+            border-radius: 10px;
+        }
+        
+        .developer-info h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .developer-info p {
+            margin: 8px 0;
+            font-size: 1.1rem;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .contact-icon {
+            font-size: 1.5rem;
+            color: #3498db;
+        }
+        
+        .theory-exp {
+            font-size: 0.9rem;
+            color: #555;
+            text-align: left;
+            padding: 5px;
+            background: #f0f7ff;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+        
+        .progress-value {
+            font-weight: bold;
+            color: #1a73e8;
+            margin-top: 5px;
+        }
+        
+        .reaction-examples {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .reaction-card {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #bbdefb;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .reaction-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .reaction-card h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .reaction-card .equation {
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+        
+        .reaction-card .type {
+            background: #4caf50;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+        
+        .selected-reaction {
+            border: 3px solid #e74c3c;
+            background: #d1e7ff;
+        }
+        
+        .quantity-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .input-group label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .input-group label i {
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-flask"></i> تطبيق جدول تقدم التفاعل الكيميائي المتقدم</h1>
+            <p>اختر تفاعلاً كيميائياً وأدخل كميات المواد المتفاعلة لرؤية جدول التقدم</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="reaction-controls">
+                <div class="reaction-selection">
+                    <h2 class="section-title"><i class="fas fa-vial"></i> اختر تفاعلاً كيميائياً</h2>
+                    
+                    <div class="reaction-control">
+                        <label for="reactionType">نوع التفاعل:</label>
+                        <select id="reactionType">
+                            <option value="acid-base">تفاعلات حمض-قاعدة</option>
+                            <option value="redox">تفاعلات أكسدة-اختزال</option>
+                        </select>
+                    </div>
+                    
+                    <div class="reaction-examples" id="reactionExamples">
+                        <!-- سيتم ملء التفاعلات بالجافاسكريبت -->
+                    </div>
+                </div>
+                
+                <div class="quantities-input">
+                    <h2 class="section-title"><i class="fas fa-calculator"></i> كميات المواد المتفاعلة</h2>
+                    
+                    <div class="reaction-control">
+                        <div class="selected-reaction-info" id="selectedReactionInfo">
+                            <p>اختر تفاعلاً من القائمة</p>
+                        </div>
+                        
+                        <div class="quantity-inputs" id="quantityInputs">
+                            <!-- سيتم ملء حقول الإدخال بالجافاسكريبت -->
+                        </div>
+                        
+                        <button id="calculateBtn"><i class="fas fa-calculator"></i> احسب التفاعل</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="result">
+                <h2 class="section-title"><i class="fas fa-chart-line"></i> نتيجة التفاعل</h2>
+                
+                <div class="reaction-equation">
+                    <div class="equation" id="equation">? + ? → ?</div>
+                    
+                    <div class="reaction-info" id="reactionInfo">
+                        <!-- سيتم ملء معلومات التفاعل بالجافاسكريبت -->
+                    </div>
+                </div>
+                
+                <h2 class="section-title"><i class="fas fa-table"></i> جدول تقدم التفاعل</h2>
+                
+                <div class="table-container">
+                    <table class="progress-table" id="progressTable">
+                        <thead>
+                            <tr>
+                                <th>المرحلة</th>
+                                <th>المتفاعل 1 (مول)</th>
+                                <th>المتفاعل 2 (مول)</th>
+                                <th>الناتج 1 (مول)</th>
+                                <th>الناتج 2 (مول)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم ملء الجدول بالبيانات عن طريق الجافاسكريبت -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="developer-info">
+            <h3>معلومات المطور</h3>
+            <p>الأستاذ محمد قادري</p>
+            <p>أستاذ بثانوية محمد الأخضر فيلالي</p>
+            <p>ولاية غرداية - الجزائر</p>
+            <p>مدرس مادة الفيزياء</p>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-envelope contact-icon"></i>
+                    <p>kadri68@gmail.com</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone contact-icon"></i>
+                    <p>0662692987</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const reactionType = document.getElementById('reactionType');
+            const reactionExamples = document.getElementById('reactionExamples');
+            const selectedReactionInfo = document.getElementById('selectedReactionInfo');
+            const quantityInputs = document.getElementById('quantityInputs');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const equation = document.getElementById('equation');
+            const reactionInfo = document.getElementById('reactionInfo');
+            const progressTable = document.getElementById('progressTable').querySelector('tbody');
+            
+            // تعريف التفاعلات الكيميائية
+            const reactions = {
+                'acid-base': [
+                    {
+                        id: 'r1',
+                        name: 'تفاعل حمض الهيدروكلوريك مع هيدروكسيد الصوديوم',
+                        equation: 'HCl + NaOH → NaCl + H₂O',
+                        reactants: [
+                            { name: 'HCl', label: 'حمض الهيدروكلوريك (HCl)', coefficient: 1 },
+                            { name: 'NaOH', label: 'هيدروكسيد الصوديوم (NaOH)', coefficient: 1 }
+                        ],
+                        products: [
+                            { name: 'NaCl', coefficient: 1 },
+                            { name: 'H₂O', coefficient: 1 }
+                        ],
+                        type: 'تفاعل تعادل'
+                    },
+                    {
+                        id: 'r2',
+                        name: 'تفاعل حمض الكبريتيك مع هيدروكسيد الصوديوم',
+                        equation: 'H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O',
+                        reactants: [
+                            { name: 'H₂SO₄', label: 'حمض الكبريتيك (H₂SO₄)', coefficient: 1 },
+                            { name: 'NaOH', label: 'هيدروكسيد الصوديوم (NaOH)', coefficient: 2 }
+                        ],
+                        products: [
+                            { name: 'Na₂SO₄', coefficient: 1 },
+                            { name: 'H₂O', coefficient: 2 }
+                        ],
+                        type: 'تفاعل تعادل'
+                    },
+                    {
+                        id: 'r3',
+                        name: 'تفاعل حمض الأسيتيك مع هيدروكسيد الصوديوم',
+                        equation: 'CH₃COOH + NaOH → CH₃COONa + H₂O',
+                        reactants: [
+                            { name: 'CH₃COOH', label: 'حمض الأسيتيك (CH₃COOH)', coefficient: 1 },
+                            { name: 'NaOH', label: 'هيدروكسيد الصوديوم (NaOH)', coefficient: 1 }
+                        ],
+                        products: [
+                            { name: 'CH₃COONa', coefficient: 1 },
+                            { name: 'H₂O', coefficient: 1 }
+                        ],
+                        type: 'تفاعل تعادل'
+                    }
+                ],
+                'redox': [
+                    {
+                        id: 'r4',
+                        name: 'تفاعل الزنك مع كبريتات النحاس',
+                        equation: 'Zn + CuSO₄ → ZnSO₄ + Cu',
+                        reactants: [
+                            { name: 'Zn', label: 'الزنك (Zn)', coefficient: 1 },
+                            { name: 'CuSO₄', label: 'كبريتات النحاس (CuSO₄)', coefficient: 1 }
+                        ],
+                        products: [
+                            { name: 'ZnSO₄', coefficient: 1 },
+                            { name: 'Cu', coefficient: 1 }
+                        ],
+                        type: 'تفاعل أكسدة-اختزال'
+                    },
+                    {
+                        id: 'r5',
+                        name: 'تفاعل الحديد مع كبريتات النحاس',
+                        equation: 'Fe + CuSO₄ → FeSO₄ + Cu',
+                        reactants: [
+                            { name: 'Fe', label: 'الحديد (Fe)', coefficient: 1 },
+                            { name: 'CuSO₄', label: 'كبريتات النحاس (CuSO₄)', coefficient: 1 }
+                        ],
+                        products: [
+                            { name: 'FeSO₄', coefficient: 1 },
+                            { name: 'Cu', coefficient: 1 }
+                        ],
+                        type: 'تفاعل أكسدة-اختزال'
+                    },
+                    {
+                        id: 'r6',
+                        name: 'تفاعل ثنائي كرومات البوتاسيوم مع شوارد الحديد',
+                        equation: 'Cr₂O₇²⁻ + 6Fe²⁺ + 14H⁺ → 2Cr³⁺ + 6Fe³⁺ + 7H₂O',
+                        reactants: [
+                            { name: 'K₂Cr₂O₇', label: 'ثنائي كرومات البوتاسيوم (K₂Cr₂O₇)', coefficient: 1 },
+                            { name: 'Fe²⁺', label: 'شوارد الحديد الثنائي (Fe²⁺)', coefficient: 6 }
+                        ],
+                        products: [
+                            { name: 'Cr³⁺', coefficient: 2 },
+                            { name: 'Fe³⁺', coefficient: 6 }
+                        ],
+                        type: 'تفاعل أكسدة-اختزال'
+                    }
+                ]
+            };
+            
+            let selectedReaction = null;
+            
+            // عرض التفاعلات حسب النوع
+            function displayReactions(type) {
+                reactionExamples.innerHTML = '';
+                reactions[type].forEach(reaction => {
+                    const card = document.createElement('div');
+                    card.className = 'reaction-card';
+                    card.dataset.id = reaction.id;
+                    card.innerHTML = `
+                        <h4>${reaction.name}</h4>
+                        <div class="equation">${reaction.equation}</div>
+                        <div class="type">${reaction.type}</div>
+                    `;
+                    card.addEventListener('click', () => selectReaction(reaction));
+                    reactionExamples.appendChild(card);
+                });
+            }
+            
+            // اختيار تفاعل
+            function selectReaction(reaction) {
+                selectedReaction = reaction;
+                
+                // إزالة التحديد من جميع البطاقات
+                document.querySelectorAll('.reaction-card').forEach(card => {
+                    card.classList.remove('selected-reaction');
+                });
+                
+                // إضافة التحديد للبطاقة المختارة
+                document.querySelector(`.reaction-card[data-id="${reaction.id}"]`).classList.add('selected-reaction');
+                
+                // تحديث معلومات التفاعل المختار
+                selectedReactionInfo.innerHTML = `
+                    <h3>${reaction.name}</h3>
+                    <div class="equation">${reaction.equation}</div>
+                    <div class="type">${reaction.type}</div>
+                `;
+                
+                // تحديث حقول إدخال الكميات
+                quantityInputs.innerHTML = '';
+                reaction.reactants.forEach((reactant, index) => {
+                    const inputGroup = document.createElement('div');
+                    inputGroup.className = 'input-group';
+                    inputGroup.innerHTML = `
+                        <label><i class="fas fa-atom"></i> ${reactant.label}</label>
+                        <input type="number" id="qty${index+1}" min="0.1" step="0.1" value="${index === 0 ? 2.0 : 2.0}" placeholder="الكمية بالمول">
+                    `;
+                    quantityInputs.appendChild(inputGroup);
+                });
+            }
+            
+            // حساب التفاعل
+            function calculateReaction() {
+                if (!selectedReaction) {
+                    alert('الرجاء اختيار تفاعل كيميائي أولاً');
+                    return;
+                }
+                
+                const qty1 = parseFloat(document.getElementById('qty1').value);
+                const qty2 = parseFloat(document.getElementById('qty2').value);
+                
+                if (!qty1 || !qty2) {
+                    alert('الرجاء إدخال كميات المواد المتفاعلة');
+                    return;
+                }
+                
+                // تحديث معادلة التفاعل
+                equation.textContent = selectedReaction.equation;
+                
+                // حساب المتفاعل المحدد والناتج النظري
+                const coeff1 = selectedReaction.reactants[0].coefficient;
+                const coeff2 = selectedReaction.reactants[1].coefficient;
+                const coeffProduct1 = selectedReaction.products[0].coefficient;
+                
+                const ratio1 = qty1 / coeff1;
+                const ratio2 = qty2 / coeff2;
+                
+                const limitingRatio = Math.min(ratio1, ratio2);
+                const limitingReactant = ratio1 <= ratio2 ? 
+                    selectedReaction.reactants[0].name : 
+                    selectedReaction.reactants[1].name;
+                
+                const theoreticalYield = (limitingRatio * coeffProduct1).toFixed(2);
+                const maxProgress = limitingRatio.toFixed(2);
+                
+                // تحديث معلومات التفاعل
+                reactionInfo.innerHTML = `
+                    <div class="info-box">
+                        <div class="info-label">نوع التفاعل</div>
+                        <div class="info-value">${selectedReaction.type}</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">المتفاعل المحدد</div>
+                        <div class="info-value">${limitingReactant}</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">الناتج النظري</div>
+                        <div class="info-value">${theoreticalYield} مول</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">التقدم الأعظمي</div>
+                        <div class="info-value">${maxProgress} مول</div>
+                    </div>
+                `;
+                
+                // إنشاء جدول تقدم التفاعل
+                createProgressTable(qty1, qty2, limitingRatio);
+            }
+            
+            // إنشاء جدول تقدم التفاعل
+            function createProgressTable(qty1, qty2, limitingRatio) {
+                progressTable.innerHTML = '';
+                
+                const coeff1 = selectedReaction.reactants[0].coefficient;
+                const coeff2 = selectedReaction.reactants[1].coefficient;
+                const coeffProd1 = selectedReaction.products[0].coefficient;
+                const coeffProd2 = selectedReaction.products[1].coefficient;
+                
+                const limitingReactant = limitingRatio === qty1/coeff1 ? 
+                    selectedReaction.reactants[0].name : 
+                    selectedReaction.reactants[1].name;
+                
+                // مراحل التفاعل: ابتدائية، انتقالية، نهائية
+                const stages = [
+                    { name: "المرحلة الابتدائية", progress: 0 },
+                    { name: "المرحلة الانتقالية", progress: 0.5 },
+                    { name: "المرحلة النهائية", progress: 1 }
+                ];
+                
+                stages.forEach(stage => {
+                    const progress = stage.progress;
+                    const reacted = limitingRatio * progress;
+                    
+                    // حساب الكميات المتبقية للمواد المتفاعلة
+                    const remaining1 = Math.max(0, qty1 - (coeff1 * reacted)).toFixed(2);
+                    const remaining2 = Math.max(0, qty2 - (coeff2 * reacted)).toFixed(2);
+                    
+                    // حساب الكميات المنتجة
+                    const produced1 = (coeffProd1 * reacted).toFixed(2);
+                    const produced2 = (coeffProd2 * reacted).toFixed(2);
+                    
+                    // حساب التقدم كنسبة مئوية
+                    const progressPercent = (progress * 100).toFixed(0);
+                    
+                    // إنشاء الصف
+                    const row = document.createElement('tr');
+                    
+                    // إضافة اسم المرحلة
+                    const stageCell = document.createElement('td');
+                    stageCell.innerHTML = `
+                        <div>${stage.name}</div>
+                        <div class="progress-value">${progressPercent}%</div>
+                    `;
+                    
+                    // خلايا المواد المتفاعلة
+                    const reactant1Cell = document.createElement('td');
+                    reactant1Cell.innerHTML = `
+                        <div>${selectedReaction.reactants[0].name}: ${remaining1} مول</div>
+                        <div class="theory-exp">نظري: ${qty1.toFixed(2)} - ${coeff1}ξ</div>
+                    `;
+                    if (selectedReaction.reactants[0].name === limitingReactant && progress < 1 && remaining1 <= 0) {
+                        reactant1Cell.style.color = 'red';
+                        reactant1Cell.style.fontWeight = 'bold';
+                    }
+                    
+                    const reactant2Cell = document.createElement('td');
+                    reactant2Cell.innerHTML = `
+                        <div>${selectedReaction.reactants[1].name}: ${remaining2} مول</div>
+                        <div class="theory-exp">نظري: ${qty2.toFixed(2)} - ${coeff2}ξ</div>
+                    `;
+                    if (selectedReaction.reactants[1].name === limitingReactant && progress < 1 && remaining2 <= 0) {
+                        reactant2Cell.style.color = 'red';
+                        reactant2Cell.style.fontWeight = 'bold';
+                    }
+                    
+                    // خلايا النواتج
+                    const product1Cell = document.createElement('td');
+                    product1Cell.innerHTML = `
+                        <div>${selectedReaction.products[0].name}: ${produced1} مول</div>
+                        <div class="theory-exp">نظري: ${coeffProd1}ξ</div>
+                    `;
+                    
+                    const product2Cell = document.createElement('td');
+                    product2Cell.innerHTML = `
+                        <div>${selectedReaction.products[1].name}: ${produced2} مول</div>
+                        <div class="theory-exp">نظري: ${coeffProd2}ξ</div>
+                    `;
+                    
+                    // إضافة الخلايا للصف
+                    row.appendChild(stageCell);
+                    row.appendChild(reactant1Cell);
+                    row.appendChild(reactant2Cell);
+                    row.appendChild(product1Cell);
+                    row.appendChild(product2Cell);
+                    
+                    // تمييز المرحلة النهائية
+                    if (stage.name === "المرحلة النهائية") {
+                        row.classList.add('highlight');
+                    }
+                    
+                    // إضافة الصف للجدول
+                    progressTable.appendChild(row);
+                    
+                    // إضافة صف للنظرية مع القيم العددية
+                    const theoryRow = document.createElement('tr');
+                    theoryRow.classList.add('theory-row');
+                    
+                    const theoryCell = document.createElement('td');
+                    theoryCell.colSpan = 5;
+                    theoryCell.style.textAlign = "center";
+                    theoryCell.style.backgroundColor = "#e3f2fd";
+                    theoryCell.style.fontStyle = "italic";
+                    theoryCell.textContent = `ξ = ${reacted.toFixed(2)} مول`;
+                    
+                    theoryRow.appendChild(theoryCell);
+                    progressTable.appendChild(theoryRow);
+                });
+            }
+            
+            // تهيئة التطبيق
+            function initApp() {
+                // عرض التفاعلات الأولية
+                displayReactions('acid-base');
+                
+                // اختيار تفاعل افتراضي
+                selectReaction(reactions['acid-base'][0]);
+                
+                // إضافة مستمعات الأحداث
+                reactionType.addEventListener('change', () => {
+                    displayReactions(reactionType.value);
+                });
+                
+                calculateBtn.addEventListener('click', calculateReaction);
+            }
+            
+            // بدء التطبيق
+            initApp();
+        });
+    </script>
+</body>
+</html>

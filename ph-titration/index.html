@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 تطبيق المعايرة pH-métrique</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* إعدادات عامة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        /* Buttons */
+        .btn-toggle, .btn-primary, .btn-secondary {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .btn-toggle {
+            background: #34495e;
+            color: white;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 18px;
+            padding: 15px 40px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-toggle:hover, .btn-primary:hover, .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Input Panel */
+        .input-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-control optgroup {
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .form-control option {
+            padding: 8px 12px;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+            animation: progress 2s ease-in-out infinite;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        /* Results Panel */
+        .results-panel {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chart-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .info-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        .info-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-card h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .info-card p {
+            margin-bottom: 8px;
+            color: #34495e;
+        }
+
+        .info-card span {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .result-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Error Panel */
+        .error-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #e74c3c;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(231, 76, 60, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        }
+
+        body.dark-mode .header,
+        body.dark-mode .card,
+        body.dark-mode .chart-card,
+        body.dark-mode .info-card {
+            background: rgba(52, 73, 94, 0.95);
+            color: #ecf0f1;
+        }
+
+        body.dark-mode .header h1,
+        body.dark-mode .card h3,
+        body.dark-mode .info-card h4,
+        body.dark-mode .form-group label {
+            color: #ecf0f1;
+        }
+
+        body.dark-mode .form-control {
+            background: #34495e;
+            border-color: #4a5f7a;
+            color: #ecf0f1;
+        }
+
+        body.dark-mode .btn-toggle {
+            background: #f39c12;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .results-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .input-panel {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .chart-controls {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .btn-primary {
+                font-size: 16px;
+                padding: 12px 30px;
+            }
+            
+            .chart-container {
+                height: 300px;
+            }
+            
+            .info-card {
+                padding: 15px;
+            }
+            
+            .form-control {
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .card, .chart-card, .info-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🧪 تطبيق المعايرة pH-métrique</h1>
+            <div class="header-controls">
+                <button id="darkModeToggle" class="btn-toggle">🌙 الوضع الداكن</button>
+            </div>
+        </header>
+
+        <!-- Input Panel -->
+        <section class="input-panel">
+            <div class="card">
+                <h3>⚗️ الحمض (الجسم المعاير)</h3>
+                <div class="form-group">
+                    <label for="acidSelect">نوع الحمض:</label>
+                    <select id="acidSelect" class="form-control">
+                        <option value="">اختر الحمض...</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="acidConc">التركيز (mol/L):</label>
+                        <input type="number" id="acidConc" class="form-control" 
+                               placeholder="0.1" step="0.001" min="0.001">
+                    </div>
+                    <div class="form-group">
+                        <label for="acidVolume">الحجم (mL):</label>
+                        <input type="number" id="acidVolume" class="form-control" 
+                               placeholder="25" step="1" min="1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🧪 الأساس (الجسم المعيار)</h3>
+                <div class="form-group">
+                    <label for="baseSelect">نوع الأساس:</label>
+                    <select id="baseSelect" class="form-control">
+                        <option value="">اختر الأساس...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="baseConc">التركيز (mol/L):</label>
+                    <input type="number" id="baseConc" class="form-control" 
+                           placeholder="0.1" step="0.001" min="0.001">
+                </div>
+            </div>
+        </section>
+
+        <!-- Control Panel -->
+        <section class="control-panel">
+            <button id="calculateBtn" class="btn-primary">🔬 ابدأ المعايرة</button>
+            <div class="progress-bar" id="progressBar" style="display: none;">
+                <div class="progress-fill"></div>
+            </div>
+        </section>
+
+        <!-- Results Panel -->
+        <section class="results-panel" id="resultsPanel" style="display: none;">
+            <div class="chart-card">
+                <h3>📈 منحنى المعايرة</h3>
+                <div class="chart-container">
+                    <canvas id="phChart"></canvas>
+                </div>
+                <div class="chart-controls">
+                    <button id="saveChart" class="btn-secondary">💾 حفظ الرسم</button>
+                    <button id="exportData" class="btn-secondary">📊 تصدير البيانات</button>
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <div class="info-card">
+                    <h4>📍 نقطة التكافؤ</h4>
+                    <div id="equivalencePoint">
+                        <p>الحجم: <span id="eqVolume">--</span> mL</p>
+                        <p>pH: <span id="eqPH">--</span></p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h4>🔬 معلومات إضافية</h4>
+                    <div id="additionalInfo">
+                        <p>ثابت الحموضة Ka: <span id="kaValue">--</span></p>
+                        <p>نوع المعايرة: <span id="titrationType">--</span></p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h4>🎯 حساب الحجم لـ pH محدد</h4>
+                    <div class="form-row">
+                        <input type="number" id="targetPH" class="form-control" 
+                               placeholder="pH المطلوب" step="0.1" min="0" max="14">
+                        <button id="findVolumeBtn" class="btn-secondary">احسب</button>
+                    </div>
+                    <div id="volumeResult"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Error Panel -->
+        <div id="errorPanel" class="error-panel" style="display: none;">
+            <span id="errorMessage"></span>
+            <button id="closeError" class="close-btn">×</button>
+        </div>
+    </div>
+
+    <script>
+        // بيانات الأحماض والأسس
+        const chemicalData = {
+            acids: {
+                strong: [
+                    { name: "حمض الهيدروكلوريك", formula: "HCl", ka: "strong", type: "strong" },
+                    { name: "حمض النتريك", formula: "HNO₃", ka: "strong", type: "strong" },
+                    { name: "حمض الكبريتيك", formula: "H₂SO₄", ka: "strong", type: "strong" },
+                    { name: "حمض البروميك", formula: "HBr", ka: "strong", type: "strong" },
+                    { name: "حمض اليوديك", formula: "HI", ka: "strong", type: "strong" }
+                ],
+                weak: [
+                    { name: "حمض الأسيتيك", formula: "CH₃COOH", ka: 1.8e-5, type: "weak" },
+                    { name: "حمض الفورميك", formula: "HCOOH", ka: 1.8e-4, type: "weak" },
+                    { name: "حمض البنزويك", formula: "C₆H₅COOH", ka: 6.3e-5, type: "weak" },
+                    { name: "حمض الكربونيك", formula: "H₂CO₃", ka: 4.3e-7, type: "weak" },
+                    { name: "حمض الفوسفوريك", formula: "H₃PO₄", ka: 7.5e-3, type: "weak" },
+                    { name: "حمض اللاكتيك", formula: "C₃H₆O₃", ka: 1.4e-4, type: "weak" },
+                    { name: "حمض الأوكساليك", formula: "H₂C₂O₄", ka: 5.9e-2, type: "weak" }
+                ]
+            },
+            bases: {
+                strong: [
+                    { name: "هيدروكسيد الصوديوم", formula: "NaOH", kb: "strong", type: "strong" },
+                    { name: "هيدروكسيد البوتاسيوم", formula: "KOH", kb: "strong", type: "strong" },
+                    { name: "هيدروكسيد الليثيوم", formula: "LiOH", kb: "strong", type: "strong" },
+                    { name: "هيدروكسيد الباريوم", formula: "Ba(OH)₂", kb: "strong", type: "strong" },
+                    { name: "هيدروكسيد الكالسيوم", formula: "Ca(OH)₂", kb: "strong", type: "strong" }
+                ],
+                weak: [
+                    { name: "الأمونيا", formula: "NH₃", kb: 1.8e-5, type: "weak" },
+                    { name: "ميثيل أمين", formula: "CH₃NH₂", kb: 4.4e-4, type: "weak" },
+                    { name: "إيثيل أمين", formula: "C₂H₅NH₂", kb: 5.6e-4, type: "weak" },
+                    { name: "بيريدين", formula: "C₅H₅N", kb: 1.7e-9, type: "weak" },
+                    { name: "هيدرازين", formula: "N₂H₄", kb: 1.3e-6, type: "weak" }
+                ]
+            }
+        };
+
+        // محرك حسابات المعايرة
+        class TitrationCalculator {
+            constructor() {
+                this.Kw = 1e-14; // ثابت الماء
+            }
+
+            // تحديد نوع المعايرة
+            getTitrationType(acid, base) {
+                if (acid.type === 'strong' && base.type === 'strong') {
+                    return 'حمض قوي - أساس قوي';
+                } else if (acid.type === 'weak' && base.type === 'strong') {
+                    return 'حمض ضعيف - أساس قوي';
+                } else if (acid.type === 'strong' && base.type === 'weak') {
+                    return 'حمض قوي - أساس ضعيف';
+                } else {
+                    return 'حمض ضعيف - أساس ضعيف';
+                }
+            }
+
+            // حساب pH للأحماض القوية مع الأسس القوية
+            calculateStrongAcidStrongBase(acidConc, acidVol, baseConc, baseVol) {
+                const acidMoles = (acidConc * acidVol) / 1000;
+                const baseMoles = (baseConc * baseVol) / 1000;
+                const totalVolume = (acidVol + baseVol) / 1000;
+
+                const netMoles = acidMoles - baseMoles;
+
+                if (Math.abs(netMoles) < 1e-10) {
+                    return 7.0;
+                } else if (netMoles > 0) {
+                    const excessAcidConc = netMoles / totalVolume;
+                    return -Math.log10(excessAcidConc);
+                } else {
+                    const excessBaseConc = -netMoles / totalVolume;
+                    const pOH = -Math.log10(excessBaseConc);
+                    return 14 - pOH;
+                }
+            }
+
+            // حساب pH للأحماض الضعيفة مع الأسس القوية
+            calculateWeakAcidStrongBase(acid, acidConc, acidVol, baseConc, baseVol) {
+                const acidMoles = (acidConc * acidVol) / 1000;
+                const baseMoles = (baseConc * baseVol) / 1000;
+                const totalVolume = (acidVol + baseVol) / 1000;
+
+                if (baseMoles === 0) {
+                    return this.calculateWeakAcidPH(acid.ka, acidConc);
+                }
+
+                if (baseMoles < acidMoles) {
+                    const remainingAcid = (acidMoles - baseMoles) / totalVolume;
+                    const conjugateBase = baseMoles / totalVolume;
+                    const pKa = -Math.log10(acid.ka);
+                    
+                    if (remainingAcid <= 0 || conjugateBase <= 0) {
+                        return this.calculateWeakAcidPH(acid.ka, acidConc);
+                    }
+                    
+                    return pKa + Math.log10(conjugateBase / remainingAcid);
+                } else if (baseMoles > acidMoles) {
+                    const excessBase = (baseMoles - acidMoles) / totalVolume;
+                    const pOH = -Math.log10(excessBase);
+                    return 14 - pOH;
+                } else {
+                    const saltConc = acidMoles / totalVolume;
+                    const Kb = this.Kw / acid.ka;
+                    const OH_conc = Math.sqrt(Kb * saltConc);
+                    const pOH = -Math.log10(OH_conc);
+                    return 14 - pOH;
+                }
+            }
+
+            // حساب pH للأحماض القوية مع الأسس الضعيفة
+            calculateStrongAcidWeakBase(base, acidConc, acidVol, baseConc, baseVol) {
+                const acidMoles = (acidConc * acidVol) / 1000;
+                const baseMoles = (baseConc * baseVol) / 1000;
+                const totalVolume = (acidVol + baseVol) / 1000;
+
+                if (baseMoles === 0) {
+                    return -Math.log10(acidConc);
+                }
+
+                if (acidMoles > baseMoles) {
+                    const excessAcid = (acidMoles - baseMoles) / totalVolume;
+                    return -Math.log10(excessAcid);
+                } else if (acidMoles < baseMoles) {
+                    const excessBase = (baseMoles - acidMoles) / totalVolume;
+                    const OH_conc = Math.sqrt(base.kb * excessBase);
+                    const pOH = -Math.log10(OH_conc);
+                    return 14 - pOH;
+                } else {
+                    const saltConc = acidMoles / totalVolume;
+                    const Ka = this.Kw / base.kb;
+                    const H_conc = Math.sqrt(Ka * saltConc);
+                    return -Math.log10(H_conc);
+                }
+            }
+
+            // حساب pH للأحماض الضعيفة مع الأسس الضعيفة
+            calculateWeakAcidWeakBase(acid, base, acidConc, acidVol, baseConc, baseVol) {
+                const acidMoles = (acidConc * acidVol) / 1000;
+                const baseMoles = (baseConc * baseVol) / 1000;
+                
+                if (baseMoles === 0) {
+                    return this.calculateWeakAcidPH(acid.ka, acidConc);
+                }
+                
+                if (Math.abs(acidMoles - baseMoles) < 1e-10) {
+                    const pKa = -Math.log10(acid.ka);
+                    const pKb = -Math.log10(base.kb);
+                    return 7 + 0.5 * (pKa - pKb);
+                }
+                
+                if (baseMoles < acidMoles) {
+                    const totalVolume = (acidVol + baseVol) / 1000;
+                    const remainingAcid = (acidMoles - baseMoles) / totalVolume;
+                    const conjugateBase = baseMoles / totalVolume;
+                    const pKa = -Math.log10(acid.ka);
+                    return pKa + Math.log10(conjugateBase / remainingAcid);
+                } else {
+                    const totalVolume = (acidVol + baseVol) / 1000;
+                    const excessBase = (baseMoles - acidMoles) / totalVolume;
+                    const OH_conc = Math.sqrt(base.kb * excessBase);
+                    const pOH = -Math.log10(OH_conc);
+                    return 14 - pOH;
+                }
+            }
+
+            // حساب pH للحمض الضعيف
+            calculateWeakAcidPH(ka, concentration) {
+                const H_conc = Math.sqrt(ka * concentration);
+                return -Math.log10(H_conc);
+            }
+
+            // الدالة الرئيسية لحساب pH
+            calculatePH(acid, base, acidConc, acidVol, baseConc, baseVol) {
+                try {
+                    const type = this.getTitrationType(acid, base);
+                    
+                    let pH;
+                    switch (type) {
+                        case 'حمض قوي - أساس قوي':
+                            pH = this.calculateStrongAcidStrongBase(acidConc, acidVol, baseConc, baseVol);
+                            break;
+                        case 'حمض ضعيف - أساس قوي':
+                            pH = this.calculateWeakAcidStrongBase(acid, acidConc, acidVol, baseConc, baseVol);
+                            break;
+                        case 'حمض قوي - أساس ضعيف':
+                            pH = this.calculateStrongAcidWeakBase(base, acidConc, acidVol, baseConc, baseVol);
+                            break;
+                        case 'حمض ضعيف - أساس ضعيف':
+                            pH = this.calculateWeakAcidWeakBase(acid, base, acidConc, acidVol, baseConc, baseVol);
+                            break;
+                        default:
+                            pH = 7;
+                    }
+                    
+                    return Math.max(0, Math.min(14, pH));
+                } catch (error) {
+                    console.error('خطأ في حساب pH:', error);
+                    return 7;
+                }
+            }
+
+            // إنشاء بيانات المنحنى
+            generateTitrationCurve(acid, base, acidConc, acidVol, baseConc, maxVolume = 50) {
+                const dataPoints = [];
+                const step = maxVolume / 200;
+                
+                for (let volume = 0; volume <= maxVolume; volume += step) {
+                    const pH = this.calculatePH(acid, base, acidConc, acidVol, baseConc, volume);
+                    dataPoints.push({
+                        x: parseFloat(volume.toFixed(2)),
+                        y: parseFloat(pH.toFixed(3))
+                    });
+                }
+                
+                return dataPoints;
+            }
+
+            // العثور على نقطة التكافؤ
+            findEquivalencePoint(dataPoints) {
+                let maxDerivative = 0;
+                let equivalenceIndex = 0;
+                
+                for (let i = 1; i < dataPoints.length - 1; i++) {
+                    const derivative = Math.abs(
+                        (dataPoints[i + 1].y - dataPoints[i - 1].y) / 
+                        (dataPoints[i + 1].x - dataPoints[i - 1].x)
+                    );
+                    
+                    if (derivative > maxDerivative) {
+                        maxDerivative = derivative;
+                        equivalenceIndex = i;
+                    }
+                }
+                
+                return dataPoints[equivalenceIndex];
+            }
+
+            // العثور على الحجم المطلوب للوصول إلى pH معين
+            findVolumeForPH(acid, base, acidConc, acidVol, baseConc, targetPH) {
+                const tolerance = 0.01;
+                let minVolume = 0;
+                let maxVolume = 100;
+                let iterations = 0;
+                const maxIterations = 100;
+                
+                while (iterations < maxIterations && (maxVolume - minVolume) > 0.001) {
+                    const midVolume = (minVolume + maxVolume) / 2;
+                    const currentPH = this.calculatePH(acid, base, acidConc, acidVol, baseConc, midVolume);
+                    
+                    if (Math.abs(currentPH - targetPH) < tolerance) {
+                        return midVolume;
+                    }
+                    
+                    if (currentPH < targetPH) {
+                        minVolume = midVolume;
+                    } else {
+                        maxVolume = midVolume;
+                    }
+                    
+                    iterations++;
+                }
+                
+                return (minVolume + maxVolume) / 2;
+            }
+        }
+
+        // إدارة واجهة المستخدم
+        class TitrationApp {
+            constructor() {
+                this.calculator = new TitrationCalculator();
+                this.chart = null;
+                this.isDarkMode = false;
+                
+                this.initializeElements();
+                this.populateSelects();
+                this.bindEvents();
+            }
+
+            initializeElements() {
+                this.elements = {
+                    acidSelect: document.getElementById('acidSelect'),
+                    baseSelect: document.getElementById('baseSelect'),
+                    acidConc: document.getElementById('acidConc'),
+                    acidVolume: document.getElementById('acidVolume'),
+                    baseConc: document.getElementById('baseConc'),
+                    calculateBtn: document.getElementById('calculateBtn'),
+                    progressBar: document.getElementById('progressBar'),
+                    resultsPanel: document.getElementById('resultsPanel'),
+                    darkModeToggle: document.getElementById('darkModeToggle'),
+                    errorPanel: document.getElementById('errorPanel'),
+                    errorMessage: document.getElementById('errorMessage'),
+                    closeError: document.getElementById('closeError'),
+                    targetPH: document.getElementById('targetPH'),
+                    findVolumeBtn: document.getElementById('findVolumeBtn'),
+                    volumeResult: document.getElementById('volumeResult'),
+                    saveChart: document.getElementById('saveChart'),
+                    exportData: document.getElementById('exportData')
+                };
+            }
+
+            populateSelects() {
+                // ملء قائمة الأحماض
+                const acidOptgroup1 = document.createElement('optgroup');
+                acidOptgroup1.label = 'الأحماض القوية';
+                chemicalData.acids.strong.forEach(acid => {
+                    const option = document.createElement('option');
+                    option.value = JSON.stringify(acid);
+                    option.textContent = `${acid.name} (${acid.formula})`;
+                    acidOptgroup1.appendChild(option);
+                });
+
+                const acidOptgroup2 = document.createElement('optgroup');
+                acidOptgroup2.label = 'الأحماض الضعيفة';
+                chemicalData.acids.weak.forEach(acid => {
+                    const option = document.createElement('option');
+                    option.value = JSON.stringify(acid);
+                    option.textContent = `${acid.name} (${acid.formula})`;
+                    acidOptgroup2.appendChild(option);
+                });
+
+                this.elements.acidSelect.appendChild(acidOptgroup1);
+                this.elements.acidSelect.appendChild(acidOptgroup2);
+
+                // ملء قائمة الأسس
+                const baseOptgroup1 = document.createElement('optgroup');
+                baseOptgroup1.label = 'الأسس القوية';
+                chemicalData.bases.strong.forEach(base => {
+                    const option = document.createElement('option');
+                    option.value = JSON.stringify(base);
+                    option.textContent = `${base.name} (${base.formula})`;
+                    baseOptgroup1.appendChild(option);
+                });
+
+                const baseOptgroup2 = document.createElement('optgroup');
+                baseOptgroup2.label = 'الأسس الضعيفة';
+                chemicalData.bases.weak.forEach(base => {
+                    const option = document.createElement('option');
+                    option.value = JSON.stringify(base);
+                    option.textContent = `${base.name} (${base.formula})`;
+                    baseOptgroup2.appendChild(option);
+                });
+
+                this.elements.baseSelect.appendChild(baseOptgroup1);
+                this.elements.baseSelect.appendChild(baseOptgroup2);
+            }
+
+            bindEvents() {
+                this.elements.calculateBtn.addEventListener('click', () => this.performTitration());
+                this.elements.darkModeToggle.addEventListener('click', () => this.toggleDarkMode());
+                this.elements.closeError.addEventListener('click', () => this.hideError());
+                this.elements.findVolumeBtn.addEventListener('click', () => this.findVolumeForTargetPH());
+                this.elements.saveChart.addEventListener('click', () => this.saveChart());
+                this.elements.exportData.addEventListener('click', () => this.exportData());
+            }
+
+            validateInputs() {
+                const acid = this.elements.acidSelect.value;
+                const base = this.elements.baseSelect.value;
+                const acidConc = parseFloat(this.elements.acidConc.value);
+                const acidVolume = parseFloat(this.elements.acidVolume.value);
+                const baseConc = parseFloat(this.elements.baseConc.value);
+
+                if (!acid) throw new Error('يرجى اختيار نوع الحمض');
+                if (!base) throw new Error('يرجى اختيار نوع الأساس');
+                if (!acidConc || acidConc <= 0) throw new Error('يرجى إدخال تركيز صحيح للحمض');
+                if (!acidVolume || acidVolume <= 0) throw new Error('يرجى إدخال حجم صحيح للحمض');
+                if (!baseConc || baseConc <= 0) throw new Error('يرجى إدخال تركيز صحيح للأساس');
+
+                return {
+                    acid: JSON.parse(acid),
+                    base: JSON.parse(base),
+                    acidConc,
+                    acidVolume,
+                    baseConc
+                };
+            }
+
+            async performTitration() {
+                try {
+                    const inputs = this.validateInputs();
+                    
+                    this.showProgress();
+                    this.elements.calculateBtn.disabled = true;
+
+                    // محاكاة وقت المعالجة
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+
+                    const dataPoints = this.calculator.generateTitrationCurve(
+                        inputs.acid, inputs.base, inputs.acidConc, 
+                        inputs.acidVolume, inputs.baseConc
+                    );
+
+                    const equivalencePoint = this.calculator.findEquivalencePoint(dataPoints);
+                    const titrationType = this.calculator.getTitrationType(inputs.acid, inputs.base);
+
+                    this.displayResults(dataPoints, equivalencePoint, inputs.acid, titrationType);
+                    this.hideProgress();
+
+                } catch (error) {
+                    this.showError(error.message);
+                    this.hideProgress();
+                } finally {
+                    this.elements.calculateBtn.disabled = false;
+                }
+            }
+
+            displayResults(dataPoints, equivalencePoint, acid, titrationType) {
+                // عرض نقطة التكافؤ
+                document.getElementById('eqVolume').textContent = equivalencePoint.x.toFixed(2);
+                document.getElementById('eqPH').textContent = equivalencePoint.y.toFixed(2);
+
+                // عرض المعلومات الإضافية
+                const kaDisplay = acid.ka === 'strong' ? 'حمض قوي' : acid.ka.toExponential(2);
+                document.getElementById('kaValue').textContent = kaDisplay;
+                document.getElementById('titrationType').textContent = titrationType;
+
+                // إنشاء الرسم البياني
+                this.createChart(dataPoints, equivalencePoint);
+
+                // عرض لوحة النتائج
+                this.elements.resultsPanel.style.display = 'grid';
+            }
+
+            createChart(dataPoints, equivalencePoint) {
+                const ctx = document.getElementById('phChart').getContext('2d');
+                
+                if (this.chart) {
+                    this.chart.destroy();
+                }
+
+                this.chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: 'منحنى المعايرة',
+                            data: dataPoints,
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            borderWidth: 3,
+                            pointRadius: 0,
+                            pointHoverRadius: 5,
+                            tension: 0.1
+                        }, {
+                            label: 'نقطة التكافؤ',
+                            data: [equivalencePoint],
+                            backgroundColor: '#e74c3c',
+                            borderColor: '#c0392b',
+                            pointRadius: 8,
+                            pointHoverRadius: 10,
+                            showLine: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    font: {
+                                        size: 14,
+                                        family: 'Segoe UI'
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `الحجم: ${context.parsed.x.toFixed(2)} mL, pH: ${context.parsed.y.toFixed(2)}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                position: 'bottom',
+                                title: {
+                                    display: true,
+                                    text: 'حجم الأساس المضاف (mL)',
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.1)'
+                                }
+                            },
+                            y: {
+                                min: 0,
+                                max: 14,
+                                title: {
+                                    display: true,
+                                    text: 'pH',
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.1)'
+                                }
+                            }
+                        },
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        }
+                    }
+                });
+            }
+
+            findVolumeForTargetPH() {
+                try {
+                    const inputs = this.validateInputs();
+                    const targetPH = parseFloat(this.elements.targetPH.value);
+
+                    if (!targetPH || targetPH < 0 || targetPH > 14) {
+                        throw new Error('يرجى إدخال قيمة pH صحيحة (0-14)');
+                    }
+
+                    const volume = this.calculator.findVolumeForPH(
+                        inputs.acid, inputs.base, inputs.acidConc,
+                        inputs.acidVolume, inputs.baseConc, targetPH
+                    );
+
+                    this.elements.volumeResult.innerHTML = `
+                        <div class="result-highlight">
+                            الحجم المطلوب: ${volume.toFixed(2)} mL
+                        </div>
+                    `;
+
+                } catch (error) {
+                    this.showError(error.message);
+                }
+            }
+
+            saveChart() {
+                if (this.chart) {
+                    const link = document.createElement('a');
+                    link.download = 'منحنى-المعايرة.png';
+                    link.href = this.chart.toBase64Image();
+                    link.click();
+                }
+            }
+
+            exportData() {
+                if (this.chart && this.chart.data.datasets[0].data) {
+                    const data = this.chart.data.datasets[0].data;
+                    let csvContent = "الحجم (mL),pH\n";
+                    
+                    data.forEach(point => {
+                        csvContent += `${point.x},${point.y}\n`;
+                    });
+
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'بيانات-المعايرة.csv';
+                    link.click();
+                }
+            }
+
+            showProgress() {
+                this.elements.progressBar.style.display = 'block';
+            }
+
+            hideProgress() {
+                this.elements.progressBar.style.display = 'none';
+            }
+
+            showError(message) {
+                this.elements.errorMessage.textContent = message;
+                this.elements.errorPanel.style.display = 'flex';
+                
+                setTimeout(() => {
+                    this.hideError();
+                }, 5000);
+            }
+
+            hideError() {
+                this.elements.errorPanel.style.display = 'none';
+            }
+
+            toggleDarkMode() {
+                this.isDarkMode = !this.isDarkMode;
+                document.body.classList.toggle('dark-mode', this.isDarkMode);
+                
+                const toggleBtn = this.elements.darkModeToggle;
+                toggleBtn.textContent = this.isDarkMode ? '☀️ الوضع الفاتح' : '🌙 الوضع الداكن';
+                
+                // تحديث لون الرسم البياني
+                if (this.chart) {
+                    const textColor = this.isDarkMode ? '#ecf0f1' : '#2c3e50';
+                    const gridColor = this.isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                    
+                    this.chart.options.plugins.legend.labels.color = textColor;
+                    this.chart.options.scales.x.title.color = textColor;
+                    this.chart.options.scales.y.title.color = textColor;
+                    this.chart.options.scales.x.ticks.color = textColor;
+                    this.chart.options.scales.y.ticks.color = textColor;
+                    this.chart.options.scales.x.grid.color = gridColor;
+                    this.chart.options.scales.y.grid.color = gridColor;
+                    
+                    this.chart.update();
+                }
+            }
+        }
+
+        // بدء التطبيق
+        document.addEventListener('DOMContentLoaded', () => {
+            new TitrationApp();
+        });
+    </script>
+</body>
+</html>

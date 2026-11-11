@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>حركة القذائف</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>【 حركة القذائف 】</h1>
+
+  <div class="info-buttons">
+    <button onclick="showInfo()">ℹ️ معلومات حول حركة القذائف</button>
+    <button onclick="showHelper()">🧭 المساعد</button>
+    <button onclick="showAbout()">👨‍🏫 من أنا</button>
+  </div>
+
+  <div>
+    <label>🔹 السرعة الابتدائية (m/s):</label>
+    <input type="number" id="v0" value="30">
+    <label>🔹 زاوية القذف (درجة):</label>
+    <input type="number" id="angle" value="45">
+    <label>🔹 الإحداثي الأفقي للنقطة الابتدائية x₀ (m):</label>
+    <input type="number" id="x0" value="0">
+    <label>🔹 الإحداثي الرأسي للنقطة الابتدائية y₀ (m):</label>
+    <input type="number" id="y0" value="0">
+    <button onclick="addTrajectory()">➕ أضف القذيفة للمقارنة</button>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="chart"></canvas>
+  </div>
+
+  <div id="actions">
+    <button onclick="printPage()">🖨️ طباعة الرسم والنتائج</button>
+    <button onclick="downloadCSV()">⬇️ تنزيل النتائج بصيغة CSV</button>
+  </div>
+
+  <div class="control-buttons">
+    <button class="clear-btn" onclick="clearData()">🗑️ مسح جميع البيانات</button>
+    <button class="exit-btn" onclick="exitExperiment()">🚪 الخروج من التجربة</button>
+  </div>
+
+  <h3>📊 ملخص النتائج:</h3>
+  <table id="resultsTable">
+    <tr>
+      <th>#</th>
+      <th>السرعة (m/s)</th>
+      <th>الزاوية (°)</th>
+      <th>زمن التحليق (s)</th>
+      <th>المدى (m)</th>
+      <th>أقصى ارتفاع (m)</th>
+    </tr>
+  </table>
+
+  <div id="summaryResults" class="results-summary" style="display: none;">
+    <h3>🏆 أفضل النتائج المحققة:</h3>
+    <div id="maxFlightTime" class="result-item">
+      <span class="result-label">⏱️ أطول زمن تحليق:</span>
+      <span class="result-value">-- ثانية</span>
+    </div>
+    <div id="maxRange" class="result-item">
+      <span class="result-label">🎯 أبعد مدى:</span>
+      <span class="result-value">-- متر</span>
+    </div>
+    <div id="maxHeight" class="result-item">
+      <span class="result-label">⬆️ أعلى ارتفاع:</span>
+      <span class="result-value">-- متر</span>
+    </div>
+    <div id="bestAngle" class="result-item">
+      <span class="result-label">📐 أفضل زاوية للمدى:</span>
+      <span class="result-value">-- درجة</span>
+    </div>
+    <div id="totalExperiments" class="result-item">
+      <span class="result-label">🧪 إجمالي التجارب:</span>
+      <span class="result-value">-- تجربة</span>
+    </div>
+  </div>
+
+  <!-- نافذة منبثقة -->
+  <div id="popup" class="popup">
+    <button onclick="closePopup()" class="popup-close">❌ إغلاق</button>
+    <div id="popupContent"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

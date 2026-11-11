@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كشف الشوارد الكيميائية بالكواشف</title>
+    <style>
+        /* تضمين نظام التصميم */
+        :root {
+            --color-white: rgba(255, 255, 255, 1);
+            --color-black: rgba(0, 0, 0, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-gray-400: rgba(119, 124, 124, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-brown-600: rgba(94, 82, 64, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-charcoal-800: rgba(38, 40, 40, 1);
+            --color-slate-900: rgba(19, 52, 59, 1);
+            --color-teal-300: rgba(50, 184, 198, 1);
+            --color-teal-400: rgba(45, 166, 178, 1);
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+            --color-teal-700: rgba(26, 104, 115, 1);
+            --color-red-400: rgba(255, 84, 89, 1);
+            --color-red-500: rgba(192, 21, 47, 1);
+            --color-orange-400: rgba(230, 129, 97, 1);
+            --color-orange-500: rgba(168, 75, 47, 1);
+            --color-brown-600-rgb: 94, 82, 64;
+            --color-teal-500-rgb: 33, 128, 141;
+            --color-slate-900-rgb: 19, 52, 59;
+            --color-slate-500-rgb: 98, 108, 113;
+            --color-bg-1: rgba(59, 130, 246, 0.08);
+            --color-bg-2: rgba(245, 158, 11, 0.08);
+            --color-bg-3: rgba(34, 197, 94, 0.08);
+            --color-bg-4: rgba(239, 68, 68, 0.08);
+            --color-background: var(--color-cream-50);
+            --color-surface: var(--color-cream-100);
+            --color-text: var(--color-slate-900);
+            --color-text-secondary: var(--color-slate-500);
+            --color-primary: var(--color-teal-500);
+            --color-primary-hover: var(--color-teal-600);
+            --color-primary-active: var(--color-teal-700);
+            --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+            --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-btn-primary-text: var(--color-cream-50);
+            --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+            --color-error: var(--color-red-500);
+            --color-success: var(--color-teal-500);
+            --color-warning: var(--color-orange-500);
+            --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-size-sm: 12px;
+            --font-size-base: 14px;
+            --font-size-lg: 16px;
+            --font-size-xl: 18px;
+            --font-size-2xl: 20px;
+            --font-size-3xl: 24px;
+            --font-size-4xl: 30px;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 550;
+            --font-weight-bold: 600;
+            --line-height-tight: 1.2;
+            --line-height-normal: 1.5;
+            --letter-spacing-tight: -0.01em;
+            --space-4: 4px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --space-32: 32px;
+            --radius-sm: 6px;
+            --radius-base: 8px;
+            --radius-md: 10px;
+            --radius-lg: 12px;
+            --radius-full: 9999px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+            --duration-fast: 150ms;
+            --duration-normal: 250ms;
+            --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-gray-400-rgb: 119, 124, 124;
+                --color-teal-300-rgb: 50, 184, 198;
+                --color-gray-300-rgb: 167, 169, 169;
+                --color-gray-200-rgb: 245, 245, 245;
+                --color-bg-1: rgba(29, 78, 216, 0.15);
+                --color-bg-2: rgba(180, 83, 9, 0.15);
+                --color-bg-3: rgba(21, 128, 61, 0.15);
+                --color-bg-4: rgba(185, 28, 28, 0.15);
+                --color-background: var(--color-charcoal-700);
+                --color-surface: var(--color-charcoal-800);
+                --color-text: var(--color-gray-200);
+                --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+                --color-primary: var(--color-teal-300);
+                --color-primary-hover: var(--color-teal-400);
+                --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+                --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+                --color-btn-primary-text: var(--color-slate-900);
+                --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+                --color-error: var(--color-red-400);
+                --color-success: var(--color-teal-300);
+                --color-warning: var(--color-orange-400);
+            }
+        }
+
+        /* التنسيقات الأساسية */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: var(--line-height-normal);
+            padding: var(--space-20);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* حاوية التطبيق الرئيسية */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-32);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* العنوان الرئيسي */
+        h1 {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text);
+            text-align: center;
+            margin-bottom: var(--space-8);
+            letter-spacing: var(--letter-spacing-tight);
+        }
+
+        /* وصف التطبيق */
+        .description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            text-align: center;
+            margin-bottom: var(--space-32);
+        }
+
+        /* نموذج الإدخال */
+        .form-group {
+            margin-bottom: var(--space-24);
+        }
+
+        label {
+            display: block;
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text);
+            margin-bottom: var(--space-8);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: var(--space-12) var(--space-16);
+            font-size: var(--font-size-lg);
+            color: var(--color-text);
+            background-color: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            transition: border-color var(--duration-fast) var(--ease-standard);
+            font-family: var(--font-family-base);
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        /* زر البحث */
+        button {
+            width: 100%;
+            padding: var(--space-12) var(--space-24);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-btn-primary-text);
+            background-color: var(--color-primary);
+            border: none;
+            border-radius: var(--radius-base);
+            cursor: pointer;
+            transition: background-color var(--duration-normal) var(--ease-standard);
+            font-family: var(--font-family-base);
+        }
+
+        button:hover {
+            background-color: var(--color-primary-hover);
+        }
+
+        button:active {
+            background-color: var(--color-primary-active);
+        }
+
+        /* منطقة عرض النتائج */
+        .result-container {
+            margin-top: var(--space-32);
+            display: none;
+        }
+
+        /* فرض محاذاة الرموز الكيميائية لليسار */
+        .chemical-formula {
+            direction: ltr;
+            display: inline-block;
+            text-align: left;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .result-container.show {
+            display: block;
+        }
+
+        /* بطاقة النتيجة */
+        .result-card {
+            background-color: var(--color-bg-3);
+            border: 1px solid var(--color-success);
+            border-radius: var(--radius-md);
+            padding: var(--space-24);
+            animation: fadeIn var(--duration-normal) var(--ease-standard);
+        }
+
+        .result-card.error {
+            background-color: var(--color-bg-4);
+            border-color: var(--color-error);
+        }
+
+        .result-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text);
+            margin-bottom: var(--space-16);
+            display: flex;
+            align-items: center;
+            gap: var(--space-8);
+        }
+
+        .result-title .icon {
+            font-size: var(--font-size-2xl);
+        }
+
+        .result-section {
+            margin-bottom: var(--space-16);
+        }
+
+        .result-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .result-label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-4);
+        }
+
+        .result-value {
+            font-size: var(--font-size-base);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        .error-message {
+            font-size: var(--font-size-base);
+            color: var(--color-text);
+            text-align: center;
+        }
+
+        /* تأثير الظهور التدريجي */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* قائمة الاقتراحات التلقائية */
+        .suggestions-list {
+            position: relative;
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-top: none;
+            border-radius: 0 0 var(--radius-base) var(--radius-base);
+            margin-top: -8px;
+            display: none;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+
+        .suggestions-list.show {
+            display: block;
+        }
+
+        .suggestion-item {
+            padding: var(--space-12) var(--space-16);
+            cursor: pointer;
+            transition: background-color var(--duration-fast) var(--ease-standard);
+            border-bottom: 1px solid var(--color-card-border);
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-item:hover {
+            background-color: var(--color-bg-1);
+        }
+
+        .suggestion-symbol {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-primary);
+            margin-left: var(--space-8);
+        }
+
+        .suggestion-name {
+            color: var(--color-text);
+        }
+
+        /* زر معلومات المطور */
+        .developer-btn {
+            width: 100%;
+            margin-top: var(--space-16);
+            background-color: var(--color-secondary);
+            color: var(--color-text);
+            font-size: var(--font-size-base);
+            padding: var(--space-12) var(--space-16);
+        }
+
+        .developer-btn:hover {
+            background-color: rgba(var(--color-brown-600-rgb), 0.2);
+        }
+
+        /* نافذة معلومات المطور */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--color-surface);
+            padding: var(--space-32);
+            border: 1px solid var(--color-card-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            animation: slideDown var(--duration-normal) var(--ease-standard);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-content h2 {
+            font-size: var(--font-size-2xl);
+            color: var(--color-text);
+            margin-bottom: var(--space-24);
+            text-align: center;
+        }
+
+        .close-btn {
+            position: absolute;
+            left: var(--space-16);
+            top: var(--space-16);
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: color var(--duration-fast) var(--ease-standard);
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: var(--color-text);
+        }
+
+        .developer-info {
+            line-height: 1.8;
+        }
+
+        .developer-info p {
+            margin-bottom: var(--space-12);
+            font-size: var(--font-size-base);
+            color: var(--color-text);
+        }
+
+        .developer-info strong {
+            color: var(--color-primary);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .developer-info a {
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color var(--duration-fast) var(--ease-standard);
+        }
+
+        .developer-info a:hover {
+            color: var(--color-primary-hover);
+            text-decoration: underline;
+        }
+
+        /* تحسين المظهر للشاشات الصغيرة */
+        @media (max-width: 640px) {
+            .container {
+                padding: var(--space-20);
+            }
+
+            h1 {
+                font-size: var(--font-size-2xl);
+            }
+
+            .modal-content {
+                padding: var(--space-24);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الحاوية الرئيسية للتطبيق -->
+    <div class="container">
+        <!-- العنوان والوصف -->
+        <h1>🧪 كشف المركبات والشوارد الكيميائية بالكواشف</h1>
+        <p class="description">أدخل اسم (عربي أو فرنسي) أو رمز المركب أو الشاردة الكيميائية لمعرفة الكاشف المناسب وطريقة استخدامه</p>
+
+        <!-- نموذج الإدخال -->
+        <form id="ionForm">
+            <div class="form-group">
+                <label for="ionInput">اسم أو رمز المركب/الشاردة:</label>
+                <input 
+                    type="text" 
+                    id="ionInput" 
+                    placeholder="ابدأ الكتابة بالعربية أو الفرنسية... مثال: NaCl، كلوريد، Chlorure"
+                    autocomplete="off"
+                    required
+                >
+                <!-- قائمة الاقتراحات التلقائية -->
+                <div id="suggestionsList" class="suggestions-list"></div>
+            </div>
+            <button type="submit">🔍 إظهار الكاشف</button>
+        </form>
+
+        <!-- زر معلومات المطور -->
+        <button id="developerBtn" class="developer-btn" type="button">👨‍🏫 معلومات المطور</button>
+
+        <!-- منطقة عرض النتائج -->
+        <div id="resultContainer" class="result-container">
+            <!-- سيتم ملء النتائج هنا بواسطة JavaScript -->
+        </div>
+    </div>
+
+    <!-- نافذة معلومات المطور -->
+    <div id="developerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <h2>👨‍🏫 معلومات المطور</h2>
+            <div class="developer-info">
+                <p><strong>الاسم:</strong> الأستاذ محمد قادري</p>
+                <p><strong>التخصص:</strong> أستاذ مادة الفيزياء</p>
+                <p><strong>المؤسسة:</strong> ثانوية محمد الأخضر فيلالي</p>
+                <p><strong>الولاية:</strong> ولاية غرداية - الجزائر</p>
+                <p><strong>البريد الإلكتروني:</strong> <a href="mailto:kadri68@gmail.com" target="_blank">kadri68@gmail.com</a></p>
+                <p><strong>الهاتف:</strong> <a href="tel:+213662692987">0662692987</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // قاعدة بيانات المركبات والشوارد الكيميائية - أكثر من 300 مركب وشاردة
+        // كل عنصر يحتوي على: الرمز، الاسم بالعربية، الاسم بالفرنسية، الكاشف، وطريقة الاستخدام بكلا اللغتين
+        // الرموز الكيميائية مكتوبة بصيغة HTML مع <sup> و <sub> للعرض الصحيح
+        // يمكن للمطور إضافة أو تعديل العناصر بسهولة
+        const ionsDatabase = [
+            // الشوارد والمركبات غير العضوية
+            { symbol: "Na<sup>+</sup>", ar_name: "شاردة الصوديوم", fr_name: "Sodium", reagent: "اختبار اللهب", method: "عند تسخين مركب يحتوي على شاردة الصوديوم في لهب حمار أو موقد بنزن، يظهر لهب أصفر ذهبي ساطع وجميل جداً. هذا اللون الأصفر المميز ناتج عن انتقال إلكترونات ذرة الصوديوم من مستوى طاقة منخفض إلى مستوى أعلى، وعندما تعود للمستوى الأصلي، تصدر فوتونات بطول موجة يقابل اللون الأصفر.", fr_method: "Chauffer le composé contenant du sodium dans une flamme. La flamme devient jaune d'or intense et caractéristique. C'est un test très fiable et spécifique au sodium." },
+            { symbol: "Cl<sup>-</sup>", ar_name: "شاردة الكلوريد", fr_name: "Chlorure", reagent: "نترات الفضة (AgNO₃)", method: "أضف قطرات من محلول نترات الفضة إلى محلول يحتوي على شاردة الكلوريد. سيحدث تفاعل فوري: Ag⁺ + Cl⁻ → AgCl↓ ينتج عن هذا التفاعل راسب أبيض كثيف وناعم جداً (كلوريد الفضة). هذا الراسب غير ذائب تقريباً في الماء. يمكن التمييز بين أنواع الرواسب من خلال لونها وملمسها.", fr_method: "Ajouter quelques gouttes de nitrate d'argent. Un précipité blanc clair et fin de chlorure d'argent (AgCl) se forme immédiatement. C'est un test classique et fiable pour identifier les chlorures." },
+            { symbol: "SO<sub>4</sub><sup>2-</sup>", ar_name: "شاردة الكبريتات", fr_name: "Sulfate", reagent: "كلوريد الباريوم (BaCl₂)", method: "أضف محلول كلوريد الباريوم قطرة قطرة إلى محلول يحتوي على شاردة الكبريتات. يحدث التفاعل: Ba²⁺ + SO₄²⁻ → BaSO₄↓ ينتج راسب أبيض كثير جداً وثقيل (كبريتات الباريوم) غير ذائب في الماء أو في الأحماض المخففة. هذا اختبار نوعي وكمي ممتاز للكبريتات.", fr_method: "Ajouter une solution de chlorure de baryum. Un précipité blanc très dense se forme. C'est le sulfate de baryum (BaSO₄), insoluble dans l'eau et les acides dilués. Test très fiable et sensible." },
+            { symbol: "NH<sub>4</sub><sup>+</sup>", ar_name: "شاردة الأمونيوم", fr_name: "Ammonium", reagent: "محلول هيدروكسيد الصوديوم (NaOH)", method: "أضف محلول هيدروكسيد الصوديوم (أو أي قاعدة قوية) ثم سخّن المحلول قليلاً. ستلاحظ تصاعد غاز برائحة حادة ونفاذة جداً وغير محتملة - هذا هو غاز الأمونياك (NH₃). يمكنك التأكد من وجود الأمونياك برفع ورقة عباد الشمس الحمراء فوق المحلول الساخن - ستتحول للأزرق. الرائحة هي أقوى مؤشر على وجود الأمونيوم.", fr_method: "Ajouter de l'hydroxyde de sodium et chauffer légèrement. Un gaz avec une odeur piquante caractéristique (ammoniac) se dégage. Placer une bandelette de papier rouge de tournesol - elle devient bleue. C'est un test très fiable." },
+            { symbol: "Fe<sup>3+</sup>", ar_name: "شاردة الحديد الثلاثي", fr_name: "Fer(III)", reagent: "ثيوسيانات البوتاسيوم (KSCN)", method: "أضف محلول ثيوسيانات البوتاسيوم إلى محلول يحتوي على شاردة الحديد الثلاثي (Fe³⁺). سيتشكل معقد ملون: [Fe(SCN)]²⁺ والذي يعطي لوناً أحمر دموي عميق جداً وجميل - هذا اللون مميز جداً ومحدد جداً للحديد الثلاثي. حتى التركيزات المنخفضة جداً من Fe³⁺ تعطي هذا اللون الأحمر. هذا اختبار حساس جداً وتشخيصي.", fr_method: "Ajouter une solution de thiocyanate de potassium. Une coloration rouge sang intense et caractéristique apparaît immédiatement. C'est un test très sensible et spécifique au fer(III). Même les traces de Fe³⁺ donnent cette coloration." },
+            { symbol: "Cu<sup>2+</sup>", ar_name: "شاردة النحاس الثنائي", fr_name: "Cuivre", reagent: "محلول الأمونيا (NH₃)", method: "أضف محلول الأمونيا بالتدريج إلى محلول أزرق فاتح (يحتوي على شاردة النحاس). أولاً، سيظهر راسب أزرق من هيدروكسيد النحاس Cu(OH)₂، لكن بإضافة فائض من الأمونيا، يذوب هذا الراسب ليتحول إلى محلول أزرق عميق جداً وجميل جداً - هذا هو معقد [Cu(NH₃)₄]²⁺. اللون الأزرق المكثف مميز جداً للنحاس.", fr_method: "Ajouter progressivement une solution d'ammoniac. Le précipité bleu Cu(OH)₂ se forme d'abord, puis se dissout dans l'excès d'ammoniac pour donner une solution bleu foncé intense du complexe [Cu(NH₃)₄]²⁺. Très caractéristique." },
+            { symbol: "CO<sub>3</sub><sup>2-</sup>", ar_name: "شاردة الكربونات", fr_name: "Carbonate", reagent: "حمض الهيدروكلوريك (HCl)", method: "أضف قطرات من حمض الهيدروكلوريك المخفف إلى محلول أو مسحوق يحتوي على شاردة الكربونات. سيحدث تفاعل سريع وقوي: CO₃²⁻ + 2H⁺ → H₂O + CO₂↑ يتصاعد غاز ثاني أكسيد الكربون الذي تراه كفقاعات غازية تصعد إلى السطح برغوة. يمكن تأكيد وجود CO₂ بتمرير الغاز عبر ماء جير صافي - سيتعكر ويتحول لأبيض (كربونات الكالسيوم).", fr_method: "Ajouter de l'acide chlorhydrique dilué. Une effervescence intense se produit avec dégagement de gaz CO₂. Le gaz trouble l'eau de chaux en formant CaCO₃ blanc. Test très caractéristique et rapide." },
+            { symbol: "Ag<sup>+</sup>", ar_name: "شاردة الفضة", fr_name: "Argent", reagent: "حمض الهيدروكلوريك (HCl)", method: "أضف حمض الهيدروكلوريك المخفف إلى محلول يحتوي على شاردة الفضة. سيتشكل راسب أبيض فوري من كلوريد الفضة (AgCl). هذا الراسب غير ذائب جداً في الماء ولكنه يذوب في محلول الأمونيا (في الأمونياك المركز)، مما يميزه عن كلوريد الرصاص. التفاعل: Ag⁺ + Cl⁻ → AgCl↓", fr_method: "Ajouter l'acide chlorhydrique dilué. Un précipité blanc immédiat de chlorure d'argent (AgCl) se forme. Ce précipité se dissout dans l'ammoniac, ce qui le distingue du PbCl₂. Test rapide et caractéristique." },
+            { symbol: "Ca<sup>2+</sup>", ar_name: "شاردة الكالسيوم", fr_name: "Calcium", reagent: "محلول أكسالات الأمونيوم ((NH₄)₂C₂O₄)", method: "أضف محلول أكسالات الأمونيوم إلى محلول يحتوي على شاردة الكالسيوم. سينتج راسب أبيض ناعم جداً من أكسالات الكالسيوم (CaC₂O₄). هذا الراسب لا يذوب في الماء لكنه يذوب في الأحماض القوية المخففة. التفاعل: Ca²⁺ + C₂O₄²⁻ → CaC₂O₄↓ هذا اختبار نوعي جداً للكالسيوم.", fr_method: "Ajouter une solution d'oxalate d'ammonium. Un précipité blanc fin de oxalate de calcium (CaC₂O₄) se forme. Ce précipité est insoluble dans l'eau mais soluble dans les acides. Test très fiable pour le calcium." },
+            { symbol: "Mg<sup>2+</sup>", ar_name: "شاردة المغنسيوم", fr_name: "Magnésium", reagent: "محلول هيدروكسيد الصوديوم (NaOH)", method: "أضف محلول هيدروكسيد الصوديوم إلى محلول يحتوي على شاردة المغنسيوم. سيظهر راسب أبيض كثيف جيلاتيني من هيدروكسيد المغنسيوم (Mg(OH)₂). هذا الراسب لا يذوب في فائض من هيدروكسيد الصوديوم (عكس هيدروكسيد الألومنيوم)، مما يساعد على التمييز. التفاعل: Mg²⁺ + 2OH⁻ → Mg(OH)₂↓", fr_method: "Ajouter la solution de NaOH. Un précipité blanc gélatineux de Mg(OH)₂ se forme. Contrairement à Al(OH)₃, ce précipité ne se dissout pas dans l'excès de NaOH. Utile pour différencier Al³⁺ et Mg²⁺." },
+            { symbol: "Cl<sub>2</sub>", ar_name: "غاز الكلور", fr_name: "Chlore", reagent: "ورقة نشأ رطبة أو ورقة اليود", method: "الكلور غاز أصفر-أخضر برائحة حادة جداً وخطرة. عندما يتصل بورقة نشأ رطبة، يعطيها لوناً أزرق (معقد الكلور والنشأ). أو عند إضافته لمحلول اليود، يحرر اليود الحر I₂ الذي يعطي لوناً بني-أحمر. الكلور مؤكسد قوي جداً وخطر.", fr_method: "Le chlore est un gaz jaune-vert avec une odeur piquante très désagréable. En contact avec du papier amidon humide, il donne une coloration bleue. C'est un oxydant puissant et très dangereux. Manipuler avec précaution." },
+            { symbol: "I<sup>-</sup>", ar_name: "شاردة اليوديد", fr_name: "Iodure", reagent: "نترات الفضة (AgNO₃)", method: "أضف نترات الفضة إلى محلول يحتوي على شاردة اليوديد. سينتج راسب أصفر دكن جميل (كيوديد الفضة AgI). لون هذا الراسب مميز جداً ويختلف عن راسب كلوريد الفضة الأبيض وراسب بروميد الفضة الأصفر الفاتح. التفاعل: Ag⁺ + I⁻ → AgI↓ يمكن التمييز بين الهاليدات من خلال ألوان رواسبها.", fr_method: "Ajouter le nitrate d'argent. Un précipité jaune foncé d'iodure d'argent (AgI) se forme. Cette couleur jaune foncé est très caractéristique et permet de distinguer l'iodure du chlorure (blanc) et du bromure (jaune pâle)." },
+            { symbol: "Br<sup>-</sup>", ar_name: "شاردة البروميد", fr_name: "Bromure", reagent: "نترات الفضة (AgNO₃)", method: "أضف نترات الفضة إلى محلول يحتوي على شاردة البروميد. سينتج راسب أصفر شاحب فاتح (بروميد الفضة AgBr). لون هذا الراسب أفتح من راسب اليوديد لكن أغمق من راسب الكلوريد الأبيض. التفاعل: Ag⁺ + Br⁻ → AgBr↓ الألوان المختلفة للرواسب تساعد على تمييز الهاليدات المختلفة.", fr_method: "Ajouter le nitrate d'argent. Un précipité jaune pâle de bromure d'argent (AgBr) se forme. Cette teinte jaune pâle est caractéristique et permet de distinguer le bromure du chlorure et de l'iodure." },
+            { symbol: "PO<sub>4</sub><sup>3-</sup>", ar_name: "شاردة الفوسفات", fr_name: "Phosphate", reagent: "كلوريد الكالسيوم (CaCl₂)", method: "أضف محلول كلوريد الكالسيوم إلى محلول يحتوي على شاردة الفوسفات. سينتج راسب أبيض من فوسفات الكالسيوم (Ca₃(PO₄)₂). هذا الراسب قد يكون هلاماً ناعماً. التفاعل: 3Ca²⁺ + 2PO₄³⁻ → Ca₃(PO₄)₂↓ اختبار موثوق للفوسفات في المحاليل المخففة.", fr_method: "Ajouter une solution de chlorure de calcium. Un précipité blanc de phosphate de calcium (Ca₃(PO₄)₂) se forme. C'est un test fiable pour la détection des phosphates." },
+            { symbol: "Fe<sup>2+</sup>", ar_name: "شاردة الحديد الثنائي", fr_name: "Fer(II)", reagent: "ثيوسيانات البوتاسيوم (KSCN)", method: "أضف محلول ثيوسيانات البوتاسيوم إلى محلول يحتوي على شاردة الحديد الثنائي (Fe²⁺). على عكس Fe³⁺، لن تحصل على اللون الأحمر الدموي المميز - بدلاً من ذلك، قد تحصل على لون أبيض أو بدون لون أو تلوين خفيف جداً. هذا يساعد على التمييز بين Fe²⁺ و Fe³⁺.", fr_method: "Ajouter une solution de thiocyanate de potassium. Pas de coloration rouge sang caractéristique. C'est une différence importante pour distinguer Fe²⁺ de Fe³⁺. Fe²⁺ peut être oxydé en Fe³⁺ pour confirmation." },
+            { symbol: "NO<sub>3</sub><sup>-</sup>", ar_name: "شاردة النترات", fr_name: "Nitrate", reagent: "محلول حديد(II) كبريتات مع حمض الكبريتيك", method: "أضف بحذر محلول كبريتات الحديد الثنائي (FeSO₄) ثم حمض الكبريتيك المركز على الحائط الجانبي للأنبوب (لا تخلط مباشرة). عند الحد الفاصل بين الطبقتين، ستلاحظ حلقة بنية مكثفة جميلة جداً. هذه الحلقة البنية ناتجة عن معقد [Fe(NO)]²⁺. اختبار حساس جداً للنترات.", fr_method: "Ajouter soigneusement une solution de FeSO₄, puis verser l'acide sulfurique concentré le long de la paroi. Un anneau brun intense se forme à l'interface entre les deux liquides. C'est un test très sensible pour les nitrates." },
+            { symbol: "SCN<sup>-</sup>", ar_name: "شاردة الثيوسيانات", fr_name: "Thiocyanate", reagent: "شاردة الحديد الثلاثي (Fe³⁺)", method: "أضف محلول يحتوي على شاردة الحديد الثلاثي (Fe³⁺) إلى محلول يحتوي على ثيوسيانات. سيتشكل معقد ملون: [Fe(SCN)]²⁺ والذي يعطي لوناً أحمر دموي عميق جداً وجميل. الحساسية عالية جداً - حتى التركيزات المنخفضة جداً من SCN⁻ ستعطي لوناً قابلاً للملاحظة.", fr_method: "Ajouter une solution de Fe³⁺. Une coloration rouge sang intense apparaît immédiatement due au complexe [Fe(SCN)]²⁺. C'est un test très sensible pour détecter les thiocyanates." },
+            { symbol: "S<sup>2-</sup>", ar_name: "شاردة الكبريتيد", fr_name: "Sulfure", reagent: "خلات الرصاص (Pb(CH₃COO)₂)", method: "أضف محلول خلات الرصاص إلى محلول يحتوي على شاردة الكبريتيد. سيحدث تفاعل فوري: Pb²⁺ + S²⁻ → PbS↓ ينتج راسب أسود كثيف وثقيل (كبريتيد الرصاص). هذا اللون الأسود مميز جداً. الرائحة الحادة (رائحة البيض الفاسد) هي أيضاً دلالة على وجود S²⁻.", fr_method: "Ajouter une solution d'acétate de plomb. Un précipité noir de PbS se forme immédiatement. Cette couleur noire est très caractéristique. L'odeur d'œuf pourri (H₂S) confirme la présence de sulfures." },
+            
+            // المركبات العضوية والسكريات
+            { symbol: "C<sub>6</sub>H<sub>12</sub>O<sub>6</sub>", ar_name: "الجلوكوز", fr_name: "Glucose", reagent: "محلول بندكت (أو فيهلنج)", method: "أضف محلول بندكت أو فيهلنج إلى محلول يحتوي على الجلوكوز. ثم سخّن المخلوط في حمام ماء دافئ (حوالي 50-60°C). سيحدث تفاعل أكسدة اختزال جميل: السكر المختزل (الجلوكوز) يختزل أيونات Cu²⁺ (الزرقاء) إلى Cu⁺ (الحمراء)، مما ينتج راسب أحمر قرمزي جميل جداً (أكسيد النحاس الأول Cu₂O). هذا اختبار موثوق وسريع وملون جداً للسكريات المختزلة.", fr_method: "Ajouter la solution de Benedict (ou Fehling) et chauffer dans un bain-marie. Une réaction de réduction oxydante se produit: le glucose réduit les ions Cu²⁺ (bleus) en Cu⁺ (rouges), formant un précipité rouge brique magnifique (Cu₂O). Test très fiable pour les sucres réducteurs." },
+            { symbol: "(C<sub>6</sub>H<sub>10</sub>O<sub>5</sub>)<sub>n</sub>", ar_name: "النشأ (الآميلوز)", fr_name: "Amidon", reagent: "محلول اليود (I₂)", method: "أضف قطرات من محلول اليود البني الفاتح إلى محلول أو معلق يحتوي على النشأ. سيحدث تفاعل معقد لا يصدق: جزيئات النشأ الحلزونية تلتقط جزيئات اليود، مما ينتج معقد أزرق-أسود عميق جداً وجميل جداً (معقد النشأ-اليود). هذا التفاعل حساس جداً جداً - حتى كميات صغيرة جداً من النشأ ستعطي لوناً أزرق قابلاً للملاحظة. هذا اختبار النشأ الكلاسيكي.", fr_method: "Ajouter quelques gouttes de solution d'iode. Une coloration bleu foncé ou bleu-noir très intense se forme immédiatement. C'est l'un des tests les plus sensibles et les plus spécifiques - l'iode se complexe avec les hélices d'amidon. Test classique et très fiable." },
+            { symbol: "C<sub>12</sub>H<sub>22</sub>O<sub>11</sub>", ar_name: "السكروز (السكر العادي)", fr_name: "Saccharose", reagent: "محلول بندكت (فيهلنج)", method: "أضف محلول بندكت إلى محلول السكروز وسخّن. على عكس الجلوكوز والفركتوز، لن تحصل على راسب أحمر فوراً - السكروز ليس سكراً مختزلاً مباشرة. لكن إذا أضفت حمضاً ضعيفاً أولاً لتحطيم (تخمير) السكروز إلى جلوكوز وفركتوز، ثم أضفت بندكت وسخّنت، ستحصل على الراسب الأحمر. هذا يساعد على التمييز بين السكاريد المختزل وغير المختزل.", fr_method: "Ajouter la solution de Benedict et chauffer. Pas de précipité rouge immédiat car le saccharose n'est pas un sucre réducteur. Cependant, après hydrolyse acide (inversion) pour former du glucose et du fructose, le test devient positif. Utile pour distinguer les sucres réducteurs des non-réducteurs." },
+            { symbol: "C<sub>6</sub>H<sub>12</sub>O<sub>6</sub>", ar_name: "الفركتوز", fr_name: "Fructose", reagent: "محلول بندكت (فيهلنج)", method: "أضف محلول بندكت إلى محلول الفركتوز وسخّن قليلاً. سيعطي راسب أحمر قرمزي جميل مثل الجلوكوز تماماً. الفركتوز هو سكر مختزل قوي. في الواقع، الفركتوز يختزل أسرع من الجلوكوز في بعض الحالات. هذا الاختبار يؤكد وجود سكريات مختزلة.", fr_method: "Ajouter la solution de Benedict et chauffer. Un précipité rouge brique se forme rapidement. Le fructose est un sucre réducteur et donne un test positif. En fait, le fructose réduit souvent plus rapidement que le glucose." },
+            
+            // الإنزيمات
+            { symbol: "أميليز", ar_name: "الأميليز (إنزيم)", fr_name: "Amylase", reagent: "محلول اليود + النشأ", method: "الأميليز هو إنزيم يحطم النشأ إلى سكريات أبسط. إذا أضفت الأميليز إلى محلول نشأ، سيبدأ الإنزيم بتقطيع جزيئات النشأ الطويلة. مع الوقت، عند إضافة اليود، سيكون هناك لون أزرق أقل وأقل لأن النشأ يُستهلك. هذا اختبار لنشاط الإنزيم - تقليل تدريجي في اللون الأزرق يشير إلى نشاط الأميليز.", fr_method: "L'amylase est une enzyme qui hydrolyse l'amidon en sucres plus simples. Si on ajoute l'amylase à une solution d'amidon, puis on teste avec du iode à intervalles réguliers, on observe une diminution progressive de la coloration bleue. C'est une mesure de l'activité enzymatique." },
+            { symbol: "بروتياز", ar_name: "البروتياز (إنزيم)", fr_name: "Protéase", reagent: "بروتينات + حرارة معتدلة", method: "البروتياز هو إنزيم يحطم البروتينات. عند إضافة البروتياز إلى محلول بروتين، يبدأ الإنزيم بقطع الروابط الببتيدية في البروتين، مما يحطم البروتين إلى جزيئات أصغر. يمكن قياس هذا عن طريق اختبار بيورت - البروتينات الكاملة تعطي لوناً بنفسجياً/وردياً، بينما المنتجات المحللة تعطي لوناً أضعف أو لا تعطي لوناً.", fr_method: "La protéase est une enzyme qui hydrolyse les protéines. L'ajout de protéase à une solution de protéine décompose les liaisons peptidiques, dégradant la protéine en molécules plus petites. Le test de Biuret (réactif violet) peut mesurer cette dégradation - les protéines intactes donnent une couleur violette/rose intense." },
+            { symbol: "ليباز", ar_name: "الليباز (إنزيم)", fr_name: "Lipase", reagent: "الدهون/الزيوت + محلول قلوي", method: "الليباز هو إنزيم يحطم الدهون والزيوت (الإستيرات). عند إضافة الليباز إلى محلول دهون، يقوم الإنزيم بقطع الروابط الإستيرية، محررة الأحماض الدهنية والغليسيرول. في وجود محلول قلوي، تتشكل أملاح الأحماض الدهنية (الصابون)، مما يزيد من الرغوة والاستحلاب. هذا اختبار لنشاط الليباز.", fr_method: "La lipase est une enzyme qui hydrolyse les graisses et les huiles (esters). L'ajout de lipase à une solution de graisse décompose les liaisons ester, libérant les acides gras et le glycérol. En milieu alcalin, les acides gras forment des sels (savon), augmentant la mousse et l'émulsion. C'est un test d'activité lipasique." },
+            
+            // فيتامينات ومركبات عضوية أخرى
+            { symbol: "C<sub>6</sub>H<sub>8</sub>O<sub>6</sub>", ar_name: "فيتامين C (حمض الأسكوربيك)", fr_name: "Vitamine C", reagent: "محلول اليود", method: "فيتامين C هو مركب مختزل قوي. عند إضافة محلول اليود البني إلى محلول يحتوي على فيتامين C، يختزل فيتامين C اليود (I₂) إلى يوديد (I⁻)، مما يزيل اللون البني. عند اختفاء اللون تماماً، كل فيتامين C تم استهلاكه. هذا اختبار موثوق للكشف عن فيتامين C والتحقق من تركيزه.", fr_method: "La vitamine C est un réducteur puissant. L'ajout de solution d'iode brune à une solution de vitamine C décolore rapidement l'iode car la vitamine C la réduit en iodure incolore. C'est un test fiable pour détecter et estimer la concentration de vitamine C." },
+            { symbol: "بروتين", ar_name: "البروتين", fr_name: "Protéine", reagent: "اختبار بيورت (محلول قلوي + Cu²⁺)", method: "البروتينات تحتوي على روابط ببتيدية (-CO-NH-). عند إضافة اختبار بيورت (محلول قلوي يحتوي على أيونات النحاس)، تتشكل معقدات لونية مع البروتين. المحلول يتحول إلى لون بنفسجي أو وردي جميل. كلما زاد تركيز البروتين، كان اللون أكثر كثافة. هذا اختبار نوعي وشبه كمي للبروتينات.", fr_method: "Les protéines contiennent des liaisons peptidiques (-CO-NH-). L'ajout du réactif de Biuret (solution alcaline avec Cu²⁺) forme des complexes colorés avec les protéines, donnant une coloration violette ou rose. L'intensité de la couleur est proportionnelle à la concentration de protéine. Test qualitatif et semi-quantitatif." },
+            { symbol: "دهون/زيوت", ar_name: "الدهون والزيوت", fr_name: "Graisse/Huile", reagent: "اختبار السودان الأسود (أو السودان III)", method: "الدهون والزيوت (الإستيرات) غير ذائبة في الماء ولكنها ذائبة في الكحولات والمذيبات العضوية. عند إضافة صبغة السودان الأسود (صبغة عضوية)، تذوب الصبغة في الدهون، مما يعطيها لوناً أسود برتقالي جميل. يمكن رؤية قطرات الدهون الملونة تطفو على السطح. اختبار موثوق للكشف عن الدهون والزيوت.", fr_method: "Les graisses et les huiles sont insolubles dans l'eau mais solubles dans les solvants organiques. L'ajout de colorant Sudan Black III les colore en noir-orange. Les gouttelettes de graisse colorées sont faciles à voir. C'est un test classique et fiable pour la détection des lipides." },
+            // مركبات إضافية للتنوع
+            { symbol: "NaCl", ar_name: "كلوريد الصوديوم", fr_name: "Chlorure de sodium", reagent: "نترات الفضة (AgNO₃)", method: "إضافة قطرات من نترات الفضة لمحلول الشاردة، ظهور راسب أبيض يدل على وجود الكلوريد.", fr_method: "Ajouter des gouttes de nitrate d'argent, apparition d'un précipité blanc indique la présence de chlorure." },
+            { symbol: "Ag+", ar_name: "شاردة الفضة", fr_name: "Ion argent", reagent: "حمض الهيدروكلوريك (HCl)", method: "إضافة حمض الهيدروكلوريك للمحلول، ظهور راسب أبيض يدل على وجود شاردة الفضة.", fr_method: "Ajouter l'acide chlorhydrique, apparition d'un précipité blanc." },
+            { symbol: "Cl-", ar_name: "شاردة الكلوريد", fr_name: "Chlorure", reagent: "نترات الفضة (AgNO3)", method: "إضافة نترات الفضة للمحلول، ظهور راسب أبيض.", fr_method: "Ajouter le nitrate d'argent, formation d'un précipité blanc." },
+            { symbol: "H2O", ar_name: "الماء", fr_name: "Eau", reagent: "كبريتات النحاس اللامائية (CuSO4)", method: "إضافة مسحوق كبريتات النحاس اللامائية، يتحول إلى اللون الأزرق.", fr_method: "Ajouter du sulfate de cuivre anhydre, passage au bleu." },
+            { symbol: "Fe3+", ar_name: "شاردة الحديد الثلاثي", fr_name: "Ion fer(III)", reagent: "ثيوسيانات البوتاسيوم (KSCN)", method: "إضافة محلول ثيوسيانات البوتاسيوم يعطي لون أحمر دموي.", fr_method: "Ajouter une solution de thiocyanate de potassium, coloration rouge sang." },
+            { symbol: "SO4^2-", ar_name: "شاردة الكبريتات", fr_name: "Sulfate", reagent: "كلوريد الباريوم (BaCl2)", method: "إضافة محلول كلوريد الباريوم، ظهور راسب أبيض.", fr_method: "Ajouter une solution de chlorure de baryum, précipité blanc." },
+            { symbol: "NH4+", ar_name: "شاردة الأمونيوم", fr_name: "Ammonium", reagent: "محلول هيدروكسيد الصوديوم (NaOH)", method: "تسخين المحلول بعد إضافة هيدروكسيد الصوديوم، تصاعد غاز برائحة نفاذة.", fr_method: "Chauffer après addition de NaOH, dégagement de gaz ammoniac (odeur piquante)." },
+            { symbol: "Ca2+", ar_name: "شاردة الكالسيوم", fr_name: "Calcium", reagent: "محلول أكسالات الأمونيوم (NH4)2C2O4", method: "ظهور راسب أبيض.", fr_method: "Apparition d'un précipité blanc." },
+            { symbol: "Mg2+", ar_name: "شاردة المغنسيوم", fr_name: "Magnésium", reagent: "محلول هيدروكسيد الصوديوم (NaOH)", method: "ظهور راسب أبيض بكميات كبيرة.", fr_method: "Précipité blanc en grande quantité." },
+            { symbol: "CO3^2-", ar_name: "شاردة الكربونات", fr_name: "Carbonate", reagent: "حمض الهيدروكلوريك (HCl)", method: "تصاعد غاز ثاني أكسيد الكربون بفقاعات.", fr_method: "Dégagement de dioxyde de carbone (bullage)." },
+            { symbol: "NO3-", ar_name: "شاردة النترات", fr_name: "Nitrate", reagent: "محلول حديد(II) كبريتات وحمض الكبريتيك", method: "ظهور حلقة بنية على الحد الفاصل.", fr_method: "Formation d'un anneau brun à l'interface." },
+            { symbol: "Fe2+", ar_name: "شاردة الحديد الثنائي", fr_name: "Ion fer(II)", reagent: "ثيوسيانات البوتاسيوم (KSCN)", method: "عدم حدوث تغيير ملحوظ أو لون أخف.", fr_method: "Pas de changement visible ou coloration très légère." },
+            { symbol: "Cu2+", ar_name: "شاردة النحاس الثنائي", fr_name: "Cuivre", reagent: "محلول الأمونيا (NH3)", method: "يعطي محلول أزرق كثيف (معقد [Cu(NH3)4]2+).", fr_method: "Formation d'une solution bleu intense (complexe [Cu(NH3)4]2+)." },
+            { symbol: "Ba2+", ar_name: "شاردة الباريوم", fr_name: "Baryum", reagent: "كبريتات الصوديوم (Na2SO4)", method: "ظهور راسب أبيض غير ذائب.", fr_method: "Précipité blanc insoluble." },
+            { symbol: "Pb2+", ar_name: "شاردة الرصاص الثنائي", fr_name: "Plomb", reagent: "كرومات البوتاسيوم (K2CrO4)", method: "ظهور راسب أصفر.", fr_method: "Précipité jaune." },
+            { symbol: "Br-", ar_name: "شاردة البروميد", fr_name: "Bromure", reagent: "نترات الفضة (AgNO3)", method: "راسب أصفر شاحب.", fr_method: "Précipité jaune pâle." },
+            { symbol: "I-", ar_name: "شاردة اليوديد", fr_name: "Iodure", reagent: "نترات الفضة (AgNO3)", method: "راسب أصفر دكن.", fr_method: "Précipité jaune foncé." },
+            { symbol: "K+", ar_name: "شاردة البوتاسيوم", fr_name: "Potassium", reagent: "اختبار اللهب", method: "لهب بنفسجي غامق.", fr_method: "Flamme violette." },
+            { symbol: "Sr2+", ar_name: "شاردة السترونشيوم", fr_name: "Strontium", reagent: "كبريتات الصوديوم (Na2SO4)", method: "راسب أبيض.", fr_method: "Précipité blanc." },
+            { symbol: "Zn2+", ar_name: "شاردة الزنك", fr_name: "Zinc", reagent: "محلول كبريتيد الصوديوم (Na2S)", method: "راسب أبيض.", fr_method: "Précipité blanc." },
+            { symbol: "Al3+", ar_name: "شاردة الألومنيوم", fr_name: "Aluminium", reagent: "محلول هيدروكسيد الصوديوم (NaOH)", method: "راسب أبيض جيلاتيني يذوب بفائض القاعدة.", fr_method: "Précipité blanc gélatineux soluble en excès de base." },
+            { symbol: "Cr3+", ar_name: "شاردة الكروم الثلاثي", fr_name: "Chrom(III)", reagent: "محلول هيدروكسيد الصوديوم (NaOH)", method: "راسب رمادي مخضر يذوب بفائض.", fr_method: "Précipité gris-vert soluble en excès." },
+            { symbol: "Ni2+", ar_name: "شاردة النيكل الثنائي", fr_name: "Nickel", reagent: "محلول ثنائي ميثيل جليوكسيم", method: "راسب أحمر وردي.", fr_method: "Précipité rouge rosé." },
+            { symbol: "Mn2+", ar_name: "شاردة المنغنيز الثنائي", fr_name: "Manganèse", reagent: "محلول هيدروكسيد الصوديوم (NaOH)", method: "راسب أبيض يتحول للبني بالتعرض للهواء.", fr_method: "Précipité blanc devenant brun à l'air." },
+            { symbol: "F-", ar_name: "شاردة الفلوريد", fr_name: "Fluorure", reagent: "كلوريد الكالسيوم (CaCl2)", method: "راسب أبيض.", fr_method: "Précipité blanc." },
+            { symbol: "PO4^3-", ar_name: "شاردة الفوسفات", fr_name: "Phosphate", reagent: "كلوريد الكالسيوم (CaCl2)", method: "راسب أبيض.", fr_method: "Précipité blanc." },
+            { symbol: "SCN-", ar_name: "شاردة الثيوسيانات", fr_name: "Thiocyanate", reagent: "شاردة الحديد الثلاثي (Fe3+)", method: "لون أحمر دموي عميق.", fr_method: "Coloration rouge sang intense." },
+            { symbol: "S2-", ar_name: "شاردة الكبريتيد", fr_name: "Sulfure", reagent: "خلات الرصاص (Pb(CH3COO)2)", method: "راسب أسود.", fr_method: "Précipité noir." },
+            { symbol: "C2O4^2-", ar_name: "شاردة الأكسالات", fr_name: "Oxalate", reagent: "كلوريد الكالسيوم (CaCl2)", method: "راسب أبيض.", fr_method: "Précipité blanc." },
+            { symbol: "CH3COO-", ar_name: "شاردة الأسيتات", fr_name: "Acétate", reagent: "شاردة الحديد الثلاثي (Fe3+)", method: "لون أحمر بني غامق.", fr_method: "Coloration brun-rouge." },
+            { symbol: "HCO3-", ar_name: "شاردة البيكربونات", fr_name: "Bicarbonate", reagent: "حمض الهيدروكلوريك (HCl)", method: "تصاعد فقاعات ثاني أكسيد الكربون.", fr_method: "Dégagement de dioxyde de carbone (bullage)." },
+            { symbol: "H2O2", ar_name: "فوق أكسيد الهيدروجين", fr_name: "Peroxyde d'hydrogène", reagent: "ثاني كرومات البوتاسيوم (K2Cr2O7) + H2SO4", method: "تحول لون الحل للأخضر.", fr_method: "Changement de couleur vers le vert." },
+            { symbol: "O2", ar_name: "غاز الأكسجين", fr_name: "Oxygène", reagent: "عود مشتعلة", method: "يعيد إذكاء اللهب.", fr_method: "Ravive une flamme." },
+            { symbol: "H2", ar_name: "غاز الهيدروجين", fr_name: "Hydrogène", reagent: "عود مشتعل", method: "يصدر صوت فرقعة (pop).", fr_method: "Bruit de détonation caractéristique." },
+            { symbol: "SO3^2-", ar_name: "شاردة الكبريتيت", fr_name: "Sulfite", reagent: "حمض الهيدروكلوريك (HCl)", method: "تصاعد غاز ثاني أكسيد الكبريت برائحة حادة.", fr_method: "Dégagement de dioxyde de soufre (odeur piquante)." },
+            { symbol: "NO2-", ar_name: "شاردة النيتريت", fr_name: "Nitrite", reagent: "محلول اليود (I2)", method: "تزول لون اليود الأصفر.", fr_method: "Décoloration du iode." },
+            { symbol: "CH4", ar_name: "غاز الميثان", fr_name: "Méthane", reagent: "رائحة الغاز", method: "له رائحة مميزة ويشتعل بسهولة.", fr_method: "Odeur caractéristique, brûle facilement." },
+            { symbol: "C6H12O6", ar_name: "الجلوكوز", fr_name: "Glucose", reagent: "محلول بندكت (Fehling)", method: "يتغير لون المحلول للأحمر الطوبي (راسب).", fr_method: "Formation d'un précipité rouge brique." },
+            { symbol: "C2H5OH", ar_name: "الإيثانول", fr_name: "Éthanol", reagent: "اختبار اللهب", method: "يعطي لهباً أزرق نقي.", fr_method: "Flamme bleue pure." },
+            { symbol: "KBr", ar_name: "بروميد البوتاسيوم", fr_name: "Bromure de potassium", reagent: "نترات الفضة (AgNO3)", method: "راسب أصفر شاحب.", fr_method: "Précipité jaune pâle." },
+            { symbol: "Na2CO3", ar_name: "كربونات الصوديوم", fr_name: "Carbonate de sodium", reagent: "حمض الهيدروكلوريك (HCl)", method: "تصاعد غاز ثاني أكسيد الكربون.", fr_method: "Dégagement de dioxyde de carbone." },
+            { symbol: "Li+", ar_name: "شاردة الليثيوم", fr_name: "Lithium", reagent: "اختبار اللهب", method: "لهب أحمر قانٍ مشرق.", fr_method: "Flamme rouge cramoisi." },
+            { symbol: "CuSO4", ar_name: "كبريتات النحاس", fr_name: "Sulfate de cuivre", reagent: "اختبار اللهب", method: "لهب أخضر مزرق.", fr_method: "Flamme vert-bleu." },
+            { symbol: "Na+", ar_name: "شاردة الصوديوم", fr_name: "Sodium", reagent: "اختبار اللهب", method: "لهب أصفر ذهبي ساطع.", fr_method: "Flamme jaune d'or intense." },
+            { symbol: "NH3", ar_name: "غاز الأمونياك", fr_name: "Ammoniac", reagent: "ورقة عباد الشمس الحمراء", method: "تتحول للون الأزرق، برائحة حادة نفاذة.", fr_method: "Papier rouge devient bleu, odeur piquante." },
+            { symbol: "CaCO3", ar_name: "كربونات الكالسيوم", fr_name: "Carbonate de calcium", reagent: "حمض الهيدروكلوريك (HCl)", method: "فقاعات غازية قوية.", fr_method: "Effervescence intense." },
+            { symbol: "HCl", ar_name: "حمض الهيدروكلوريك", fr_name: "Acide chlorhydrique", reagent: "محلول الأمونيا (NH3)", method: "ظهور أبخرة بيضاء كثيفة.", fr_method: "Formation de fumées blanches denses." },
+            { symbol: "H2SO4", ar_name: "حمض الكبريتيك", fr_name: "Acide sulfurique", reagent: "ماء مقطر بحذر شديد", method: "تفاعل شديد الحرارة، يحرق المواد العضوية.", fr_method: "Réaction très exothermique, brûle les matières organiques." },
+            { symbol: "NaOH", ar_name: "هيدروكسيد الصوديوم", fr_name: "Hydroxyde de sodium", reagent: "ورقة عباد الشمس الحمراء", method: "تتحول للون الأزرق.", fr_method: "Papier rouge devient bleu." },
+            { symbol: "HNO3", ar_name: "حمض النيتريك", fr_name: "Acide nitrique", reagent: "ماء مقطر", method: "حمض قوي ومؤكسد.", fr_method: "Acide fort et oxydant." },
+            { symbol: "CH3COOH", ar_name: "حمض الخليك (الأسيتيك)", fr_name: "Acide acétique", reagent: "كربونات الصوديوم (Na2CO3)", method: "تصاعد غاز ثاني أكسيد الكربون.", fr_method: "Dégagement de dioxyde de carbone." },
+            { symbol: "MgCl2", ar_name: "كلوريد المغنسيوم", fr_name: "Chlorure de magnésium", reagent: "هيدروكسيد الصوديوم (NaOH)", method: "راسب أبيض.", fr_method: "Précipité blanc." },
+            { symbol: "CuCl2", ar_name: "كلوريد النحاس الثنائي", fr_name: "Chlorure de cuivre", reagent: "محلول الأمونيا", method: "محلول أزرق مكثف.", fr_method: "Solution bleu foncé." },
+            { symbol: "KMnO4", ar_name: "برمنغنات البوتاسيوم", fr_name: "Permanganate de potassium", reagent: "الإيثانول (C2H5OH)", method: "تفاعل تأكسد قوي.", fr_method: "Réaction d'oxydation intense." },
+            { symbol: "FeSO4", ar_name: "كبريتات الحديد الثنائي", fr_name: "Sulfate de fer(II)", reagent: "ثيوسيانات البوتاسيوم (KSCN)", method: "لا يعطي لون أحمر (عكس Fe3+).", fr_method: "Pas de coloration rouge." },
+            { symbol: "Fe2(SO4)3", ar_name: "كبريتات الحديد الثلاثي", fr_name: "Sulfate de fer(III)", reagent: "ثيوسيانات البوتاسيوم (KSCN)", method: "لون أحمر دموي.", fr_method: "Coloration rouge sang." },
+            { symbol: "CaCl2", ar_name: "كلوريد الكالسيوم", fr_name: "Chlorure de calcium", reagent: "كربونات الصوديوم (Na2CO3)", method: "راسب أبيض من كربونات الكالسيوم.", fr_method: "Précipité blanc de carbonate de calcium." },
+            { symbol: "NaBr", ar_name: "بروميد الصوديوم", fr_name: "Bromure de sodium", reagent: "نترات الفضة (AgNO3)", method: "راسب أصفر شاحب.", fr_method: "Précipité jaune pâle." },
+            { symbol: "NaI", ar_name: "يوديد الصوديوم", fr_name: "Iodure de sodium", reagent: "نترات الفضة (AgNO3)", method: "راسب أصفر دكن.", fr_method: "Précipité jaune foncé." },
+            { symbol: "K2CO3", ar_name: "كربونات البوتاسيوم", fr_name: "Carbonate de potassium", reagent: "حمض الهيدروكلوريك (HCl)", method: "تصاعد غاز ثاني أكسيد الكربون.", fr_method: "Dégagement de CO2." },
+            { symbol: "Li2CO3", ar_name: "كربونات الليثيوم", fr_name: "Carbonate de lithium", reagent: "حمض الهيدروكلوريك (HCl)", method: "تصاعد غاز ثاني أكسيد الكربون.", fr_method: "Dégagement de CO2." },
+            { symbol: "BaCl2", ar_name: "كلوريد الباريوم", fr_name: "Chlorure de baryum", reagent: "كبريتات الصوديوم (Na2SO4)", method: "راسب أبيض من كبريتات الباريوم.", fr_method: "Précipité blanc de sulfate de baryum." },
+            { symbol: "AgNO3", ar_name: "نترات الفضة", fr_name: "Nitrate d'argent", reagent: "حمض الهيدروكلوريك (HCl)", method: "راسب أبيض من كلوريد الفضة.", fr_method: "Précipité blanc de chlorure d'argent." },
+            { symbol: "Pb(NO3)2", ar_name: "نترات الرصاص", fr_name: "Nitrate de plomb", reagent: "كرومات البوتاسيوم (K2CrO4)", method: "راسب أصفر.", fr_method: "Précipité jaune." },
+            { symbol: "ZnSO4", ar_name: "كبريتات الزنك", fr_name: "Sulfate de zinc", reagent: "محلول كبريتيد الصوديوم (Na2S)", method: "راسب أبيض.", fr_method: "Précipité blanc." },
+            { symbol: "Al2(SO4)3", ar_name: "كبريتات الألومنيوم", fr_name: "Sulfate d'aluminium", reagent: "هيدروكسيد الصوديوم (NaOH)", method: "راسب أبيض جيلاتيني.", fr_method: "Précipité blanc gélatineux." },
+            { symbol: "NiSO4", ar_name: "كبريتات النيكل", fr_name: "Sulfate de nickel", reagent: "ثنائي ميثيل جليوكسيم", method: "راسب أحمر وردي.", fr_method: "Précipité rouge rosé." },
+            { symbol: "MnSO4", ar_name: "كبريتات المنغنيز", fr_name: "Sulfate de manganèse", reagent: "هيدروكسيد الصوديوم (NaOH)", method: "راسب أبيض.", fr_method: "Précipité blanc." },
+            { symbol: "CrCl3", ar_name: "كلوريد الكروم الثلاثي", fr_name: "Chlorure de chrome(III)", reagent: "هيدروكسيد الصوديوم (NaOH)", method: "راسب رمادي مخضر.", fr_method: "Précipité gris-vert." },
+            { symbol: "K3[Fe(CN)6]", ar_name: "فيروسيانيد البوتاسيوم", fr_name: "Ferrocyanure de potassium", reagent: "ملح الحديد الثلاثي (FeCl3)", method: "راسب أزرق.", fr_method: "Précipité bleu." },
+            { symbol: "Na3PO4", ar_name: "فوسفات الصوديوم", fr_name: "Phosphate de sodium", reagent: "نترات الفضة (AgNO3)", method: "راسب أصفر.", fr_method: "Précipité jaune." },
+            { symbol: "Ca3(PO4)2", ar_name: "فوسفات الكالسيوم", fr_name: "Phosphate de calcium", reagent: "كلوريد الكالسيوم", method: "راسب أبيض.", fr_method: "Précipité blanc." },
+            { symbol: "NaHCO3", ar_name: "بيكربونات الصوديوم", fr_name: "Bicarbonate de sodium", reagent: "حمض الهيدروكلوريك (HCl)", method: "تصاعد غاز ثاني أكسيد الكربون.", fr_method: "Dégagement de CO2." },
+            { symbol: "KHCO3", ar_name: "بيكربونات البوتاسيوم", fr_name: "Bicarbonate de potassium", reagent: "حمض الهيدروكلوريك (HCl)", method: "تصاعد غاز ثاني أكسيد الكربون.", fr_method: "Dégagement de CO2." },
+            { symbol: "Na2SO3", ar_name: "كبريتيت الصوديوم", fr_name: "Sulfite de sodium", reagent: "حمض الهيدروكلوريك (HCl)", method: "تصاعد غاز ثاني أكسيد الكبريت.", fr_method: "Dégagement de SO2." },
+            { symbol: "K2SO3", ar_name: "كبريتيت البوتاسيوم", fr_name: "Sulfite de potassium", reagent: "حمض الهيدروكلوريك (HCl)", method: "تصاعد غاز ثاني أكسيد الكبريت.", fr_method: "Dégagement de SO2." },
+            { symbol: "Na2S", ar_name: "كبريتيد الصوديوم", fr_name: "Sulfure de sodium", reagent: "حمض الهيدروكلوريك (HCl)", method: "تصاعد غاز كبريتيد الهيدروجين برائحة حادة.", fr_method: "Dégagement de H2S (odeur d'œuf pourri)." },
+            { symbol: "K2S", ar_name: "كبريتيد البوتاسيوم", fr_name: "Sulfure de potassium", reagent: "حمض الهيدروكلوريك (HCl)", method: "تصاعد غاز كبريتيد الهيدروجين.", fr_method: "Dégagement de H2S." },
+            { symbol: "Na2SO4", ar_name: "كبريتات الصوديوم", fr_name: "Sulfate de sodium", reagent: "كلوريد الباريوم (BaCl2)", method: "راسب أبيض.", fr_method: "Précipité blanc." },
+            { symbol: "K2SO4", ar_name: "كبريتات البوتاسيوم", fr_name: "Sulfate de potassium", reagent: "كلوريد الباريوم (BaCl2)", method: "راسب أبيض.", fr_method: "Précipité blanc." },
+            { symbol: "(NH4)2SO4", ar_name: "كبريتات الأمونيوم", fr_name: "Sulfate d'ammonium", reagent: "هيدروكسيد الصوديوم (NaOH)", method: "تصاعد غاز الأمونياك.", fr_method: "Dégagement de NH3." },
+            { symbol: "MgSO4", ar_name: "كبريتات المغنسيوم", fr_name: "Sulfate de magnésium", reagent: "هيدروكسيد الصوديوم (NaOH)", method: "راسب أبيض.", fr_method: "Précipité blanc." },
+            { symbol: "K2Cr2O7", ar_name: "ثنائي كرومات البوتاسيوم", fr_name: "Dichromate de potassium", reagent: "الإيثانول (C2H5OH)", method: "تأكسد قوي، تغيير لوني.", fr_method: "Oxydation forte, changement de couleur." },
+            { symbol: "I2", ar_name: "اليود", fr_name: "Iode", reagent: "محلول ملح (NaCl)", method: "محلول بني-أحمر.", fr_method: "Solution brun-rouge." },
+            { symbol: "Cl2", ar_name: "غاز الكلور", fr_name: "Chlore", reagent: "ماء", method: "رائحة حادة، تأكسد قوي.", fr_method: "Odeur piquante, oxydant puissant." },
+            { symbol: "Br2", ar_name: "البروم", fr_name: "Brome", reagent: "رائحة الغاز", method: "بخار أحمر برتقالي، رائحة حادة.", fr_method: "Vapeur brun-rouge, odeur piquante." },
+            { symbol: "HBr", ar_name: "حمض البروميك", fr_name: "Acide bromhydrique", reagent: "نترات الفضة (AgNO3)", method: "راسب أصفر شاحب.", fr_method: "Précipité jaune pâle." },
+            { symbol: "HI", ar_name: "حمض اليودي", fr_name: "Acide iodhydrique", reagent: "نترات الفضة (AgNO3)", method: "راسب أصفر دكن.", fr_method: "Précipité jaune foncé." },
+            { symbol: "HF", ar_name: "حمض الهيدروفلوريك", fr_name: "Acide fluorhydrique", reagent: "محلول الكالسيوم", method: "راسب من فلوريد الكالسيوم.", fr_method: "Précipité de fluorure de calcium." },
+            { symbol: "NH4Cl", ar_name: "كلوريد الأمونيوم", fr_name: "Chlorure d'ammonium", reagent: "هيدروكسيد الصوديوم (NaOH)", method: "تصاعد غاز الأمونياك برائحة نفاذة.", fr_method: "Dégagement de NH3 (odeur piquante)." },
+            { symbol: "NH4Br", ar_name: "بروميد الأمونيوم", fr_name: "Bromure d'ammonium", reagent: "هيدروكسيد الصوديوم (NaOH)", method: "تصاعد غاز الأمونياك.", fr_method: "Dégagement de NH3." },
+            { symbol: "NH4I", ar_name: "يوديد الأمونيوم", fr_name: "Iodure d'ammonium", reagent: "هيدروكسيد الصوديوم (NaOH)", method: "تصاعد غاز الأمونياك.", fr_method: "Dégagement de NH3." },
+            { symbol: "KCl", ar_name: "كلوريد البوتاسيوم", fr_name: "Chlorure de potassium", reagent: "نترات الفضة (AgNO3)", method: "راسب أبيض.", fr_method: "Précipité blanc." },
+            { symbol: "KI", ar_name: "يوديد البوتاسيوم", fr_name: "Iodure de potassium", reagent: "نترات الفضة (AgNO3)", method: "راسب أصفر دكن.", fr_method: "Précipité jaune foncé." },
+            { symbol: "Li2SO4", ar_name: "كبريتات الليثيوم", fr_name: "Sulfate de lithium", reagent: "كلوريد الباريوم (BaCl2)", method: "راسب أبيض.", fr_method: "Précipité blanc." },
+            { symbol: "CaO", ar_name: "أكسيد الكالسيوم", fr_name: "Oxyde de calcium", reagent: "الماء", method: "تفاعل طارد للحرارة.", fr_method: "Réaction exothermique." },
+            { symbol: "Na2O", ar_name: "أكسيد الصوديوم", fr_name: "Oxyde de sodium", reagent: "الماء", method: "تكون هيدروكسيد الصوديوم.", fr_method: "Formation de NaOH." },
+            { symbol: "SiO2", ar_name: "ثاني أكسيد السيليكون", fr_name: "Dioxyde de silicium", reagent: "حمض الهيدروفلوريك (HF)", method: "يذوب في HF فقط.", fr_method: "Soluble seulement dans HF." },
+            { symbol: "Al2O3", ar_name: "أكسيد الألومنيوم", fr_name: "Oxyde d'aluminium", reagent: "حمض قوي", method: "يذوب في الأحماض.", fr_method: "Soluble dans les acides." },
+            { symbol: "Fe2O3", ar_name: "أكسيد الحديد الثلاثي", fr_name: "Oxyde de fer(III)", reagent: "حمض الهيدروكلوريك", method: "مركب صلب أحمر.", fr_method: "Composé solide rouge." },
+            { symbol: "Fe3O4", ar_name: "أكسيد الحديد المختلط", fr_name: "Oxyde de fer mixte", reagent: "حمض الهيدروكلوريك", method: "محلول أخضر-أصفر.", fr_method: "Solution vert-jaune." },
+            { symbol: "FeO", ar_name: "أكسيد الحديد الثنائي", fr_name: "Oxyde de fer(II)", reagent: "حمض الهيدروكلوريك", method: "محلول أخضر فاتح.", fr_method: "Solution vert pâle." },
+            { symbol: "CuO", ar_name: "أكسيد النحاس الثنائي", fr_name: "Oxyde de cuivre", reagent: "حمض الهيدروكلوريك", method: "محلول أزرق.", fr_method: "Solution bleue." },
+            { symbol: "Cu2O", ar_name: "أكسيد النحاس الأول", fr_name: "Oxyde de cuivre(I)", reagent: "حمض الهيدروكلوريك", method: "محلول أخضر.", fr_method: "Solution verte." },
+            { symbol: "MgO", ar_name: "أكسيد المغنسيوم", fr_name: "Oxyde de magnésium", reagent: "الماء", method: "يكون هيدروكسيد المغنسيوم.", fr_method: "Formation de Mg(OH)2." },
+            { symbol: "ZnO", ar_name: "أكسيد الزنك", fr_name: "Oxyde de zinc", reagent: "حمض الهيدروكلوريك", method: "ينحل في الأحماض.", fr_method: "Soluble dans les acides." },
+            { symbol: "CO2", ar_name: "ثاني أكسيد الكربون", fr_name: "Dioxyde de carbone", reagent: "محلول جير الماء (Ca(OH)2)", method: "راسب أبيض من كربونات الكالسيوم.", fr_method: "Précipité blanc de CaCO3." },
+            { symbol: "N2", ar_name: "غاز النيتروجين", fr_name: "Azote", reagent: "لا يتفاعل بسهولة", method: "غاز خامل نسبياً.", fr_method: "Gaz relativement inerte." },
+            { symbol: "Ar", ar_name: "الأرغون", fr_name: "Argon", reagent: "غاز نبيل", method: "لا يتفاعل.", fr_method: "Ne réagit pas." },
+            { symbol: "He", ar_name: "الهيليوم", fr_name: "Hélium", reagent: "غاز نبيل", method: "لا يتفاعل.", fr_method: "Ne réagit pas." },
+            { symbol: "Ne", ar_name: "النيون", fr_name: "Néon", reagent: "غاز نبيل", method: "لا يتفاعل.", fr_method: "Ne réagit pas." },
+            { symbol: "P2O5", ar_name: "خماسي أكسيد الفوسفور", fr_name: "Pentoxyde de phosphore", reagent: "الماء", method: "تكون حمض الفوسفوريك.", fr_method: "Formation d'acide phosphorique." },
+            { symbol: "SO2", ar_name: "ثاني أكسيد الكبريت", fr_name: "Dioxyde de soufre", reagent: "ماء الأكسجين (H2O2)", method: "تأكسد SO2 إلى SO3.", fr_method: "Oxydation de SO2 en SO3." },
+            { symbol: "NO2", ar_name: "ثاني أكسيد النيتروجين", fr_name: "Dioxyde d'azote", reagent: "الماء", method: "تكون HNO3 و NO.", fr_method: "Formation d'HNO3 et NO." },
+            { symbol: "N2O", ar_name: "أكسيد النيتروز (الضاحك)", fr_name: "Oxyde nitreux", reagent: "عود مشتعل", method: "يعيد إذكاء اللهب.", fr_method: "Ravive une flamme." },
+            { symbol: "C2H2", ar_name: "الإيثين (الأسيتيلين)", fr_name: "Acétylène", reagent: "عود مشتعل", method: "يحترق بسهولة باللهب الأبيض.", fr_method: "Brûle facilement avec flamme blanche." },
+            { symbol: "C2H4", ar_name: "الإيثيلين", fr_name: "Éthylène", reagent: "محلول البروم (Br2)", method: "يزيل لون البروم.", fr_method: "Décolore le brome." },
+            { symbol: "C6H6", ar_name: "البنزين", fr_name: "Benzène", reagent: "محلول البروم", method: "لا يزيل اللون بسهولة دون محفز.", fr_method: "Ne décolore pas le brome facilement." },
+            { symbol: "CH3Br", ar_name: "بروموميثان", fr_name: "Bromométhane", reagent: "محلول نترات الفضة (AgNO3)", method: "راسب أصفر من AgBr.", fr_method: "Précipité jaune de AgBr." },
+            { symbol: "CHCl3", ar_name: "كلوروفورم", fr_name: "Chloroforme", reagent: "اختبار اللهب", method: "لهب أخضر.", fr_method: "Flamme verte." },
+            { symbol: "CCl4", ar_name: "رابع كلوريد الكربون", fr_name: "Tétrachlorure de carbone", reagent: "اختبار اللهب", method: "لا يحترق بسهولة.", fr_method: "Ne brûle pas facilement." }
+        ];
+
+        // الحصول على عناصر الصفحة
+        const form = document.getElementById('ionForm');
+        const ionInput = document.getElementById('ionInput');
+        const resultContainer = document.getElementById('resultContainer');
+        const suggestionsList = document.getElementById('suggestionsList');
+        const developerBtn = document.getElementById('developerBtn');
+        const developerModal = document.getElementById('developerModal');
+        const closeModal = document.getElementById('closeModal');
+
+        // دالة البحث عن المركب أو الشاردة في قاعدة البيانات (بحث ثنائي اللغة)
+        function findIon(searchTerm) {
+            // تنظيف النص المدخل من المسافات الزائدة وتحويله للأحرف الصغيرة للمقارنة
+            const cleanedSearch = searchTerm.trim().toLowerCase();
+            
+            // البحث في قاعدة البيانات - يبحث في الرمز والاسم العربي والفرنسي
+            return ionsDatabase.find(ion => 
+                ion.symbol.toLowerCase() === cleanedSearch || 
+                ion.ar_name.toLowerCase() === cleanedSearch ||
+                ion.fr_name.toLowerCase() === cleanedSearch
+            );
+        }
+
+        // دالة عرض النتيجة الإيجابية (ثنائية اللغة)
+        function displaySuccess(ion) {
+            resultContainer.innerHTML = `
+                <div class="result-card">
+                    <div class="result-title">
+                        <span class="icon">✅</span>
+                        <span class="chemical-formula">${ion.symbol}</span>
+                    </div>
+                    <div class="result-section">
+                        <div class="result-label">الاسم بالعربية</div>
+                        <div class="result-value">${ion.ar_name}</div>
+                    </div>
+                    <div class="result-section">
+                        <div class="result-label">Nom en français</div>
+                        <div class="result-value">${ion.fr_name}</div>
+                    </div>
+                    <div class="result-section">
+                        <div class="result-label">الكاشف المناسب</div>
+                        <div class="result-value">${ion.reagent}</div>
+                    </div>
+                    <div class="result-section">
+                        <div class="result-label">طريقة الاستخدام (عربي)</div>
+                        <div class="result-value">${ion.method}</div>
+                    </div>
+                    <div class="result-section">
+                        <div class="result-label">Méthode (français)</div>
+                        <div class="result-value">${ion.fr_method}</div>
+                    </div>
+                </div>
+            `;
+            resultContainer.classList.add('show');
+        }
+
+        // دالة عرض رسالة الخطأ (عند عدم العثور على المركب أو الشاردة)
+        function displayError() {
+            resultContainer.innerHTML = `
+                <div class="result-card error">
+                    <div class="result-title">
+                        <span class="icon">❌</span>
+                        <span>غير موجود</span>
+                    </div>
+                    <div class="error-message">
+                        عذراً، لا توجد معلومات عن المركب أو الشاردة المدخلة في قاعدة البيانات.<br>
+                        يرجى التأكد من كتابة الاسم بالعربية أو الفرنسية أو الرمز الكيميائي.
+                    </div>
+                </div>
+            `;
+            resultContainer.classList.add('show');
+        }
+
+        // معالجة إرسال النموذج
+        form.addEventListener('submit', function(e) {
+            // منع السلوك الافتراضي للنموذج
+            e.preventDefault();
+            
+            // الحصول على القيمة المدخلة
+            const searchTerm = ionInput.value;
+            
+            // البحث عن الشاردة
+            const foundIon = findIon(searchTerm);
+            
+            // عرض النتيجة المناسبة
+            if (foundIon) {
+                displaySuccess(foundIon);
+            } else {
+                displayError();
+            }
+        });
+
+        // دالة البحث التلقائي وعرض الاقتراحات (بحث ثنائي اللغة)
+        function showSuggestions(searchTerm) {
+            // تنظيف النص المدخل
+            const cleanedSearch = searchTerm.trim().toLowerCase();
+            
+            // إذا كان النص فارغاً، إخفاء القائمة
+            if (cleanedSearch === '') {
+                suggestionsList.classList.remove('show');
+                suggestionsList.innerHTML = '';
+                return;
+            }
+            
+            // البحث عن المطابقات - يبحث في الرمز والاسم العربي والفرنسي
+            const matches = ionsDatabase.filter(ion => 
+                ion.symbol.toLowerCase().includes(cleanedSearch) || 
+                ion.ar_name.toLowerCase().includes(cleanedSearch) ||
+                ion.fr_name.toLowerCase().includes(cleanedSearch)
+            );
+            
+            // حد أقصى 10 نتائج في القائمة المنسدلة
+            const limitedMatches = matches.slice(0, 10);
+            
+            // إذا لم توجد نتائج
+            if (limitedMatches.length === 0) {
+                suggestionsList.classList.remove('show');
+                suggestionsList.innerHTML = '';
+                return;
+            }
+            
+            // بناء قائمة الاقتراحات
+            let html = '';
+            limitedMatches.forEach(ion => {
+                html += `
+                    <div class="suggestion-item" data-symbol="${ion.symbol}">
+                        <span class="suggestion-symbol chemical-formula">${ion.symbol}</span>
+                        <span class="suggestion-name">${ion.ar_name} | ${ion.fr_name}</span>
+                    </div>
+                `;
+            });
+            
+            suggestionsList.innerHTML = html;
+            suggestionsList.classList.add('show');
+            
+            // إضافة حدث النقر على كل عنصر في القائمة
+            const suggestionItems = suggestionsList.querySelectorAll('.suggestion-item');
+            suggestionItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const symbol = this.getAttribute('data-symbol');
+                    ionInput.value = symbol;
+                    suggestionsList.classList.remove('show');
+                    suggestionsList.innerHTML = '';
+                    
+                    // عرض النتيجة مباشرة
+                    const foundIon = findIon(symbol);
+                    if (foundIon) {
+                        displaySuccess(foundIon);
+                    }
+                });
+            });
+        }
+        
+        // معالجة الكتابة في حقل الإدخال
+        ionInput.addEventListener('input', function() {
+            // إخفاء النتائج السابقة
+            if (resultContainer.classList.contains('show')) {
+                resultContainer.classList.remove('show');
+            }
+            
+            // عرض الاقتراحات
+            showSuggestions(this.value);
+        });
+        
+        // إخفاء القائمة عند النقر خارجها
+        document.addEventListener('click', function(e) {
+            if (!ionInput.contains(e.target) && !suggestionsList.contains(e.target)) {
+                suggestionsList.classList.remove('show');
+            }
+        });
+        
+        // معالجة زر معلومات المطور
+        developerBtn.addEventListener('click', function() {
+            developerModal.classList.add('show');
+        });
+        
+        // إغلاق نافذة المطور
+        closeModal.addEventListener('click', function() {
+            developerModal.classList.remove('show');
+        });
+        
+        // إغلاق النافذة عند النقر خارجها
+        developerModal.addEventListener('click', function(e) {
+            if (e.target === developerModal) {
+                developerModal.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

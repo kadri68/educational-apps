@@ -1,0 +1,463 @@
+/* Define a color palette for easier management */
+:root {
+    /* Light Mode Colors */
+    --light-bg: #f0f7f7; /* Soft light blue-green */
+    --light-container-bg: #ffffff;
+    --light-text-color: #333;
+    --light-heading-color: #2c3e50;
+    --light-input-bg: #f9f9f9;
+    --light-current-display-bg: #e0f2f7; /* Lighter blue-green */
+    --light-border-color: #cce7ed;
+
+    /* Dark Mode Colors */
+    --dark-bg: #202a3a; /* Deep charcoal blue */
+    --dark-container-bg: #2a384a;
+    --dark-text-color: #e0e0e0;
+    --dark-heading-color: #f0f0f0;
+    --dark-input-bg: #3a475a;
+    --dark-current-display-bg: #3a475a;
+    --dark-border-color: #4a5d73;
+
+    /* Accent Colors */
+    --primary-accent: #00bcd4; /* Teal */
+    --primary-accent-darker: #0097a7; /* Darker Teal */
+    --secondary-accent: #3f51b5; /* Indigo */
+    --secondary-accent-darker: #303f9f; /* Darker Indigo */
+    --success-color: #4CAF50; /* Green */
+    --success-color-darker: #45a049;
+
+    /* Gradients */
+    --button-gradient-light: linear-gradient(135deg, var(--primary-accent), var(--primary-accent-darker));
+    --button-gradient-dark: linear-gradient(135deg, #007985, #005f6b);
+    --action-button-gradient-light: linear-gradient(135deg, var(--secondary-accent), var(--secondary-accent-darker));
+    --action-button-gradient-dark: linear-gradient(135deg, #30419e, #24307a);
+}
+
+/* Base styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--light-bg);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    color: var(--light-text-color);
+    direction: rtl;
+    text-align: right;
+    font-size: 28px; /* Very large base font size */
+    transition: background-color 0.4s ease, color 0.4s ease;
+    position: relative;
+}
+
+/* Dark Mode styles */
+body.dark-mode {
+    background-color: var(--dark-bg);
+    color: var(--dark-text-color);
+}
+
+.container {
+    background-color: var(--light-container-bg);
+    padding: 30px;
+    border-radius: 20px; /* More rounded corners */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Softer, larger shadow */
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    transition: background-color 0.4s ease, box-shadow 0.4s ease;
+}
+body.dark-mode .container {
+    background-color: var(--dark-container-bg);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+h1, h2 {
+    color: var(--light-heading-color);
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.5em;
+    transition: color 0.4s ease;
+}
+body.dark-mode h1, body.dark-mode h2 {
+    color: var(--dark-heading-color);
+}
+
+#current-date-time {
+    font-size: 1.2em;
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--light-text-color);
+    padding: 15px;
+    border: 1px solid var(--light-border-color);
+    border-radius: 12px;
+    background-color: var(--light-current-display-bg);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+}
+body.dark-mode #current-date-time {
+    background-color: var(--dark-current-display-bg);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-color);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--light-heading-color);
+    font-size: 1.1em;
+    transition: color 0.4s ease;
+}
+body.dark-mode .form-group label {
+    color: var(--dark-heading-color);
+}
+
+.form-group input[type="number"],
+.form-group select {
+    width: calc(100% - 20px);
+    padding: 18px; /* Larger padding for inputs */
+    border: 1px solid var(--light-border-color);
+    border-radius: 12px;
+    font-size: 1.1em;
+    box-sizing: border-box;
+    background-color: var(--light-input-bg);
+    color: var(--light-text-color);
+    transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+}
+body.dark-mode .form-group input[type="number"],
+body.dark-mode .form-group select {
+    background-color: var(--dark-input-bg);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-color);
+}
+body.dark-mode .form-group select option {
+    background-color: var(--dark-input-bg);
+    color: var(--dark-text-color);
+}
+
+.radio-group {
+    display: flex;
+    gap: 25px;
+    margin-top: 20px;
+    justify-content: center;
+    font-size: 1.1em;
+}
+.radio-group input[type="radio"] {
+    transform: scale(1.5);
+    margin-left: 10px;
+}
+.radio-group label {
+    cursor: pointer;
+    color: var(--light-text-color);
+    transition: color 0.4s ease;
+}
+body.dark-mode .radio-group label {
+    color: var(--dark-text-color);
+}
+
+button {
+    background: var(--button-gradient-light); /* Gradient background */
+    color: white;
+    padding: 18px 30px;
+    border: none;
+    border-radius: 15px; /* More rounded */
+    cursor: pointer;
+    font-size: 1.2em;
+    margin-top: 30px;
+    width: 100%;
+    transition: all 0.3s ease; /* Smooth transition for all properties */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25); /* Enhanced shadow */
+}
+button:hover {
+    transform: translateY(-3px); /* Lift effect */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35); /* Deeper shadow on hover */
+    opacity: 0.9;
+}
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+}
+body.dark-mode button {
+    background: var(--button-gradient-dark);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+body.dark-mode button:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+#results {
+    margin-top: 35px;
+    padding: 25px;
+    border: 1px solid var(--light-border-color);
+    border-radius: 15px;
+    background-color: #e0f7fa; /* Lighter accent color for results */
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 1.1em;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+body.dark-mode #results {
+    background-color: #3e4e60; /* Darker accent for results */
+    border-color: #5a6d80;
+    color: var(--dark-text-color);
+}
+#results p {
+    margin: 0;
+    color: var(--light-text-color);
+    transition: color 0.4s ease;
+}
+body.dark-mode #results p {
+    color: var(--dark-text-color);
+}
+
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 30px;
+    justify-content: center;
+}
+.action-buttons button {
+    background: var(--action-button-gradient-light);
+    flex: 1;
+    min-width: 180px;
+    padding: 15px 20px;
+    font-size: 1.1em;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+.action-buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+body.dark-mode .action-buttons button {
+    background: var(--action-button-gradient-dark);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+body.dark-mode .action-buttons button:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Modal styling (for "Who Am I" - designed to feel like a separate screen on mobile) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px); /* Subtle blur effect */
+}
+
+.modal-content {
+    background-color: var(--light-container-bg);
+    margin: 20px; /* Margin on all sides */
+    padding: 35px; /* More padding */
+    border-radius: 25px; /* Very rounded */
+    width: 95%; /* Wider on small screens */
+    max-width: 550px; /* Slightly larger max-width */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); /* Prominent shadow */
+    position: relative;
+    text-align: right;
+    font-size: 1.1em;
+    transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, color 0.4s ease;
+}
+body.dark-mode .modal-content {
+    background-color: var(--dark-container-bg);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-color);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.modal-content h3 {
+    text-align: center;
+    color: var(--light-heading-color);
+    margin-bottom: 25px;
+    font-size: 1.4em;
+    border-bottom: 2px solid var(--primary-accent); /* Underline effect */
+    padding-bottom: 10px;
+    transition: color 0.4s ease, border-color 0.4s ease;
+}
+body.dark-mode .modal-content h3 {
+    color: var(--dark-heading-color);
+    border-bottom-color: var(--primary-accent-darker);
+}
+
+.modal-content p {
+    margin-bottom: 12px;
+    line-height: 1.6;
+}
+
+.close-button {
+    color: #aaa;
+    float: left;
+    font-size: 45px; /* Larger close button */
+    font-weight: bold;
+    position: absolute;
+    top: 15px;
+    left: 25px;
+    transition: color 0.3s ease;
+}
+.close-button:hover,
+.close-button:focus {
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+body.dark-mode .close-button {
+    color: #ccc;
+}
+body.dark-mode .close-button:hover,
+body.dark-mode .close-button:focus {
+    color: #f0f0f0;
+}
+
+/* Dark Mode Toggle Button */
+#darkModeToggle {
+    position: absolute;
+    top: 25px; /* Adjust top positioning for better look */
+    left: 25px;
+    background-color: transparent;
+    color: var(--light-heading-color);
+    border: none;
+    cursor: pointer;
+    font-size: 1.6em; /* Slightly larger icon */
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none; /* Override default button shadow */
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+#darkModeToggle:hover {
+    background-color: rgba(0, 0, 0, 0.08); /* Darker hover effect */
+}
+body.dark-mode #darkModeToggle {
+    color: var(--dark-heading-color);
+}
+body.dark-mode #darkModeToggle:hover {
+    background-color: rgba(255, 255, 255, 0.12); /* Lighter hover effect for dark mode */
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+        font-size: 24px;
+    }
+    .container {
+        padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 15px;
+    }
+    h1, h2 {
+        font-size: 1.4em;
+    }
+    #current-date-time {
+        font-size: 1em;
+        padding: 12px;
+        border-radius: 10px;
+    }
+    .form-group input[type="number"],
+    .form-group select {
+        font-size: 1em;
+        padding: 15px;
+        border-radius: 10px;
+    }
+    button {
+        font-size: 1.1em;
+        padding: 15px 25px;
+        border-radius: 12px;
+    }
+    .action-buttons button {
+        min-width: 140px;
+        font-size: 1em;
+        padding: 12px 18px;
+    }
+    /* Make modal full screen on smaller devices */
+    .modal-content {
+        width: 95%; /* Adjusted to be almost full width */
+        height: auto; /* Allow height to adjust */
+        max-height: 90%; /* Max height to avoid overflowing viewport */
+        margin: 0; /* Remove fixed margin */
+        border-radius: 0; /* Remove corner radius for full screen effect */
+        box-shadow: none; /* No shadow for full screen */
+        display: flex; /* Use flexbox for content alignment */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center; /* Center text within modal */
+        overflow-y: auto; /* Enable scrolling if content overflows */
+    }
+    .modal-content h3 {
+        padding-bottom: 8px;
+        margin-bottom: 20px;
+    }
+    .modal-content p {
+        text-align: center; /* Center paragraphs in modal */
+    }
+    .close-button {
+        top: 10px;
+        left: 10px;
+        font-size: 35px;
+    }
+    #darkModeToggle {
+        top: 15px;
+        left: 15px;
+        font-size: 1.4em;
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 20px;
+    }
+    h1, h2 {
+        font-size: 1.2em;
+    }
+    .form-group label {
+        font-size: 0.9em;
+    }
+    .radio-group {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    .action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .action-buttons button {
+        width: 100%;
+    }
+    .modal-content {
+        padding: 20px;
+    }
+    .close-button {
+        font-size: 30px;
+    }
+    #darkModeToggle {
+        top: 10px;
+        left: 10px;
+        font-size: 1.2em;
+        width: 45px;
+        height: 45px;
+    }
+}
+

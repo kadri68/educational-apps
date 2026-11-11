@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>موسوعة الذكاء الاصطناعي — AI Universe</title>
+<style>
+:root{
+  --bg:#f8f9fc;--bg2:#fff;--card:#fff;--hover:#f1f3f8;--tx:#1a1d27;--tx2:#5a5f72;--tx3:#8b90a0;
+  --bd:#e4e7ef;--ac:#4f6ef7;--ac-h:#3d5bd9;--ac-l:#eef1ff;--ok:#22c55e;--ok-l:#ecfdf5;
+  --wr:#f59e0b;--wr-l:#fffbeb;--dg:#ef4444;--dg-l:#fef2f2;--inf:#06b6d4;--inf-l:#ecfeff;
+  --sh-sm:0 1px 3px rgba(0,0,0,.06);--sh-md:0 4px 16px rgba(0,0,0,.08);--sh-lg:0 8px 32px rgba(0,0,0,.12);
+  --r-sm:8px;--r-md:14px;--r-lg:20px;--fn:'Segoe UI','Tahoma','Arial',sans-serif;--tr:.25s ease
+}
+[data-theme="dark"]{
+  --bg:#0f1117;--bg2:#171923;--card:#1c1f2b;--hover:#252838;--tx:#e8eaf0;--tx2:#a0a5b8;--tx3:#6b7085;
+  --bd:#2a2e40;--ac:#6b86ff;--ac-h:#8a9fff;--ac-l:#1e2340;--ok-l:#0d2818;--wr-l:#2a2006;--dg-l:#2a0d0d;
+  --inf-l:#0a2a30;--sh-sm:0 1px 3px rgba(0,0,0,.3);--sh-md:0 4px 16px rgba(0,0,0,.4);--sh-lg:0 8px 32px rgba(0,0,0,.5)
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--fn);background:var(--bg);color:var(--tx);line-height:1.6;transition:background var(--tr),color var(--tr);min-height:100vh}
+a{color:var(--ac);text-decoration:none}a:hover{color:var(--ac-h)}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,select{font-family:inherit}
+.container{max-width:1280px;margin:0 auto;padding:0 20px}
+/* Navbar */
+.navbar{background:var(--bg2);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.navbar-inner{display:flex;align-items:center;justify-content:space-between;min-height:64px;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem;color:var(--tx);white-space:nowrap}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--ac),#a855f7);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;font-weight:800}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none;overflow-x:auto;scrollbar-width:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-btn{padding:8px 14px;border-radius:var(--r-sm);color:var(--tx2);font-size:.88rem;font-weight:600;transition:all var(--tr);white-space:nowrap;background:none}
+.nav-btn:hover,.nav-btn.active{background:var(--ac-l);color:var(--ac)}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.theme-toggle{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--tx2);background:var(--hover);transition:all var(--tr)}
+.theme-toggle:hover{background:var(--bd);transform:rotate(20deg)}
+/* Search */
+.search-bar{position:relative;flex:1;max-width:480px;min-width:200px}
+.search-bar input{width:100%;padding:11px 46px 11px 18px;border-radius:50px;border:2px solid var(--bd);background:var(--card);color:var(--tx);font-size:.92rem;transition:all var(--tr);outline:none}
+.search-bar input:focus{border-color:var(--ac);box-shadow:0 0 0 4px rgba(79,110,247,.15)}
+.search-bar input::placeholder{color:var(--tx3)}
+.search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--tx3);font-size:1.05rem;pointer-events:none}
+.search-clear{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;display:none;align-items:center;justify-content:center;background:var(--hover);color:var(--tx3);font-size:.85rem}
+.search-clear.visible{display:flex}
+/* Filters */
+.filters-bar{display:flex;gap:8px;flex-wrap:wrap;padding:16px 0;align-items:center}
+.filter-group{display:flex;align-items:center;gap:6px}
+.filter-group label{font-size:.8rem;font-weight:600;color:var(--tx2);white-space:nowrap}
+.filter-select{padding:8px 30px 8px 12px;border-radius:var(--r-sm);border:1.5px solid var(--bd);background:var(--card);color:var(--tx);font-size:.83rem;cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b90a0' d='M6 8L2 4h8z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 10px center;transition:border-color var(--tr)}
+.filter-select:focus{border-color:var(--ac)}
+.filter-chip{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:50px;border:1.5px solid var(--bd);background:var(--card);color:var(--tx2);font-size:.8rem;font-weight:600;cursor:pointer;transition:all var(--tr);white-space:nowrap}
+.filter-chip:hover{border-color:var(--ac);color:var(--ac)}
+.filter-chip.active{background:var(--ac);border-color:var(--ac);color:#fff}
+.btn-reset-filters{padding:7px 14px;border-radius:50px;background:var(--dg-l);color:var(--dg);font-size:.8rem;font-weight:600;display:none;align-items:center;gap:4px;transition:all var(--tr)}
+.btn-reset-filters.visible{display:inline-flex}
+.btn-reset-filters:hover{background:var(--dg);color:#fff}
+/* Stats */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.stat-card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r-md);padding:16px 18px;text-align:center;transition:all var(--tr)}
+.stat-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
+.stat-num{font-size:1.5rem;font-weight:800;color:var(--ac);line-height:1.2}
+.stat-label{font-size:.75rem;color:var(--tx3);font-weight:600;margin-top:2px}
+/* Grid */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px;padding-bottom:40px}
+.tool-card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r-md);padding:20px;display:flex;flex-direction:column;gap:12px;transition:all var(--tr);cursor:pointer;position:relative}
+.tool-card:hover{box-shadow:var(--sh-lg);transform:translateY(-3px);border-color:var(--ac)}
+.tool-card-header{display:flex;align-items:flex-start;gap:12px}
+.tool-logo{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:800;flex-shrink:0;overflow:hidden}
+.tool-title{flex:1;min-width:0}
+.tool-name{font-size:1rem;font-weight:700;color:var(--tx);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tool-name-ar{font-size:.78rem;color:var(--tx3);font-weight:500}
+.tool-maker{font-size:.73rem;color:var(--tx3)}
+.tool-desc{font-size:.83rem;color:var(--tx2);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tool-tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{display:inline-block;padding:3px 9px;border-radius:50px;font-size:.68rem;font-weight:600;background:var(--ac-l);color:var(--ac)}
+.tag.price-free{background:var(--ok-l);color:var(--ok)}
+.tag.price-freemium{background:var(--inf-l);color:var(--inf)}
+.tag.price-trial{background:var(--wr-l);color:var(--wr)}
+.tag.price-paid{background:var(--dg-l);color:var(--dg)}
+.tag.price-enterprise{background:#f3e8ff;color:#9333ea}
+.tag.price-unknown{background:var(--hover);color:var(--tx3)}
+.tag.tag-arabic{background:#fef3c7;color:#b45309}
+.tag.tag-local{background:#e0f2fe;color:#0369a1}
+.tag.tag-api{background:#fce7f3;color:#be185d}
+[data-theme="dark"] .tag.price-enterprise{background:#2d1b4e;color:#c084fc}
+[data-theme="dark"] .tag.tag-arabic{background:#422006;color:#fbbf24}
+[data-theme="dark"] .tag.tag-local{background:#082f49;color:#7dd3fc}
+[data-theme="dark"] .tag.tag-api{background:#4a0e2e;color:#f9a8d4}
+.tool-features{display:flex;flex-wrap:wrap;gap:8px;font-size:.72rem;color:var(--tx3)}
+.feature-badge{display:inline-flex;align-items:center;gap:3px}
+.feature-badge.yes{color:var(--ok)}
+.feature-badge.no{color:var(--tx3);text-decoration:line-through}
+.tool-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:10px;border-top:1px solid var(--bd)}
+.tool-verified{font-size:.68rem;color:var(--tx3)}
+.tool-actions{display:flex;gap:4px;align-items:center}
+.btn-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;background:var(--hover);color:var(--tx2);transition:all var(--tr)}
+.btn-icon:hover{background:var(--ac-l);color:var(--ac)}
+.btn-icon.active{background:var(--ac);color:#fff}
+.btn-icon.fav.active{background:var(--dg);color:#fff}
+.btn-visit{display:inline-flex;align-items:center;gap:4px;padding:7px 14px;border-radius:50px;background:var(--ac);color:#fff;font-size:.78rem;font-weight:600;transition:all var(--tr)}
+.btn-visit:hover{background:var(--ac-h);color:#fff}
+/* Empty */
+.empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--tx3)}
+.empty-icon{font-size:3rem;margin-bottom:16px}
+.empty-state h3{font-size:1.15rem;color:var(--tx);margin-bottom:8px}
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
+.modal-overlay.open{display:flex}
+.modal-content{background:var(--bg2);border-radius:var(--r-lg);max-width:800px;width:100%;padding:32px;position:relative;box-shadow:var(--sh-lg);animation:modalIn .3s ease}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.modal-close{position:absolute;top:16px;left:16px;width:36px;height:36px;border-radius:50%;background:var(--hover);color:var(--tx2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all var(--tr)}
+.modal-close:hover{background:var(--dg-l);color:var(--dg)}
+.detail-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:24px}
+.detail-logo{width:72px;height:72px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;flex-shrink:0}
+.detail-title h2{font-size:1.4rem;font-weight:800;margin-bottom:4px}
+.detail-title .ar-name{font-size:.92rem;color:var(--tx2);margin-bottom:4px}
+.detail-title .maker{font-size:.82rem;color:var(--tx3)}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.detail-field{background:var(--bg);border-radius:var(--r-sm);padding:10px 14px}
+.detail-field.full{grid-column:1/-1}
+.detail-field .label{font-size:.72rem;font-weight:600;color:var(--tx3);margin-bottom:4px}
+.detail-field .value{font-size:.87rem;color:var(--tx);font-weight:500}
+.detail-links{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.detail-links a{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:50px;font-size:.83rem;font-weight:600;transition:all var(--tr)}
+.detail-links a.official{background:var(--ac);color:#fff}
+.detail-links a.official:hover{background:var(--ac-h);color:#fff}
+.detail-links a.sec{background:var(--hover);color:var(--tx2)}
+.detail-links a.sec:hover{background:var(--bd);color:var(--tx)}
+.detail-actions{display:flex;gap:8px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--bd)}
+/* Buttons */
+.btn-primary{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:50px;background:var(--ac);color:#fff;font-size:.87rem;font-weight:600;transition:all var(--tr)}
+.btn-primary:hover{background:var(--ac-h);color:#fff}
+.btn-secondary{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:50px;background:var(--hover);color:var(--tx2);font-size:.87rem;font-weight:600;transition:all var(--tr)}
+.btn-secondary:hover{background:var(--bd);color:var(--tx)}
+.btn-secondary.active{background:var(--ac-l);color:var(--ac)}
+/* Compare bar */
+.compare-bar{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:2px solid var(--ac);padding:12px 20px;display:none;align-items:center;justify-content:space-between;gap:16px;z-index:150;box-shadow:0 -4px 20px rgba(0,0,0,.1)}
+.compare-bar.visible{display:flex}
+.compare-items{display:flex;gap:6px;align-items:center;flex-wrap:wrap;flex:1}
+.compare-item{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:50px;background:var(--ac-l);color:var(--ac);font-size:.78rem;font-weight:600}
+.compare-item button{color:var(--ac);font-size:.9rem;display:flex}
+.compare-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
+/* Compare table */
+.compare-modal .modal-content{max-width:1000px}
+.compare-table{width:100%;border-collapse:collapse;font-size:.83rem;margin-top:16px}
+.compare-table th,.compare-table td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--bd);vertical-align:top}
+.compare-table th{background:var(--bg);font-weight:700;color:var(--tx);position:sticky;top:0}
+.compare-table td{color:var(--tx2)}
+.compare-table tr:hover td{background:var(--hover)}
+.compare-table .attr-name{font-weight:600;color:var(--tx);white-space:nowrap}
+.compare-table .tool-name-cell{font-weight:700;color:var(--ac)}
+/* Guide */
+.guide-section{background:var(--card);border:1px solid var(--bd);border-radius:var(--r-md);padding:28px;margin:20px 0 40px}
+.guide-section h2{font-size:1.25rem;font-weight:800;margin-bottom:16px;color:var(--tx)}
+.guide-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.guide-step{padding:16px;border-radius:var(--r-sm);background:var(--bg);border-right:4px solid var(--ac)}
+.guide-step h3{font-size:.92rem;font-weight:700;margin-bottom:6px;color:var(--tx)}
+.guide-step p{font-size:.82rem;color:var(--tx2);line-height:1.6}
+/* Footer */
+.footer{background:var(--bg2);border-top:1px solid var(--bd);padding:40px 0 24px;margin-top:40px}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px;margin-bottom:28px}
+.footer h4{font-size:.92rem;font-weight:700;margin-bottom:10px;color:var(--tx)}
+.footer p,.footer li{font-size:.8rem;color:var(--tx2);line-height:1.7}
+.footer ul{list-style:none;padding:0}
+.footer ul li{padding:2px 0}
+.footer-bottom{border-top:1px solid var(--bd);padding-top:18px;text-align:center;font-size:.78rem;color:var(--tx3)}
+.footer-bottom .credit{font-weight:600;color:var(--tx2)}
+/* Views */
+.view-section{display:none}
+.view-section.active{display:block}
+/* Favorites header */
+.fav-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;padding-top:20px}
+.fav-header h2{font-size:1.35rem;font-weight:800}
+.btn-clear-favs{padding:7px 16px;border-radius:50px;background:var(--dg-l);color:var(--dg);font-size:.82rem;font-weight:600;transition:all var(--tr)}
+.btn-clear-favs:hover{background:var(--dg);color:#fff}
+@media(max-width:768px){
+  .navbar-inner{padding:10px 0}
+  .search-bar{order:3;max-width:100%;flex-basis:100%}
+  .nav-links{order:4;flex-basis:100%}
+  .tools-grid{grid-template-columns:1fr}
+  .detail-grid{grid-template-columns:1fr}
+  .modal-content{padding:24px 18px}
+  .compare-bar{flex-direction:column;gap:10px}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .compare-table{font-size:.76rem}
+  .compare-table th,.compare-table td{padding:8px 6px}
+}
+@media(max-width:480px){
+  .container{padding:0 12px}
+  .logo{font-size:.95rem}
+  .logo-icon{width:30px;height:30px;font-size:.85rem}
+  .stat-num{font-size:1.25rem}
+  .tool-card{padding:15px}
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <div class="logo"><div class="logo-icon">AI</div><span>موسوعة الذكاء الاصطناعي</span></div>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="ابحث عن أداة، تخصص، أو شركة..." aria-label="بحث">
+      <span class="search-icon">🔍</span>
+      <button class="search-clear" id="searchClear" aria-label="مسح">✕</button>
+    </div>
+    <ul class="nav-links">
+      <li><button class="nav-btn active" data-view="home">الرئيسية</button></li>
+      <li><button class="nav-btn" data-view="favorites">المفضلة <span id="favCount" style="font-size:.72rem;opacity:.7">(0)</span></button></li>
+      <li><button class="nav-btn" data-view="guide">كيف تختار؟</button></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+  <section class="view-section active" id="view-home">
+    <div class="stats-row" id="statsRow"></div>
+    <div class="filters-bar" id="filtersBar">
+      <div class="filter-group">
+        <label for="filterCategory">التخصص:</label>
+        <select class="filter-select" id="filterCategory"><option value="">الكل</option></select>
+      </div>
+      <div class="filter-group">
+        <label for="filterPrice">التسعير:</label>
+        <select class="filter-select" id="filterPrice">
+          <option value="">الكل</option>
+          <option value="free">مجاني بالكامل</option>
+          <option value="freemium">خطة مجانية محدودة</option>
+          <option value="trial">تجربة مجانية</option>
+          <option value="open-source">مفتوح المصدر</option>
+          <option value="paid">مدفوع فقط</option>
+          <option value="enterprise">مؤسسي</option>
+          <option value="unknown">غير مؤكد</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="sortBy">ترتيب:</label>
+        <select class="filter-select" id="sortBy">
+          <option value="default">الافتراضي (مجاني أولاً)</option>
+          <option value="name">الاسم</option>
+          <option value="category">التخصص</option>
+          <option value="verified">تاريخ التحقق</option>
+        </select>
+      </div>
+      <button class="filter-chip" id="chipArabic">🇸🇦 يدعم العربية</button>
+      <button class="filter-chip" id="chipLocal">💻 يعمل محلياً</button>
+      <button class="filter-chip" id="chipAPI">🔌 يوفر API</button>
+      <button class="btn-reset-filters" id="resetFilters">✕ مسح الفلاتر</button>
+    </div>
+    <div class="tools-grid" id="toolsGrid"></div>
+    <section class="guide-section">
+      <h2>🎯 كيف تختار أداة الذكاء الاصطناعي المناسبة؟</h2>
+      <div class="guide-steps">
+        <div class="guide-step"><h3>1. حدد هدفك</h3><p>هل تريد كتابة، تصميماً، برمجة، تحليلاً، أو بحثاً؟ التخصص أولاً.</p></div>
+        <div class="guide-step"><h3>2. افحص التسعير</h3><p>ليست كل "خطة مجانية" كافية. تحقق من حدود الاستخدام والميزات المقفلة.</p></div>
+        <div class="guide-step"><h3>3. تحقق من العربية</h3><p>ليست كل الأدوات تدعم العربية بجودة متساوية. جرب قبل الاعتماد.</p></div>
+        <div class="guide-step"><h3>4. راجع تاريخ التحقق</h3><p>الأسعار والميزات تتغير بسرعة. تحقق من التاريخ بجانب كل أداة.</p></div>
+      </div>
+    </section>
+  </section>
+
+  <section class="view-section" id="view-favorites">
+    <div class="fav-header">
+      <h2>⭐ المفضلة</h2>
+      <button class="btn-clear-favs" id="clearFavs">مسح الكل</button>
+    </div>
+    <div class="tools-grid" id="favoritesGrid"></div>
+  </section>
+
+  <section class="view-section" id="view-guide">
+    <section class="guide-section" style="margin-top:20px">
+      <h2>🎯 دليل اختيار أداة الذكاء الاصطناعي</h2>
+      <div class="guide-steps">
+        <div class="guide-step"><h3>1. حدد هدفك بدقة</h3><p>ابدأ بسؤال: ما المهمة التي أريد إنجازها؟ التخصص يضيق الخيارات بسرعة.</p></div>
+        <div class="guide-step"><h3>2. افحص التسعير بعناية</h3><p>"خطة مجانية" لا تعني "مجاني بالكامل". تحقق من الحدود والقيود.</p></div>
+        <div class="guide-step"><h3>3. لا تفترض دعم العربية</h3><p>اختبر الأداة بنص عربي حقيقي قبل الاعتماد عليها.</p></div>
+        <div class="guide-step"><h3>4. تحقق من القيود</h3><p>هل تحتاج اتصالاً دائماً؟ هل توجد قيود على الاستخدام التجاري؟</p></div>
+        <div class="guide-step"><h3>5. راجع تاريخ آخر تحقق</h3><p>اعتمد فقط على المعلومات المؤرخة والمصادر الرسمية.</p></div>
+        <div class="guide-step"><h3>6. ابدأ بالتجربة</h3><p>استخدم الخطة المجانية أو التجريبية قبل الالتزام المالي.</p></div>
+      </div>
+    </section>
+  </section>
+</main>
+
+<div class="compare-bar" id="compareBar">
+  <div class="compare-items" id="compareItems"></div>
+  <div class="compare-actions">
+    <button class="btn-secondary" id="clearCompare" style="font-size:.78rem;padding:7px 14px">مسح</button>
+    <button class="btn-primary" id="openCompare" style="font-size:.78rem;padding:7px 18px">مقارنة</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="detailModal">
+  <div class="modal-content">
+    <button class="modal-close" id="closeDetail">✕</button>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<div class="modal-overlay compare-modal" id="compareModal">
+  <div class="modal-content">
+    <button class="modal-close" id="closeCompare">✕</button>
+    <h2 style="font-size:1.25rem;font-weight:800;margin-bottom:16px">📊 مقارنة الأدوات</h2>
+    <div style="overflow-x:auto"><table class="compare-table" id="compareTable"></table></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><h4>عن الموسوعة</h4><p>موسوعة مرجعية عالمية لمحركات ونماذج ومنصات وأدوات الذكاء الاصطناعي. معلومات موثقة بالعربية.</p></div>
+      <div><h4>إخلاء مسؤولية</h4><p>المعلومات لأغراض مرجعية. الأسعار والميزات قابلة للتغيير. تحقق دائماً من الموقع الرسمي.</p></div>
+      <div><h4>مصادر البيانات</h4><ul><li>المواقع الرسمية للأدوات</li><li>صفحات التسعير المنشورة</li><li>الوثائق التقنية</li></ul></div>
+      <div><h4>الاتصال</h4><p>قام بتجميع وتطوير الموسوعة:</p><p class="credit">الأستاذ محمد قادري</p><p>أستاذ مادة الفيزياء</p><p>ثانوية محمد الأخضر فيلالي</p><p>ولاية غرداية - الجزائر</p><p style="margin-top:6px">📧 kadri68@gmail.com</p></div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 موسوعة الذكاء الاصطناعي — AI Universe. لأغراض تعليمية ومرجعية.</p>
+      <p style="margin-top:4px">آخر تحديث للبيانات: أكتوبر 2026</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============ قاعدة البيانات (63 أداة) ============ */
+const AI_TOOLS=[
+{id:'chatgpt',name:'ChatGPT',nameAr:'شات جي بي تي',maker:'OpenAI',makerAr:'أوبن إيه آي',logo:'C',logoColor:'#10a37f',website:'https://chatgpt.com',docs:'https://platform.openai.com/docs',pricingUrl:'https://openai.com/api/pricing/',categories:['chat','coding','writing','productivity'],categoriesAr:['مساعد حوارى','برمجة','كتابة','إنتاجية'],descriptionAr:'مساعد ذكاء اصطناعي متعدد الأغراض من OpenAI، يدعم المحادثة والبرمجة وتحليل البيانات وتوليد الصور.',useCases:['كتابة المحتوى','البرمجة','تحليل البيانات','الدعم التعليمي'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$20/شهر (Plus)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:true,platforms:['web','mobile','desktop','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل جداً',restrictions:'الخطة المجانية محدودة. الاستخدام التجاري يتطلب خطة مدفوعة.',source:'الموقع الرسمي وصفحة التسعير'},
+{id:'claude',name:'Claude',nameAr:'كلود',maker:'Anthropic',makerAr:'أنثروبيك',logo:'A',logoColor:'#d4a27f',website:'https://claude.ai',docs:'https://docs.anthropic.com',pricingUrl:'https://claude.ai/upgrade',categories:['chat','coding','writing','research'],categoriesAr:['مساعد حوارى','برمجة','كتابة','بحث'],descriptionAr:'مساعد من Anthropic يتميز بفهم النصوص الطويلة والبرمجة والكتابة الأكاديمية.',useCases:['تحليل المستندات الطويلة','البرمجة','الكتابة الأكاديمية'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$20/شهر (Pro)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:true,platforms:['web','mobile','desktop','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الخطة المجانية محدودة الرسائل.',source:'الموقع الرسمي'},
+{id:'gemini',name:'Gemini',nameAr:'جيميناي',maker:'Google DeepMind',makerAr:'جوجل ديب مايند',logo:'G',logoColor:'#4285f4',website:'https://gemini.google.com',docs:'https://ai.google.dev/gemini-api/docs',pricingUrl:'https://ai.google.dev/gemini-api/docs/pricing',categories:['chat','image','video','coding','research'],categoriesAr:['مساعد حوارى','صور','فيديو','برمجة','بحث'],descriptionAr:'نموذج متعدد الوسائط من Google يدمج البحث والصور والفيديو والبرمجة.',useCases:['البحث','توليد الصور','تحليل الفيديو','البرمجة'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$19.99/شهر (AI Pro)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:true,platforms:['web','mobile','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل جداً',restrictions:'النماذج المتقدمة مدفوعة. API له طبقة مجانية محدودة.',source:'الموقع الرسمي'},
+{id:'deepseek',name:'DeepSeek',nameAr:'ديب سيك',maker:'DeepSeek',makerAr:'ديب سيك',logo:'D',logoColor:'#4f46e5',website:'https://chat.deepseek.com',docs:'https://api-docs.deepseek.com',pricingUrl:'https://api-docs.deepseek.com/quick_start/pricing',categories:['chat','coding','research'],categoriesAr:['مساعد حوارى','برمجة','بحث'],descriptionAr:'نموذج صيني يقدم أداءً قوياً في البرمجة والاستدلال بتكلفة منخفضة.',useCases:['البرمجة','الاستدلال التقني','API منخفض التكلفة'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$0.27/مليون توكن',currency:'USD',billingCycle:'حسب الاستهلاك',lastVerified:'2026-10',supportsArabic:true,platforms:['web','mobile','api'],hasAPI:true,worksOffline:true,license:'أوزان مفتوحة (بعض النماذج)',easeOfUse:'متوسط',restrictions:'API مدفوع. بعض النماذج مفتوحة الأوزان.',source:'الموقع الرسمي'},
+{id:'grok',name:'Grok',nameAr:'جروك',maker:'xAI',makerAr:'إكس إيه آي',logo:'X',logoColor:'#1d1d1f',website:'https://grok.com',docs:'https://docs.x.ai/docs/overview',pricingUrl:'https://x.ai/api',categories:['chat','research','coding'],categoriesAr:['مساعد حوارى','بحث','برمجة'],descriptionAr:'مساعد من xAI بالوصول المباشر للإنترنت والردود غير المقيدة نسبياً.',useCases:['البحث في الوقت الحقيقي','المحادثة','تحليل المحتوى'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$30/شهر (SuperGrok)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:true,platforms:['web','mobile','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'API مدفوع. الميزات المتقدمة تتطلب اشتراك X Premium+.',source:'الموقع الرسمي'},
+{id:'copilot',name:'Microsoft Copilot',nameAr:'مايكروسوفت كوبايلوت',maker:'Microsoft',makerAr:'مايكروسوفت',logo:'M',logoColor:'#0078d4',website:'https://copilot.microsoft.com',docs:'https://learn.microsoft.com/en-us/copilot/',pricingUrl:'https://www.microsoft.com/en-us/microsoft-365/copilot',categories:['chat','productivity','coding','image'],categoriesAr:['مساعد حوارى','إنتاجية','برمجة','صور'],descriptionAr:'مساعد من Microsoft مدمج في Office وWindows وEdge، مع دعم GPT-4.',useCases:['الإنتاجية المكتبية','البحث','إنشاء المستندات'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$30/مستخدم/شهر (Enterprise)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:true,platforms:['web','mobile','desktop','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل جداً',restrictions:'الميزات المتقدمة في Office تتطلب اشتراك Copilot.',source:'الموقع الرسمي'},
+{id:'meta-ai',name:'Meta AI',nameAr:'ميتا إيه آي',maker:'Meta',makerAr:'ميتا',logo:'∞',logoColor:'#0866ff',website:'https://www.meta.ai',docs:'',pricingUrl:'',categories:['chat','image'],categoriesAr:['مساعد حوارى','صور'],descriptionAr:'مساعد مجاني من Meta مدمج في واتساب وإنستغرام وفيسبوك.',useCases:['المساعدة اليومية','توليد الصور','الأسئلة السريعة'],availability:'متاح',pricingModel:'free',pricingLabel:'مجاني بالكامل',hasFreePlan:true,hasFreeTrial:false,freeLimit:'غير محدود (ضمن حدود معقولة)',priceKnown:'مجاني',currency:'',billingCycle:'',lastVerified:'2026-10',supportsArabic:true,platforms:['mobile','web'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل جداً',restrictions:'متاح فقط داخل تطبيقات Meta. لا يوفر API عاماً.',source:'الموقع الرسمي'},
+{id:'perplexity',name:'Perplexity',nameAr:'بيربليكسيتي',maker:'Perplexity AI',makerAr:'بيربليكسيتي',logo:'P',logoColor:'#20b2aa',website:'https://www.perplexity.ai',docs:'https://docs.perplexity.ai',pricingUrl:'https://www.perplexity.ai/pro',categories:['search','research','chat'],categoriesAr:['بحث ذكي','بحث علمي','مساعد حوارى'],descriptionAr:'محرك بحث مدعوم بالذكاء الاصطناعي يقدم إجابات مباشرة مع الاستشهاد بالمصادر.',useCases:['البحث السريع','التحقق من المعلومات','البحث الأكاديمي'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$20/شهر (Pro)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:true,platforms:['web','mobile','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل جداً',restrictions:'البحث المتقدم (Deep Research) يتطلب اشتراك Pro.',source:'الموقع الرسمي'},
+{id:'midjourney',name:'Midjourney',nameAr:'ميدجورني',maker:'Midjourney',makerAr:'ميدجورني',logo:'M',logoColor:'#5865f2',website:'https://www.midjourney.com',docs:'https://docs.midjourney.com',pricingUrl:'https://www.midjourney.com/account',categories:['image','design'],categoriesAr:['توليد صور','تصميم'],descriptionAr:'أداة رائدة في توليد الصور الفنية بالذكاء الاصطناعي، تشتهر بجودة الإخراج الفني.',useCases:['التصميم الفني','المفاهيم البصرية','الرسوم التوضيحية'],availability:'متاح',pricingModel:'paid',pricingLabel:'مدفوع فقط',hasFreePlan:false,hasFreeTrial:false,freeLimit:'لا',priceKnown:'$10/شهر (Basic)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','discord'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'متوسط',restrictions:'لا توجد خطة مجانية. يتطلب اشتراكاً.',source:'الموقع الرسمي'},
+{id:'dalle',name:'DALL·E',nameAr:'دالي',maker:'OpenAI',makerAr:'أوبن إيه آي',logo:'D',logoColor:'#10a37f',website:'https://chatgpt.com',docs:'https://platform.openai.com/docs',pricingUrl:'https://openai.com/api/pricing/',categories:['image'],categoriesAr:['توليد صور'],descriptionAr:'مولد صور بالذكاء الاصطناعي من OpenAI، مدمج في ChatGPT.',useCases:['توليد الصور','التصميم السريع','العصف البصري'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود جداً',priceKnown:'$0.04/صورة (API)',currency:'USD',billingCycle:'حسب الاستهلاك',lastVerified:'2026-10',supportsArabic:false,platforms:['web','mobile','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل جداً',restrictions:'الاستخدام المجاني محدود. API مدفوع.',source:'الموقع الرسمي'},
+{id:'stable-diffusion',name:'Stable Diffusion',nameAr:'ستيبل ديفيوجن',maker:'Stability AI',makerAr:'ستابيليتي إيه آي',logo:'S',logoColor:'#a855f7',website:'https://stability.ai',docs:'https://stability.ai/stable-diffusion',pricingUrl:'https://stability.ai/pricing',categories:['image','open-source'],categoriesAr:['توليد صور','مفتوح المصدر'],descriptionAr:'نموذج توليد صور مفتوح الأوزان يمكن تشغيله محلياً.',useCases:['التوليد المحلي','التخصيص الكامل','البحث'],availability:'متاح',pricingModel:'open-source',pricingLabel:'مفتوح المصدر (مجاني محلياً)',hasFreePlan:true,hasFreeTrial:false,freeLimit:'غير محدود محلياً',priceKnown:'مجاني (محلي) / API مدفوع',currency:'',billingCycle:'',lastVerified:'2026-10',supportsArabic:false,platforms:['desktop','api'],hasAPI:true,worksOffline:true,license:'مفتوح الأوزان (CreativeML OpenRAIL-M)',easeOfUse:'صعب',restrictions:'يتطلب عتاداً قوياً (GPU).',source:'الموقع الرسمي وHugging Face'},
+{id:'flux',name:'FLUX',nameAr:'فلكس',maker:'Black Forest Labs',makerAr:'بلاك فورست لابز',logo:'F',logoColor:'#000000',website:'https://blackforestlabs.ai',docs:'https://docs.bfl.ai',pricingUrl:'https://bfl.ai/pricing',categories:['image','open-source'],categoriesAr:['توليد صور','مفتوح المصدر'],descriptionAr:'نموذج من Black Forest Labs، مفتوح الأوزان بجودة عالية.',useCases:['التوليد المحلي','التصميم','البحث'],availability:'متاح',pricingModel:'open-source',pricingLabel:'مفتوح المصدر (مجاني محلياً)',hasFreePlan:true,hasFreeTrial:false,freeLimit:'غير محدود محلياً',priceKnown:'مجاني (محلي) / API مدفوع',currency:'',billingCycle:'',lastVerified:'2026-10',supportsArabic:false,platforms:['desktop','api'],hasAPI:true,worksOffline:true,license:'مفتوح الأوزان (Apache 2.0 لبعض النماذج)',easeOfUse:'متوسط',restrictions:'يتطلب عتاداً قوياً. بعض النماذج تجارية.',source:'الموقع الرسمي'},
+{id:'leonardo',name:'Leonardo AI',nameAr:'ليوناردو إيه آي',maker:'Leonardo Interactive',makerAr:'ليوناردو إنتراكتيف',logo:'L',logoColor:'#f59e0b',website:'https://leonardo.ai',docs:'',pricingUrl:'https://leonardo.ai/pricing',categories:['image','design','gaming'],categoriesAr:['توليد صور','تصميم','ألعاب'],descriptionAr:'منصة توليد صور مع تركيز على أصول الألعاب والتصميم الإبداعي.',useCases:['أصول الألعاب','التصميم','توليد الصور'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — 150 توكن يومياً',priceKnown:'$12/شهر (Apprentice)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الرصيد المجاني محدود يومياً.',source:'الموقع الرسمي'},
+{id:'adobe-firefly',name:'Adobe Firefly',nameAr:'أدوبي فايرفلاي',maker:'Adobe',makerAr:'أدوبي',logo:'A',logoColor:'#ff0000',website:'https://firefly.adobe.com',docs:'https://helpx.adobe.com/firefly.html',pricingUrl:'https://www.adobe.com/products/firefly/plans.html',categories:['image','design'],categoriesAr:['توليد صور','تصميم'],descriptionAr:'مولد صور من Adobe، مصمم للاستخدام التجاري الآمن ومدمج في Creative Cloud.',useCases:['التصميم الاحترافي','الاستخدام التجاري','تحرير الصور'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — رصيد شهري محدود',priceKnown:'$9.99/شهر (Standard)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','desktop','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الرصيد المجاني محدود.',source:'الموقع الرسمي'},
+{id:'ideogram',name:'Ideogram',nameAr:'أيديوجرام',maker:'Ideogram',makerAr:'أيديوجرام',logo:'I',logoColor:'#8b5cf6',website:'https://ideogram.ai',docs:'',pricingUrl:'https://ideogram.ai/pricing',categories:['image','design'],categoriesAr:['توليد صور','تصميم'],descriptionAr:'أداة توليد صور تتميز بعرض النصوص بدقة داخل الصورة، مناسبة للشعارات والملصقات.',useCases:['الشعارات','الملصقات','النصوص الفنية'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$8/شهر (Basic)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الخطة المجانية محدودة.',source:'الموقع الرسمي'},
+{id:'recraft',name:'Recraft',nameAr:'ريكرافت',maker:'Recraft',makerAr:'ريكرافت',logo:'R',logoColor:'#ec4899',website:'https://www.recraft.ai',docs:'',pricingUrl:'https://www.recraft.ai/pricing',categories:['image','design'],categoriesAr:['توليد صور','تصميم'],descriptionAr:'أداة توليد صور وتصاميم متجهة قابلة للتحرير (SVG).',useCases:['الشعارات','الأيقونات','الرسوم المتجهة'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — 50 صورة مجانية',priceKnown:'$12/شهر (Basic)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الاستخدام التجاري يتطلب خطة مدفوعة.',source:'الموقع الرسمي'},
+{id:'runway',name:'Runway',nameAr:'رانواي',maker:'Runway ML',makerAr:'رانواي',logo:'R',logoColor:'#000000',website:'https://runwayml.com',docs:'https://docs.runwayml.com',pricingUrl:'https://runwayml.com/pricing',categories:['video','design'],categoriesAr:['فيديو','تصميم'],descriptionAr:'منصة رائدة لتوليد وتحرير الفيديو بالذكاء الاصطناعي.',useCases:['الإنتاج السينمائي','الإعلانات','المحتوى المرئي'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — 125 رصيداً',priceKnown:'$15/شهر (Standard)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'متوسط',restrictions:'الرصيد المجاني محدود.',source:'الموقع الرسمي'},
+{id:'pika',name:'Pika',nameAr:'بيكا',maker:'Pika Labs',makerAr:'بيكا لابز',logo:'P',logoColor:'#ec4899',website:'https://pika.art',docs:'',pricingUrl:'https://pika.art/pricing',categories:['video'],categoriesAr:['فيديو'],descriptionAr:'أداة توليد فيديو تركز على المحتوى القصير والسريع.',useCases:['محتوى التواصل الاجتماعي','الإعلانات القصيرة'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — 80 رصيداً شهرياً',priceKnown:'$10/شهر (Standard)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','mobile'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الفيديوهات المجانية بعلامة مائية.',source:'الموقع الرسمي'},
+{id:'sora',name:'Sora',nameAr:'سورا',maker:'OpenAI',makerAr:'أوبن إيه آي',logo:'S',logoColor:'#10a37f',website:'https://sora.com',docs:'',pricingUrl:'https://openai.com/sora',categories:['video'],categoriesAr:['فيديو'],descriptionAr:'نموذج توليد فيديو متقدم من OpenAI، ينتج مقاطع واقعية من النص.',useCases:['الإنتاج الإبداعي','النماذج الأولية'],availability:'متاح',pricingModel:'paid',pricingLabel:'مدفوع فقط',hasFreePlan:false,hasFreeTrial:false,freeLimit:'لا',priceKnown:'ضمن ChatGPT Plus ($20/شهر)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'يتطلب اشتراك ChatGPT.',source:'الموقع الرسمي'},
+{id:'synthesia',name:'Synthesia',nameAr:'سينثيسيا',maker:'Synthesia',makerAr:'سينثيسيا',logo:'S',logoColor:'#4f46e5',website:'https://www.synthesia.io',docs:'',pricingUrl:'https://www.synthesia.io/pricing',categories:['video','business'],categoriesAr:['فيديو','أعمال'],descriptionAr:'منصة لإنشاء فيديوهات تدريبية وتسويقية بممثلين افتراضيين.',useCases:['فيديوهات التدريب','التسويق','الدعم'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:true,freeLimit:'نعم — 3 دقائق فيديو',priceKnown:'$29/شهر (Starter)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:true,platforms:['web'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الفيديو المجاني محدود.',source:'الموقع الرسمي'},
+{id:'kling',name:'Kling AI',nameAr:'كلينج إيه آي',maker:'Kuaishou',makerAr:'كوايشو',logo:'K',logoColor:'#ef4444',website:'https://klingai.com',docs:'',pricingUrl:'https://klingai.com/pricing',categories:['video'],categoriesAr:['فيديو'],descriptionAr:'نموذج توليد فيديو من Kuaishou بجودة عالية.',useCases:['الإنتاج الإبداعي','الإعلانات'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — رصيد يومي',priceKnown:'$10/شهر (Standard)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'متوسط',restrictions:'الرصيد المجاني محدود يومياً.',source:'الموقع الرسمي'},
+{id:'veo',name:'Veo',nameAr:'فيو',maker:'Google DeepMind',makerAr:'جوجل ديب مايند',logo:'V',logoColor:'#4285f4',website:'https://deepmind.google/technologies/veo/',docs:'https://ai.google.dev/gemini-api/docs/video',pricingUrl:'https://ai.google.dev/gemini-api/docs/pricing',categories:['video'],categoriesAr:['فيديو'],descriptionAr:'نموذج توليد فيديو متقدم من Google DeepMind مع صوت متزامن.',useCases:['الإنتاج الإبداعي','الإعلانات'],availability:'متاح',pricingModel:'paid',pricingLabel:'مدفوع فقط (API)',hasFreePlan:false,hasFreeTrial:false,freeLimit:'لا',priceKnown:'حسب الاستهلاك',currency:'USD',billingCycle:'حسب الاستهلاك',lastVerified:'2026-10',supportsArabic:false,platforms:['api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'صعب',restrictions:'متاح فقط عبر API.',source:'وثائق Google API'},
+{id:'elevenlabs',name:'ElevenLabs',nameAr:'إيليفن لابز',maker:'ElevenLabs',makerAr:'إيليفن لابز',logo:'11',logoColor:'#000000',website:'https://elevenlabs.io',docs:'https://elevenlabs.io/docs',pricingUrl:'https://elevenlabs.io/pricing',categories:['audio','voice'],categoriesAr:['صوت','كلام'],descriptionAr:'منصة رائدة في توليد الكلام الاصطناعي واستنساخ الأصوات.',useCases:['التعليق الصوتي','استنساخ الصوت','الكتب الصوتية'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — 10,000 حرف شهرياً',priceKnown:'$5/شهر (Starter)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:true,platforms:['web','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الاستخدام التجاري مدفوع.',source:'الموقع الرسمي'},
+{id:'suno',name:'Suno',nameAr:'سونو',maker:'Suno AI',makerAr:'سونو',logo:'S',logoColor:'#f97316',website:'https://suno.com',docs:'',pricingUrl:'https://suno.com/pricing',categories:['music','audio'],categoriesAr:['موسيقى','صوت'],descriptionAr:'أداة توليد موسيقى وأغاني كاملة بالكلمات والغناء الاصطناعي.',useCases:['تأليف الموسيقى','الأغاني'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — 50 رصيداً يومياً',priceKnown:'$8/شهر (Pro)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:true,platforms:['web','mobile'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الاستخدام التجاري مدفوع.',source:'الموقع الرسمي'},
+{id:'udio',name:'Udio',nameAr:'أوديو',maker:'Udio',makerAr:'أوديو',logo:'U',logoColor:'#8b5cf6',website:'https://www.udio.com',docs:'',pricingUrl:'https://www.udio.com/pricing',categories:['music','audio'],categoriesAr:['موسيقى','صوت'],descriptionAr:'منصة توليد موسيقى بالذكاء الاصطناعي بجودة عالية.',useCases:['الموسيقى التصويرية','الإنتاج الموسيقي'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$10/شهر (Standard)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الاستخدام التجاري مدفوع.',source:'الموقع الرسمي'},
+{id:'github-copilot',name:'GitHub Copilot',nameAr:'جيت هاب كوبايلوت',maker:'GitHub (Microsoft)',makerAr:'جيت هاب',logo:'GH',logoColor:'#24292e',website:'https://github.com/features/copilot',docs:'https://docs.github.com/en/copilot',pricingUrl:'https://github.com/features/copilot/plans',categories:['coding','productivity'],categoriesAr:['برمجة','إنتاجية'],descriptionAr:'مساعد برمجة ذكي مدمج في محررات الأكواد، يقترح أكواداً ويصحح الأخطاء.',useCases:['كتابة الكود','إكمال الأكواد','تصحيح الأخطاء'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:true,freeLimit:'نعم — 2000 إكمال شهرياً',priceKnown:'$10/شهر (Pro)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:true,platforms:['desktop','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الخطة المجانية محدودة.',source:'الموقع الرسمي'},
+{id:'cursor',name:'Cursor',nameAr:'كيرسر',maker:'Anysphere',makerAr:'أنيسفير',logo:'C',logoColor:'#000000',website:'https://cursor.com',docs:'https://docs.cursor.com',pricingUrl:'https://cursor.com/pricing',categories:['coding','productivity'],categoriesAr:['برمجة','إنتاجية'],descriptionAr:'محرر أكواد متقدم مع مساعد ذكاء اصطناعي يفهم المشروع بالكامل.',useCases:['البرمجة','إعادة الهيكلة','التطوير السريع'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:true,freeLimit:'نعم — خطة Hobby',priceKnown:'$20/شهر (Pro)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['desktop'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'متوسط',restrictions:'الخطة المجانية محدودة.',source:'الموقع الرسمي'},
+{id:'replit',name:'Replit',nameAr:'ريبليت',maker:'Replit',makerAr:'ريبليت',logo:'R',logoColor:'#f26207',website:'https://replit.com',docs:'https://docs.replit.com',pricingUrl:'https://replit.com/pricing',categories:['coding','nocode','business'],categoriesAr:['برمجة','بدون كود','أعمال'],descriptionAr:'منصة بناء تطبيقات عبر المتصفح مع وكيل ذكاء اصطناعي.',useCases:['بناء التطبيقات','النماذج الأولية','النشر'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$20/شهر (Core)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','mobile'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الخطة المجانية محدودة الموارد.',source:'الموقع الرسمي'},
+{id:'v0',name:'v0',nameAr:'في زيرو',maker:'Vercel',makerAr:'فيرسل',logo:'V0',logoColor:'#000000',website:'https://v0.dev',docs:'https://v0.dev/docs',pricingUrl:'https://v0.dev/pricing',categories:['coding','nocode','design'],categoriesAr:['برمجة','بدون كود','تصميم'],descriptionAr:'أداة من Vercel لتوليد واجهات React من وصف نصي.',useCases:['واجهات المستخدم','النماذج الأولية'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — رصيد مجاني',priceKnown:'$20/شهر (Premium)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الرصيد المجاني محدود.',source:'الموقع الرسمي'},
+{id:'windsurf',name:'Windsurf',nameAr:'ويندسيرف',maker:'Cognition',makerAr:'كوجنيشن',logo:'W',logoColor:'#0ea5e9',website:'https://windsurf.com',docs:'https://docs.windsurf.com',pricingUrl:'https://windsurf.com/pricing',categories:['coding','productivity'],categoriesAr:['برمجة','إنتاجية'],descriptionAr:'محرر أكواد متقدم مع وكيل ذكاء اصطناعي يعمل على المشروع بالكامل.',useCases:['البرمجة','إعادة الهيكلة'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:true,freeLimit:'نعم — خطة مجانية',priceKnown:'$20/شهر (Pro)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['desktop','web'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'متوسط',restrictions:'الخطة المجانية محدودة.',source:'الموقع الرسمي'},
+{id:'cline',name:'Cline',nameAr:'كلاين',maker:'Cline (open source)',makerAr:'كلاين',logo:'Cl',logoColor:'#f97316',website:'https://cline.bot',docs:'https://docs.cline.bot',pricingUrl:'',categories:['coding','open-source','api'],categoriesAr:['برمجة','مفتوح المصدر','API'],descriptionAr:'وكيل برمجة مفتوح المصدر يعمل داخل VS Code، يدعم نماذج متعددة.',useCases:['البرمجة','التطوير','التشغيل المحلي'],availability:'متاح',pricingModel:'open-source',pricingLabel:'مفتوح المصدر (مجاني)',hasFreePlan:true,hasFreeTrial:false,freeLimit:'غير محدود (BYOK)',priceKnown:'مجاني (تدفع مقابل API)',currency:'',billingCycle:'',lastVerified:'2026-10',supportsArabic:false,platforms:['desktop'],hasAPI:true,worksOffline:true,license:'مفتوح المصدر (Apache-2.0)',easeOfUse:'متوسط',restrictions:'يتطلب مفتاح API. يمكن استخدامه مع Ollama.',source:'GitHub الرسمي'},
+{id:'aider',name:'Aider',nameAr:'إيدر',maker:'Aider (open source)',makerAr:'إيدر',logo:'Ai',logoColor:'#22c55e',website:'https://aider.chat',docs:'https://aider.chat/docs',pricingUrl:'',categories:['coding','open-source','api'],categoriesAr:['برمجة','مفتوح المصدر','API'],descriptionAr:'مساعد برمجة مفتوح المصدر يعمل في الطرفية.',useCases:['البرمجة','الطرفية'],availability:'متاح',pricingModel:'open-source',pricingLabel:'مفتوح المصدر (مجاني)',hasFreePlan:true,hasFreeTrial:false,freeLimit:'غير محدود (BYOK)',priceKnown:'مجاني (تدفع مقابل API)',currency:'',billingCycle:'',lastVerified:'2026-10',supportsArabic:false,platforms:['desktop'],hasAPI:true,worksOffline:true,license:'مفتوح المصدر (Apache-2.0)',easeOfUse:'صعب',restrictions:'يتطلب مفتاح API. واجهة طرفية.',source:'GitHub الرسمي'},
+{id:'codex-cli',name:'OpenAI Codex CLI',nameAr:'كوديكس CLI',maker:'OpenAI',makerAr:'أوبن إيه آي',logo:'CX',logoColor:'#10a37f',website:'https://openai.com/codex',docs:'https://platform.openai.com/docs',pricingUrl:'https://openai.com/api/pricing/',categories:['coding','api'],categoriesAr:['برمجة','API'],descriptionAr:'وكيل برمجة من OpenAI يعمل في الطرفية.',useCases:['البرمجة','الأتمتة'],availability:'متاح',pricingModel:'paid',pricingLabel:'مدفوع (API)',hasFreePlan:false,hasFreeTrial:false,freeLimit:'لا',priceKnown:'حسب الاستهلاك',currency:'USD',billingCycle:'حسب الاستهلاك',lastVerified:'2026-10',supportsArabic:false,platforms:['desktop','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'متوسط',restrictions:'يتطلب رصيد API مدفوع.',source:'الموقع الرسمي'},
+{id:'coderabbit',name:'CodeRabbit',nameAr:'كودرابيت',maker:'CodeRabbit',makerAr:'كودرابيت',logo:'CR',logoColor:'#6366f1',website:'https://coderabbit.ai',docs:'',pricingUrl:'https://coderabbit.ai/pricing',categories:['coding','productivity'],categoriesAr:['برمجة','إنتاجية'],descriptionAr:'أداة مراجعة أكواد آلية بالذكاء الاصطناعي.',useCases:['مراجعة الأكواد','فرق التطوير'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:true,freeLimit:'نعم — للمشاريع المفتوحة',priceKnown:'$15/شهر (Lite)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الخطة المجانية محدودة.',source:'الموقع الرسمي'},
+{id:'amazon-q',name:'Amazon Q Developer',nameAr:'أمازون كيو',maker:'Amazon (AWS)',makerAr:'أمازون',logo:'Q',logoColor:'#ff9900',website:'https://aws.amazon.com/q/developer/',docs:'https://docs.aws.amazon.com/amazonq/',pricingUrl:'https://aws.amazon.com/q/developer/pricing/',categories:['coding','business'],categoriesAr:['برمجة','أعمال'],descriptionAr:'مساعد برمجة من AWS بتكامل عميق مع الخدمات السحابية.',useCases:['البرمجة','AWS','التطوير السحابي'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$19/شهر (Pro)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['desktop','web','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'متوسط',restrictions:'موجه لمستخدمي AWS.',source:'الموقع الرسمي'},
+{id:'notebooklm',name:'NotebookLM',nameAr:'نوتبوك إل إم',maker:'Google',makerAr:'جوجل',logo:'N',logoColor:'#4285f4',website:'https://notebooklm.google.com',docs:'https://notebooklm.google.com',pricingUrl:'https://notebooklm.google.com',categories:['research','productivity','education'],categoriesAr:['بحث علمي','إنتاجية','تعليم'],descriptionAr:'أداة بحثية من Google تحلل مستنداتك وتجيب منها فقط.',useCases:['تحليل المستندات','المراجعة الأدبية','التلخيص الصوتي'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$19.99/شهر (Pro)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:true,platforms:['web'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل جداً',restrictions:'لا يبحث في الويب. الخطة المجانية محدودة المصادر.',source:'الموقع الرسمي'},
+{id:'elicit',name:'Elicit',nameAr:'إليسيت',maker:'Elicit',makerAr:'إليسيت',logo:'E',logoColor:'#059669',website:'https://elicit.com',docs:'https://docs.elicit.com',pricingUrl:'https://elicit.com/pricing',categories:['research','education'],categoriesAr:['بحث علمي','تعليم'],descriptionAr:'مساعد بحثي متخصص في المراجعات الأدبية المنهجية.',useCases:['المراجعات المنهجية','استخراج البيانات'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$12/شهر (Plus)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'متوسط',restrictions:'متخصص في الأدبيات الأكاديمية.',source:'الموقع الرسمي'},
+{id:'consensus',name:'Consensus',nameAr:'كونسنسوس',maker:'Consensus',makerAr:'كونسنسوس',logo:'C',logoColor:'#2563eb',website:'https://consensus.app',docs:'',pricingUrl:'https://consensus.app/pricing',categories:['research','education'],categoriesAr:['بحث علمي','تعليم'],descriptionAr:'محرك بحث أكاديمي يقدم إجابات مبنية على توافق الدراسات.',useCases:['البحث العلمي','التحقق من الإجماع'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$8.99/شهر (Premium)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'يغطي الأبحاث الإنجليزية.',source:'الموقع الرسمي'},
+{id:'scispace',name:'SciSpace',nameAr:'ساي سبيس',maker:'SciSpace',makerAr:'ساي سبيس',logo:'SS',logoColor:'#0891b2',website:'https://typeset.io',docs:'',pricingUrl:'https://typeset.io/pricing',categories:['research','education'],categoriesAr:['بحث علمي','تعليم'],descriptionAr:'أداة بحثية تشرح الأوراق العلمية وتبسط محتواها.',useCases:['قراءة الأوراق','فهم الأبحاث'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:true,freeLimit:'نعم — محدود',priceKnown:'$12/شهر (Premium)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'يدعم الإنجليزية أساساً.',source:'الموقع الرسمي'},
+{id:'research-rabbit',name:'ResearchRabbit',nameAr:'ريسرش رابيت',maker:'ResearchRabbit',makerAr:'ريسرش رابيت',logo:'RR',logoColor:'#8b5cf6',website:'https://www.researchrabbit.ai',docs:'',pricingUrl:'https://www.researchrabbit.ai/pricing',categories:['research'],categoriesAr:['بحث علمي'],descriptionAr:'أداة مجانية لاستكشاف الأوراق العلمية وشبكات الاستشهادات.',useCases:['استكشاف الأبحاث','شبكات الاستشهاد'],availability:'متاح',pricingModel:'free',pricingLabel:'مجاني بالكامل',hasFreePlan:true,hasFreeTrial:false,freeLimit:'غير محدود',priceKnown:'مجاني',currency:'',billingCycle:'',lastVerified:'2026-10',supportsArabic:false,platforms:['web'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'مجاني للاستخدام الأساسي.',source:'الموقع الرسمي'},
+{id:'semantic-scholar',name:'Semantic Scholar',nameAr:'سيمانتيك سكولار',maker:'Allen Institute for AI',makerAr:'معهد ألن',logo:'SS',logoColor:'#1e40af',website:'https://www.semanticscholar.org',docs:'https://api.semanticscholar.org',pricingUrl:'',categories:['research','api','education'],categoriesAr:['بحث علمي','API','تعليم'],descriptionAr:'محرك بحث علمي مجاني من AI2 مع API للباحثين.',useCases:['البحث العلمي','مراجعة الأدبيات','الاقتباسات'],availability:'متاح',pricingModel:'free',pricingLabel:'مجاني بالكامل',hasFreePlan:true,hasFreeTrial:false,freeLimit:'غير محدود (API بمعدل)',priceKnown:'مجاني',currency:'',billingCycle:'',lastVerified:'2026-10',supportsArabic:false,platforms:['web','api'],hasAPI:true,worksOffline:false,license:'مجاني (غير ربحي)',easeOfUse:'سهل',restrictions:'API بمعدل طلبات محدود.',source:'الموقع الرسمي'},
+{id:'julius-ai',name:'Julius AI',nameAr:'جوليوس إيه آي',maker:'Julius AI',makerAr:'جوليوس',logo:'J',logoColor:'#f59e0b',website:'https://julius.ai',docs:'',pricingUrl:'https://julius.ai/pricing',categories:['data','research','math'],categoriesAr:['بيانات','بحث علمي','رياضيات'],descriptionAr:'أداة تحليل بيانات بالذكاء الاصطناعي، تحلل الملفات وتنشئ رسوماً بيانية.',useCases:['تحليل البيانات','الإحصاء','الرسوم البيانية'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — 15 رسالة شهرياً',priceKnown:'$20/شهر (Pro)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الخطة المجانية محدودة.',source:'الموقع الرسمي'},
+{id:'notion-ai',name:'Notion AI',nameAr:'نوشن إيه آي',maker:'Notion',makerAr:'نوشن',logo:'N',logoColor:'#000000',website:'https://www.notion.so/product/ai',docs:'https://www.notion.so/help',pricingUrl:'https://www.notion.so/pricing',categories:['productivity','writing','business'],categoriesAr:['إنتاجية','كتابة','أعمال'],descriptionAr:'مساعد ذكاء اصطناعي مدمج في Notion للكتابة والتلخيص.',useCases:['تنظيم المعرفة','الكتابة','تلخيص الاجتماعات'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:true,freeLimit:'نعم — تجربة محدودة',priceKnown:'$10/شهر (AI إضافة)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:true,platforms:['web','mobile','desktop'],hasAPI:true,worksOffline:true,license:'احتكاري',easeOfUse:'سهل',restrictions:'AI ميزة إضافية مدفوعة.',source:'الموقع الرسمي'},
+{id:'otter',name:'Otter.ai',nameAr:'أوتر',maker:'Otter.ai',makerAr:'أوتر',logo:'O',logoColor:'#10b981',website:'https://otter.ai',docs:'',pricingUrl:'https://otter.ai/pricing',categories:['productivity','audio','business'],categoriesAr:['إنتاجية','صوت','أعمال'],descriptionAr:'أداة تفريغ صوتي تلقائي للاجتماعات مع ملخصات ذكية.',useCases:['تفريغ الاجتماعات','المحاضرات','المقابلات'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — 300 دقيقة شهرياً',priceKnown:'$16.99/شهر (Pro)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','mobile','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل جداً',restrictions:'يدعم الإنجليزية بشكل أساسي.',source:'الموقع الرسمي'},
+{id:'magicschool',name:'MagicSchool AI',nameAr:'ماجيك سكول',maker:'MagicSchool',makerAr:'ماجيك سكول',logo:'MS',logoColor:'#8b5cf6',website:'https://www.magicschool.ai',docs:'',pricingUrl:'https://www.magicschool.ai/pricing',categories:['education','productivity'],categoriesAr:['تعليم','إنتاجية'],descriptionAr:'منصة تعليمية بالذكاء الاصطناعي توفر أدوات لتخطيط الدروس والتقييم.',useCases:['تخطيط الدروس','إنشاء الاختبارات','تقييم الطلاب'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — أدوات محدودة',priceKnown:'$12.99/شهر (Plus)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل جداً',restrictions:'مصمم للمعلمين.',source:'الموقع الرسمي'},
+{id:'eduaide',name:'Eduaide.ai',nameAr:'إديوايد',maker:'Eduaide',makerAr:'إديوايد',logo:'EA',logoColor:'#14b8a6',website:'https://www.eduaide.ai',docs:'',pricingUrl:'https://www.eduaide.ai/pricing',categories:['education'],categoriesAr:['تعليم'],descriptionAr:'أداة تعليمية بالذكاء الاصطناعي لإنشاء خطط الدروس والمواد.',useCases:['تخطيط الدروس','المواد التعليمية','التقييم'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$9.99/شهر (Pro)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'مصمم للمعلمين.',source:'الموقع الرسمي'},
+{id:'diffit',name:'Diffit',nameAr:'ديفيت',maker:'Diffit',makerAr:'ديفيت',logo:'D',logoColor:'#f59e0b',website:'https://www.diffit.me',docs:'',pricingUrl:'https://www.diffit.me/pricing',categories:['education'],categoriesAr:['تعليم'],descriptionAr:'أداة تعليمية تعيد كتابة المحتوى بمستويات قراءة مختلفة.',useCases:['تكييف المواد','التعليم المتمايز'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$12.99/شهر (Plus)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'يدعم الإنجليزية أساساً.',source:'الموقع الرسمي'},
+{id:'brisk-teaching',name:'Brisk Teaching',nameAr:'بريسك تيتشينج',maker:'Brisk Teaching',makerAr:'بريسك',logo:'BT',logoColor:'#ec4899',website:'https://www.briskteaching.com',docs:'',pricingUrl:'https://www.briskteaching.com/pricing',categories:['education','productivity'],categoriesAr:['تعليم','إنتاجية'],descriptionAr:'أداة تعليمية تعمل كإضافة للمتصفح، تساعد في تعديل المحتوى.',useCases:['تعديل المحتوى','ملاحظات الطلاب','التعليم المتمايز'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$9.99/شهر (Plus)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','desktop'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'يعمل داخل المتصفح.',source:'الموقع الرسمي'},
+{id:'canva-education',name:'Canva for Education',nameAr:'كانفا للتعليم',maker:'Canva',makerAr:'كانفا',logo:'C',logoColor:'#00c4cc',website:'https://www.canva.com/education/',docs:'',pricingUrl:'https://www.canva.com/education/',categories:['education','design'],categoriesAr:['تعليم','تصميم'],descriptionAr:'منصة تصميم مجانية للمعلمين المعتمدين مع أدوات ذكاء اصطناعي.',useCases:['تصميم الدروس','العروض التقديمية'],availability:'متاح',pricingModel:'free',pricingLabel:'مجاني للمعلمين',hasFreePlan:true,hasFreeTrial:false,freeLimit:'غير محدود للمعلمين المعتمدين',priceKnown:'مجاني للمعلمين',currency:'',billingCycle:'',lastVerified:'2026-10',supportsArabic:true,platforms:['web','mobile'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل جداً',restrictions:'يتطلب التحقق من صفة المعلم.',source:'الموقع الرسمي'},
+{id:'khanmigo',name:'Khanmigo',nameAr:'خانميجو',maker:'Khan Academy',makerAr:'أكاديمية خان',logo:'K',logoColor:'#14b8a6',website:'https://www.khanmigo.ai',docs:'',pricingUrl:'https://www.khanmigo.ai/pricing',categories:['education','chat'],categoriesAr:['تعليم','مساعد حوارى'],descriptionAr:'مساعد تعليمي يقدم توجيهاً خطوة بخطوة دون إعطاء الإجابات مباشرة.',useCases:['التعلم الشخصي','الرياضيات','العلوم'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:true,freeLimit:'نعم — محدود',priceKnown:'$4/شهر (للطلاب)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'مجاني للمعلمين في الولايات المتحدة.',source:'الموقع الرسمي'},
+{id:'mathway',name:'Mathway',nameAr:'ماثواي',maker:'Chegg',makerAr:'تشيج',logo:'M',logoColor:'#ef4444',website:'https://www.mathway.com',docs:'',pricingUrl:'https://www.mathway.com/pricing',categories:['education','math'],categoriesAr:['تعليم','رياضيات'],descriptionAr:'أداة حل مسائل رياضية تدعم الجبر والتفاضل والتكامل والإحصاء.',useCases:['حل الواجبات','تعلم الرياضيات'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — حلول أساسية',priceKnown:'$9.99/شهر (Premium)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:true,platforms:['web','mobile'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل جداً',restrictions:'الحلول خطوة بخطوة مدفوعة.',source:'الموقع الرسمي'},
+{id:'zapier',name:'Zapier',nameAr:'زابير',maker:'Zapier',makerAr:'زابير',logo:'Z',logoColor:'#ff4f00',website:'https://zapier.com',docs:'https://docs.zapier.com',pricingUrl:'https://zapier.com/pricing',categories:['automation','productivity','business'],categoriesAr:['أتمتة','إنتاجية','أعمال'],descriptionAr:'منصة أتمتة تربط آلاف التطبيقات مع دعم الذكاء الاصطناعي.',useCases:['أتمتة المهام','ربط التطبيقات'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:true,freeLimit:'نعم — 100 مهمة شهرياً',priceKnown:'$19.99/شهر (Starter)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الخطة المجانية محدودة المهام.',source:'الموقع الرسمي'},
+{id:'n8n',name:'n8n',nameAr:'إن إيت إن',maker:'n8n',makerAr:'n8n',logo:'n8',logoColor:'#ea4b71',website:'https://n8n.io',docs:'https://docs.n8n.io',pricingUrl:'https://n8n.io/pricing',categories:['automation','open-source','business'],categoriesAr:['أتمتة','مفتوح المصدر','أعمال'],descriptionAr:'منصة أتمتة سير عمل مفتوحة المصدر قابلة للاستضافة الذاتية.',useCases:['أتمتة العمليات','الاستضافة الذاتية'],availability:'متاح',pricingModel:'open-source',pricingLabel:'مفتوح المصدر (مجاني محلياً)',hasFreePlan:true,hasFreeTrial:true,freeLimit:'غير محدود (استضافة ذاتية)',priceKnown:'$20/شهر (Cloud)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','desktop','api'],hasAPI:true,worksOffline:true,license:'مفتوح المصدر (Sustainable Use License)',easeOfUse:'متوسط',restrictions:'الاستضافة الذاتية تتطلب معرفة تقنية.',source:'الموقع الرسمي'},
+{id:'ollama',name:'Ollama',nameAr:'أولاما',maker:'Ollama',makerAr:'أولاما',logo:'O',logoColor:'#000000',website:'https://ollama.com',docs:'https://github.com/ollama/ollama',pricingUrl:'',categories:['open-source','local','coding'],categoriesAr:['مفتوح المصدر','محلي','برمجة'],descriptionAr:'أداة مفتوحة المصدر لتشغيل النماذج اللغوية محلياً بأمر واحد.',useCases:['التشغيل المحلي','الخصوصية','دون إنترنت'],availability:'متاح',pricingModel:'open-source',pricingLabel:'مفتوح المصدر (مجاني)',hasFreePlan:true,hasFreeTrial:false,freeLimit:'غير محدود',priceKnown:'مجاني',currency:'',billingCycle:'',lastVerified:'2026-10',supportsArabic:false,platforms:['desktop','api'],hasAPI:true,worksOffline:true,license:'مفتوح المصدر (MIT)',easeOfUse:'متوسط',restrictions:'يتطلب عتاداً جيداً (RAM/GPU).',source:'GitHub الرسمي'},
+{id:'lm-studio',name:'LM Studio',nameAr:'إل إم ستوديو',maker:'LM Studio',makerAr:'LM Studio',logo:'LM',logoColor:'#6366f1',website:'https://lmstudio.ai',docs:'https://lmstudio.ai/docs',pricingUrl:'',categories:['open-source','local'],categoriesAr:['مفتوح المصدر','محلي'],descriptionAr:'تطبيق سطح مكتب بواجهة رسومية لتشغيل النماذج اللغوية محلياً.',useCases:['التشغيل المحلي','الخصوصية'],availability:'متاح',pricingModel:'free',pricingLabel:'مجاني بالكامل',hasFreePlan:true,hasFreeTrial:false,freeLimit:'غير محدود',priceKnown:'مجاني',currency:'',billingCycle:'',lastVerified:'2026-10',supportsArabic:false,platforms:['desktop'],hasAPI:true,worksOffline:true,license:'مجاني (مغلق المصدر)',easeOfUse:'سهل',restrictions:'مغلق المصدر لكن مجاني. يتطلب عتاداً جيداً.',source:'الموقع الرسمي'},
+{id:'huggingface',name:'Hugging Face',nameAr:'هاجينج فيس',maker:'Hugging Face',makerAr:'هاجينج فيس',logo:'HF',logoColor:'#ffd21e',website:'https://huggingface.co',docs:'https://huggingface.co/docs',pricingUrl:'https://huggingface.co/pricing',categories:['open-source','local','api','research'],categoriesAr:['مفتوح المصدر','محلي','API','بحث'],descriptionAr:'أكبر منصة للنماذج مفتوحة المصدر ومجتمع الذكاء الاصطناعي.',useCases:['البحث عن النماذج','النشر','المجتمع'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — موارد محدودة',priceKnown:'$9/شهر (PRO)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','api'],hasAPI:true,worksOffline:true,license:'حسب النموذج',easeOfUse:'متوسط',restrictions:'الموارد المجانية محدودة.',source:'الموقع الرسمي'},
+{id:'jasper',name:'Jasper',nameAr:'جاسبر',maker:'Jasper AI',makerAr:'جاسبر',logo:'J',logoColor:'#7c3aed',website:'https://www.jasper.ai',docs:'',pricingUrl:'https://www.jasper.ai/pricing',categories:['writing','marketing','business'],categoriesAr:['كتابة','تسويق','أعمال'],descriptionAr:'منصة كتابة محتوى تسويقي مخصصة للفرق والعلامات التجارية.',useCases:['التسويق','المدونات','الإعلانات'],availability:'متاح',pricingModel:'paid',pricingLabel:'مدفوع فقط',hasFreePlan:false,hasFreeTrial:true,freeLimit:'لا',priceKnown:'$39/شهر (Creator)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:true,platforms:['web','api'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'لا توجد خطة مجانية دائمة.',source:'الموقع الرسمي'},
+{id:'grammarly',name:'Grammarly',nameAr:'جرامرلي',maker:'Grammarly',makerAr:'جرامرلي',logo:'G',logoColor:'#15c39a',website:'https://www.grammarly.com',docs:'',pricingUrl:'https://www.grammarly.com/plans',categories:['writing','productivity'],categoriesAr:['كتابة','إنتاجية'],descriptionAr:'أداة تدقيق لغوي وتحسين أسلوب الكتابة بالذكاء الاصطناعي.',useCases:['التدقيق اللغوي','تحسين الكتابة'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:true,freeLimit:'نعم — محدود',priceKnown:'$12/شهر (Premium)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','desktop','mobile'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'سهل جداً',restrictions:'يدعم الإنجليزية فقط أساساً.',source:'الموقع الرسمي'},
+{id:'quillbot',name:'QuillBot',nameAr:'كويل بوت',maker:'QuillBot',makerAr:'كويل بوت',logo:'Q',logoColor:'#14b8a6',website:'https://quillbot.com',docs:'',pricingUrl:'https://quillbot.com/pricing',categories:['writing','education'],categoriesAr:['كتابة','تعليم'],descriptionAr:'أداة إعادة صياغة وتحرير النصوص، تساعد في تحسين الأسلوب.',useCases:['إعادة الصياغة','التدقيق','تحسين الكتابة'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$8.33/شهر (Premium)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web','desktop'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل جداً',restrictions:'يدعم الإنجليزية أساساً.',source:'الموقع الرسمي'},
+{id:'copy-ai',name:'Copy.ai',nameAr:'كوبي إيه آي',maker:'Copy.ai',makerAr:'كوبي',logo:'CA',logoColor:'#8b5cf6',website:'https://www.copy.ai',docs:'',pricingUrl:'https://www.copy.ai/pricing',categories:['writing','marketing'],categoriesAr:['كتابة','تسويق'],descriptionAr:'أداة توليد نصوص تسويقية وإعلانية، مع قوالب متعددة للفرق.',useCases:['الإعلانات','البريد التسويقي'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:false,freeLimit:'نعم — محدود',priceKnown:'$49/شهر (Pro)',currency:'USD',billingCycle:'شهري',lastVerified:'2026-10',supportsArabic:false,platforms:['web'],hasAPI:false,worksOffline:false,license:'احتكاري',easeOfUse:'سهل',restrictions:'الخطة المجانية محدودة.',source:'الموقع الرسمي'},
+{id:'jais',name:'Jais',nameAr:'جيس',maker:'MBZUAI',makerAr:'جامعة محمد بن زايد',logo:'J',logoColor:'#059669',website:'https://www.jais.ai',docs:'https://huggingface.co/inceptionai',pricingUrl:'',categories:['chat','open-source','research'],categoriesAr:['مساعد حوارى','مفتوح المصدر','بحث'],descriptionAr:'عائلة نماذج عربية أصيلة مفتوحة الأوزان من الإمارات.',useCases:['المحادثة بالعربية','معالجة اللغة العربية'],availability:'متاح',pricingModel:'open-source',pricingLabel:'مفتوح المصدر (مجاني)',hasFreePlan:true,hasFreeTrial:false,freeLimit:'غير محدود (محلياً)',priceKnown:'مجاني',currency:'',billingCycle:'',lastVerified:'2026-10',supportsArabic:true,platforms:['web','api','desktop'],hasAPI:true,worksOffline:true,license:'مفتوح الأوزان',easeOfUse:'متوسط',restrictions:'يتطلب معرفة تقنية للتشغيل المحلي.',source:'Hugging Face'},
+{id:'mistral',name:'Mistral AI',nameAr:'ميسترال إيه آي',maker:'Mistral AI',makerAr:'ميسترال',logo:'M',logoColor:'#f97316',website:'https://mistral.ai',docs:'https://docs.mistral.ai',pricingUrl:'https://mistral.ai/pricing',categories:['chat','open-source','api'],categoriesAr:['مساعد حوارى','مفتوح المصدر','API'],descriptionAr:'شركة فرنسية رائدة في النماذج اللغوية مفتوحة الأوزان.',useCases:['المحادثة','البرمجة','API','التشغيل المحلي'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:true,freeLimit:'نعم — تجربة محدودة',priceKnown:'حسب الاستهلاك (API)',currency:'USD',billingCycle:'حسب الاستهلاك',lastVerified:'2026-10',supportsArabic:true,platforms:['web','api'],hasAPI:true,worksOffline:true,license:'مفتوح الأوزان (Apache 2.0)',easeOfUse:'متوسط',restrictions:'API مدفوع. النماذج المفتوحة تُشغّل محلياً.',source:'الموقع الرسمي'},
+{id:'cohere',name:'Cohere',nameAr:'كوهير',maker:'Cohere',makerAr:'كوهير',logo:'C',logoColor:'#39594d',website:'https://cohere.com',docs:'https://docs.cohere.com',pricingUrl:'https://cohere.com/pricing',categories:['api','business','research'],categoriesAr:['API','أعمال','بحث'],descriptionAr:'منصة ذكاء اصطناعي للمؤسسات تركز على البحث الدلالي وتوليد النصوص.',useCases:['البحث الدلالي','توليد النصوص','تصنيف النصوص'],availability:'متاح',pricingModel:'freemium',pricingLabel:'خطة مجانية محدودة',hasFreePlan:true,hasFreeTrial:true,freeLimit:'نعم — مفاتيح تجريبية',priceKnown:'حسب الاستهلاك (API)',currency:'USD',billingCycle:'حسب الاستهلاك',lastVerified:'2026-10',supportsArabic:false,platforms:['api','web'],hasAPI:true,worksOffline:false,license:'احتكاري',easeOfUse:'متوسط',restrictions:'موجه للمطورين والمؤسسات.',source:'الموقع الرسمي'}
+];
+
+/* ============ الثوابت ============ */
+const CATEGORY_LABELS={chat:'مساعدات حوارية',search:'بحث ذكي',image:'توليد صور',video:'فيديو',audio:'صوت وكلام',voice:'استنساخ صوت',music:'موسيقى',coding:'برمجة',nocode:'بدون كود',education:'تعليم',math:'رياضيات',research:'بحث علمي',productivity:'إنتاجية',automation:'وكلاء وأتمتة',writing:'كتابة ومحتوى',design:'تصميم',business:'أعمال',marketing:'تسويق','open-source':'مفتوح المصدر',local:'محلي',api:'API ومنصات',gaming:'ألعاب',data:'بيانات وتحليل'};
+
+/* ============ الحالة ============ */
+let state={
+  search:'',category:'',price:'',sort:'default',
+  arabicOnly:false,localOnly:false,apiOnly:false,
+  view:'home',
+  compare:[],
+  favorites:JSON.parse(localStorage.getItem('ai-favorites')||'[]')
+};
+
+/* ============ أدوات ============ */
+const $=(s,c=document)=>c.querySelector(s);
+const $$=(s,c=document)=>[...c.querySelectorAll(s)];
+
+function saveFavorites(){localStorage.setItem('ai-favorites',JSON.stringify(state.favorites));updateFavCount()}
+function updateFavCount(){const el=$('#favCount');if(el)el.textContent=`(${state.favorites.length})`}
+function isFav(id){return state.favorites.includes(id)}
+function toggleFav(id){
+  if(isFav(id))state.favorites=state.favorites.filter(f=>f!==id);
+  else state.favorites.push(id);
+  saveFavorites();
+  renderCurrentView();
+  if($('#detailModal').classList.contains('open'))openDetail(id);
+}
+function isInCompare(id){return state.compare.includes(id)}
+function toggleCompare(id){
+  if(isInCompare(id))state.compare=state.compare.filter(c=>c!==id);
+  else{
+    if(state.compare.length>=4){alert('يمكنك مقارنة 4 أدوات كحد أقصى.');return}
+    state.compare.push(id);
+  }
+  renderCurrentView();
+  renderCompareBar();
+}
+function getToolById(id){return AI_TOOLS.find(t=>t.id===id)}
+function priceTagClass(model){
+  const map={free:'price-free',freemium:'price-freemium',trial:'price-trial','open-source':'price-free',paid:'price-paid',enterprise:'price-enterprise',unknown:'price-unknown'};
+  return map[model]||'price-unknown';
+}
+
+/* ============ التصفية ============ */
+function getFilteredTools(){
+  let tools=[...AI_TOOLS];
+  if(state.search){
+    const q=state.search.toLowerCase().trim();
+    tools=tools.filter(t=>
+      t.name.toLowerCase().includes(q)||
+      t.nameAr.includes(q)||
+      t.maker.toLowerCase().includes(q)||
+      t.makerAr.includes(q)||
+      t.descriptionAr.includes(q)||
+      t.categoriesAr.some(c=>c.includes(q))||
+      t.useCases.some(u=>u.includes(q))
+    );
+  }
+  if(state.category)tools=tools.filter(t=>t.categories.includes(state.category));
+  if(state.price)tools=tools.filter(t=>t.pricingModel===state.price);
+  if(state.arabicOnly)tools=tools.filter(t=>t.supportsArabic);
+  if(state.localOnly)tools=tools.filter(t=>t.worksOffline);
+  if(state.apiOnly)tools=tools.filter(t=>t.hasAPI);
+  const priceOrder={free:0,'open-source':1,freemium:2,trial:3,paid:4,enterprise:5,unknown:6};
+  switch(state.sort){
+    case 'name':tools.sort((a,b)=>a.name.localeCompare(b.name,'ar'));break;
+    case 'category':tools.sort((a,b)=>(a.categoriesAr[0]||'').localeCompare(b.categoriesAr[0]||'','ar'));break;
+    case 'verified':tools.sort((a,b)=>b.lastVerified.localeCompare(a.lastVerified));break;
+    default:tools.sort((a,b)=>(priceOrder[a.pricingModel]??9)-(priceOrder[b.pricingModel]??9));
+  }
+  return tools;
+}
+
+/* ============ الرسم ============ */
+function renderStats(tools){
+  const el=$('#statsRow');if(!el)return;
+  const total=tools.length;
+  const free=tools.filter(t=>t.pricingModel==='free'||t.pricingModel==='open-source').length;
+  const arabic=tools.filter(t=>t.supportsArabic).length;
+  const local=tools.filter(t=>t.worksOffline).length;
+  el.innerHTML=`
+    <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">أداة في الموسوعة</div></div>
+    <div class="stat-card"><div class="stat-num">${free}</div><div class="stat-label">مجانية / مفتوحة</div></div>
+    <div class="stat-card"><div class="stat-num">${arabic}</div><div class="stat-label">تدعم العربية</div></div>
+    <div class="stat-card"><div class="stat-num">${local}</div><div class="stat-label">تعمل محلياً</div></div>`;
+}
+
+function renderToolCard(tool){
+  const fav=isFav(tool.id);
+  const inComp=isInCompare(tool.id);
+  const platforms=(tool.platforms.includes('web')?'🌐':'')+(tool.platforms.includes('mobile')?'📱':'')+(tool.platforms.includes('desktop')?'💻':'');
+  return `<div class="tool-card" data-id="${tool.id}">
+    <div class="tool-card-header">
+      <div class="tool-logo" style="background:${tool.logoColor}15;color:${tool.logoColor}">${tool.logo}</div>
+      <div class="tool-title">
+        <div class="tool-name">${tool.name}</div>
+        <div class="tool-name-ar">${tool.nameAr}</div>
+        <div class="tool-maker">${tool.makerAr}</div>
+      </div>
+    </div>
+    <div class="tool-desc">${tool.descriptionAr}</div>
+    <div class="tool-tags">
+      <span class="tag ${priceTagClass(tool.pricingModel)}">${tool.pricingLabel}</span>
+      ${tool.supportsArabic?'<span class="tag tag-arabic">🇸🇦 عربي</span>':''}
+      ${tool.worksOffline?'<span class="tag tag-local">💻 محلي</span>':''}
+      ${tool.hasAPI?'<span class="tag tag-api">🔌 API</span>':''}
+    </div>
+    <div class="tool-features">
+      <span class="feature-badge ${tool.hasFreePlan?'yes':'no'}">${tool.hasFreePlan?'✓':'✗'} خطة مجانية</span>
+      <span class="feature-badge ${tool.hasFreeTrial?'yes':'no'}">${tool.hasFreeTrial?'✓':'✗'} تجربة</span>
+      <span class="feature-badge">${platforms}</span>
+    </div>
+    <div class="tool-footer">
+      <span class="tool-verified">آخر تحقق: ${tool.lastVerified}</span>
+      <div class="tool-actions">
+        <button class="btn-icon fav ${fav?'active':''}" data-action="fav" data-id="${tool.id}" title="مفضلة">${fav?'❤️':'🤍'}</button>
+        <button class="btn-icon ${inComp?'active':''}" data-action="compare" data-id="${tool.id}" title="مقارنة">${inComp?'✓':'⇄'}</button>
+        <a class="btn-visit" href="${tool.website}" target="_blank" rel="noopener">زيارة ↗</a>
+      </div>
+    </div>
+  </div>`;
+}
+
+function bindCardEvents(grid){
+  $$('[data-action="fav"]',grid).forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();toggleFav(btn.dataset.id)}));
+  $$('[data-action="compare"]',grid).forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();toggleCompare(btn.dataset.id)}));
+  $$('.tool-card',grid).forEach(card=>card.addEventListener('click',e=>{
+    if(e.target.closest('a')||e.target.closest('button'))return;
+    openDetail(card.dataset.id);
+  }));
+}
+
+function renderTools(){
+  const grid=$('#toolsGrid');
+  const tools=getFilteredTools();
+  renderStats(tools);
+  if(tools.length===0){
+    grid.innerHTML=`<div class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <h3>لا توجد نتائج مطابقة</h3>
+      <p>جرّب تغيير كلمات البحث أو مسح بعض الفلاتر.</p>
+      <button class="btn-primary" style="margin-top:12px" onclick="resetAllFilters()">مسح جميع الفلاتر</button>
+    </div>`;
+    return;
+  }
+  grid.innerHTML=tools.map(renderToolCard).join('');
+  bindCardEvents(grid);
+}
+
+function renderFavorites(){
+  const grid=$('#favoritesGrid');
+  const favs=AI_TOOLS.filter(t=>state.favorites.includes(t.id));
+  if(favs.length===0){
+    grid.innerHTML=`<div class="empty-state">
+      <div class="empty-icon">🤍</div>
+      <h3>لا توجد أدوات في المفضلة</h3>
+      <p>أضف الأدوات التي تعجبك بالضغط على رمز القلب.</p>
+    </div>`;
+    return;
+  }
+  grid.innerHTML=favs.map(renderToolCard).join('');
+  bindCardEvents(grid);
+}
+
+function renderCurrentView(){
+  if(state.view==='home')renderTools();
+  else if(state.view==='favorites')renderFavorites();
+}
+
+/* ============ التفاصيل ============ */
+function openDetail(id){
+  const tool=getToolById(id);if(!tool)return;
+  const fav=isFav(id);
+  const inComp=isInCompare(id);
+  const platforms=tool.platforms.map(p=>({web:'🌐 ويب',mobile:'📱 هاتف',desktop:'💻 حاسوب',api:'🔌 API',discord:'💬 Discord'}[p]||p)).join(' · ');
+  $('#detailContent').innerHTML=`
+    <div class="detail-header">
+      <div class="detail-logo" style="background:${tool.logoColor}15;color:${tool.logoColor}">${tool.logo}</div>
+      <div class="detail-title">
+        <h2>${tool.name}</h2>
+        <div class="ar-name">${tool.nameAr}</div>
+        <div class="maker">${tool.makerAr} — ${tool.maker}</div>
+      </div>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-field"><div class="label">التخصص الرئيسي</div><div class="value">${tool.categoriesAr[0]||'—'}</div></div>
+      <div class="detail-field"><div class="label">نموذج التسعير</div><div class="value"><span class="tag ${priceTagClass(tool.pricingModel)}">${tool.pricingLabel}</span></div></div>
+      <div class="detail-field"><div class="label">السعر المعروف</div><div class="value">${tool.priceKnown||'—'}</div></div>
+      <div class="detail-field"><div class="label">دورية الدفع</div><div class="value">${tool.billingCycle||'—'}</div></div>
+      <div class="detail-field"><div class="label">خطة مجانية</div><div class="value">${tool.hasFreePlan?'✓ '+(tool.freeLimit||'نعم'):'✗ لا'}</div></div>
+      <div class="detail-field"><div class="label">تجربة مجانية</div><div class="value">${tool.hasFreeTrial?'✓ نعم':'✗ لا'}</div></div>
+      <div class="detail-field"><div class="label">دعم العربية</div><div class="value">${tool.supportsArabic?'✓ نعم':'✗ غير مؤكد'}</div></div>
+      <div class="detail-field"><div class="label">الترخيص</div><div class="value">${tool.license}</div></div>
+      <div class="detail-field"><div class="label">المنصات</div><div class="value">${platforms}</div></div>
+      <div class="detail-field"><div class="label">API</div><div class="value">${tool.hasAPI?'✓ متوفر':'✗ غير متوفر'}</div></div>
+      <div class="detail-field"><div class="label">يعمل محلياً</div><div class="value">${tool.worksOffline?'✓ نعم':'✗ لا'}</div></div>
+      <div class="detail-field"><div class="label">سهولة الاستخدام</div><div class="value">${tool.easeOfUse}</div></div>
+    </div>
+    <div class="detail-field full" style="margin-bottom:12px"><div class="label">الوصف</div><div class="value" style="font-weight:400;line-height:1.8">${tool.descriptionAr}</div></div>
+    <div class="detail-field full" style="margin-bottom:12px"><div class="label">حالات الاستخدام</div><div class="value" style="font-weight:400">${tool.useCases.map(u=>'• '+u).join('<br>')}</div></div>
+    <div class="detail-field full" style="margin-bottom:12px"><div class="label">القيود</div><div class="value" style="font-weight:400">${tool.restrictions}</div></div>
+    <div class="detail-field full" style="margin-bottom:16px"><div class="label">المصدر</div><div class="value" style="font-weight:400">${tool.source} — آخر تحقق: ${tool.lastVerified}</div></div>
+    <div class="detail-links">
+      <a href="${tool.website}" class="official" target="_blank" rel="noopener">🌐 الموقع الرسمي ↗</a>
+      ${tool.docs?`<a href="${tool.docs}" class="sec" target="_blank" rel="noopener">📚 التوثيق ↗</a>`:''}
+      ${tool.pricingUrl?`<a href="${tool.pricingUrl}" class="sec" target="_blank" rel="noopener">💰 التسعير ↗</a>`:''}
+    </div>
+    <div class="detail-actions">
+      <button class="btn-secondary ${fav?'active':''}" onclick="toggleFav('${tool.id}')">${fav?'❤️ في المفضلة':'🤍 إضافة للمفضلة'}</button>
+      <button class="btn-secondary ${inComp?'active':''}" onclick="toggleCompare('${tool.id}')">${inComp?'✓ في المقارنة':'⇄ إضافة للمقارنة'}</button>
+    </div>`;
+  $('#detailModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDetail(){$('#detailModal').classList.remove('open');document.body.style.overflow=''}
+
+/* ============ المقارنة ============ */
+function renderCompareBar(){
+  const bar=$('#compareBar');const items=$('#compareItems');
+  if(state.compare.length===0){bar.classList.remove('visible');return}
+  bar.classList.add('visible');
+  items.innerHTML=state.compare.map(id=>{
+    const t=getToolById(id);
+    return `<span class="compare-item">${t.name} <button onclick="toggleCompare('${id}')">✕</button></span>`;
+  }).join('');
+}
+
+function openCompareModal(){
+  if(state.compare.length<2){alert('اختر أداة على الأقل (أداتان إلى 4).');return}
+  const tools=state.compare.map(getToolById);
+  const attrs=[
+    {key:'pricingLabel',label:'التسعير'},
+    {key:'priceKnown',label:'السعر'},
+    {key:'hasFreePlan',label:'خطة مجانية',fmt:v=>v?'✓':'✗'},
+    {key:'freeLimit',label:'حدود المجاني'},
+    {key:'supportsArabic',label:'دعم العربية',fmt:v=>v?'✓':'✗'},
+    {key:'worksOffline',label:'يعمل محلياً',fmt:v=>v?'✓':'✗'},
+    {key:'hasAPI',label:'API',fmt:v=>v?'✓':'✗'},
+    {key:'categoriesAr',label:'التخصص',fmt:v=>v.join(' · ')},
+    {key:'easeOfUse',label:'سهولة الاستخدام'},
+    {key:'platforms',label:'المنصات',fmt:v=>v.map(p=>({web:'ويب',mobile:'هاتف',desktop:'حاسوب',api:'API',discord:'Discord'}[p]||p)).join(' · ')},
+    {key:'license',label:'الترخيص'},
+    {key:'restrictions',label:'القيود'},
+    {key:'lastVerified',label:'آخر تحقق'}
+  ];
+  let html=`<thead><tr><th></th>${tools.map(t=>`<th class="tool-name-cell">${t.name}<br><small style="font-weight:400;color:var(--tx3)">${t.nameAr}</small></th>`).join('')}</tr></thead><tbody>`;
+  attrs.forEach(a=>{
+    html+=`<tr><td class="attr-name">${a.label}</td>`;
+    tools.forEach(t=>{
+      let v=t[a.key];
+      if(a.fmt)v=a.fmt(v);
+      if(v===undefined||v===null||v==='')v='غير متحقق منه';
+      html+=`<td>${v}</td>`;
+    });
+    html+='</tr>';
+  });
+  html+='</tbody>';
+  $('#compareTable').innerHTML=html;
+  $('#compareModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeCompareModal(){$('#compareModal').classList.remove('open');document.body.style.overflow=''}
+
+/* ============ تبديل العرض ============ */
+function switchView(view){
+  state.view=view;
+  $$('.view-section').forEach(s=>s.classList.remove('active'));
+  $$('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const sec=$('#view-'+view);if(sec)sec.classList.add('active');
+  const btn=$(`.nav-btn[data-view="${view}"]`);if(btn)btn.classList.add('active');
+  if(view==='home')renderTools();
+  else if(view==='favorites')renderFavorites();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ============ إعادة تعيين ============ */
+function resetAllFilters(){
+  state.search='';state.category='';state.price='';state.sort='default';
+  state.arabicOnly=false;state.localOnly=false;state.apiOnly=false;
+  $('#searchInput').value='';
+  $('#filterCategory').value='';
+  $('#filterPrice').value='';
+  $('#sortBy').value='default';
+  $('#chipArabic').classList.remove('active');
+  $('#chipLocal').classList.remove('active');
+  $('#chipAPI').classList.remove('active');
+  $('#searchClear').classList.remove('visible');
+  $('#resetFilters').classList.remove('visible');
+  renderTools();
+}
+
+function syncResetButtonVisibility(){
+  const hasFilters=state.search||state.category||state.price||state.arabicOnly||state.localOnly||state.apiOnly||state.sort!=='default';
+  $('#resetFilters').classList.toggle('visible',!!hasFilters);
+}
+
+/* ============ التهيئة ============ */
+function init(){
+  // تعبئة التصنيفات
+  const catSelect=$('#filterCategory');
+  const cats=[...new Set(AI_TOOLS.flatMap(t=>t.categories))].sort();
+  cats.forEach(c=>{
+    const opt=document.createElement('option');
+    opt.value=c;opt.textContent=CATEGORY_LABELS[c]||c;
+    catSelect.appendChild(opt);
+  });
+
+  // الوضع الليلي
+  const savedTheme=localStorage.getItem('ai-theme')||'light';
+  document.documentElement.setAttribute('data-theme',savedTheme);
+  $('#themeToggle').textContent=savedTheme==='dark'?'☀️':'🌙';
+  $('#themeToggle').addEventListener('click',()=>{
+    const cur=document.documentElement.getAttribute('data-theme');
+    const next=cur==='dark'?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('ai-theme',next);
+    $('#themeToggle').textContent=next==='dark'?'☀️':'🌙';
+  });
+
+  // البحث
+  const searchInput=$('#searchInput');
+  const searchClear=$('#searchClear');
+  searchInput.addEventListener('input',e=>{
+    state.search=e.target.value;
+    searchClear.classList.toggle('visible',!!state.search);
+    syncResetButtonVisibility();
+    renderTools();
+  });
+  searchClear.addEventListener('click',()=>{
+    state.search='';searchInput.value='';searchClear.classList.remove('visible');
+    syncResetButtonVisibility();renderTools();searchInput.focus();
+  });
+
+  // الفلاتر
+  $('#filterCategory').addEventListener('change',e=>{state.category=e.target.value;syncResetButtonVisibility();renderTools()});
+  $('#filterPrice').addEventListener('change',e=>{state.price=e.target.value;syncResetButtonVisibility();renderTools()});
+  $('#sortBy').addEventListener('change',e=>{state.sort=e.target.value;syncResetButtonVisibility();renderTools()});
+
+  const chipArabic=$('#chipArabic'),chipLocal=$('#chipLocal'),chipAPI=$('#chipAPI');
+  chipArabic.addEventListener('click',()=>{state.arabicOnly=!state.arabicOnly;chipArabic.classList.toggle('active',state.arabicOnly);syncResetButtonVisibility();renderTools()});
+  chipLocal.addEventListener('click',()=>{state.localOnly=!state.localOnly;chipLocal.classList.toggle('active',state.localOnly);syncResetButtonVisibility();renderTools()});
+  chipAPI.addEventListener('click',()=>{state.apiOnly=!state.apiOnly;chipAPI.classList.toggle('active',state.apiOnly);syncResetButtonVisibility();renderTools()});
+  $('#resetFilters').addEventListener('click',resetAllFilters);
+
+  // نوافذ
+  $('#closeDetail').addEventListener('click',closeDetail);
+  $('#detailModal').addEventListener('click',e=>{if(e.target.id==='detailModal')closeDetail()});
+  $('#closeCompare').addEventListener('click',closeCompareModal);
+  $('#compareModal').addEventListener('click',e=>{if(e.target.id==='compareModal')closeCompareModal()});
+
+  // المقارنة
+  $('#clearCompare').addEventListener('click',()=>{state.compare=[];renderCompareBar();renderCurrentView()});
+  $('#openCompare').addEventListener('click',openCompareModal);
+
+  // التنقل
+  $$('.nav-btn').forEach(btn=>btn.addEventListener('click',()=>switchView(btn.dataset.view)));
+
+  // المفضلة
+  $('#clearFavs').addEventListener('click',()=>{
+    if(confirm('هل تريد مسح جميع المفضلة؟')){state.favorites=[];saveFavorites();renderFavorites()}
+  });
+
+  // ESC لإغلاق النوافذ
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){
+      if($('#detailModal').classList.contains('open'))closeDetail();
+      if($('#compareModal').classList.contains('open'))closeCompareModal();
+    }
+  });
+
+  // إغلاق الشريط عند عدم وجود عناصر
+  updateFavCount();
+  renderCompareBar();
+  renderTools();
+}
+
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>

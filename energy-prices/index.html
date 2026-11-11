@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>مؤشرات الطاقة والمعادن الثمينة - شامل</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Tahoma', 'Arial', system-ui, -apple-system, sans-serif;
+            background: #e9eef2;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            color: #1e2b3c;
+        }
+        header {
+            background: #0f2b4b;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 4px solid #f0b400;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        header h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .container {
+            padding: 16px 12px;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+        .refresh-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .btn-refresh {
+            width: 100%;
+            padding: 14px;
+            background: #0f2b4b;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,40,80,0.2);
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-refresh:hover {
+            background: #1a3f64;
+        }
+        .btn-refresh:active {
+            transform: scale(0.98);
+        }
+        .btn-refresh:disabled {
+            background: #7f8c8d;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .btn-source {
+            background: #f0b400;
+            color: #0f2b4b;
+        }
+        .btn-source:hover {
+            background: #ffc107;
+        }
+        .card {
+            background: white;
+            margin: 12px 0;
+            padding: 18px 16px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #dfe6ed;
+            transition: all 0.2s;
+        }
+        .card.loading {
+            opacity: 0.7;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .label i {
+            font-style: normal;
+            background: #eef2f6;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #0f2b4b;
+            font-weight: 400;
+        }
+        .price {
+            font-family: 'Courier New', monospace;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0f2b4b;
+            direction: ltr;
+            background: #f4f9ff;
+            padding: 4px 12px;
+            border-radius: 40px;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+            min-width: 100px;
+            text-align: center;
+        }
+        .price.error {
+            color: #c0392b;
+            background: #fce9e7;
+            font-size: 1rem;
+        }
+        .price.loading {
+            background: #eef2f6;
+            color: transparent;
+            position: relative;
+            min-width: 90px;
+        }
+        .price.loading::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid #b0c4de;
+            border-top-color: #0f2b4b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+        .gram-price {
+            font-size: 0.9rem;
+            color: #2ecc71;
+            background: #e8f8f0;
+            padding: 4px 10px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 8px;
+            font-weight: 500;
+            direction: ltr;
+        }
+        .gold-carats {
+            margin-top: 15px;
+            background: #fafbfc;
+            border-radius: 16px;
+            padding: 12px;
+            border: 1px dashed #b0c4de;
+        }
+        .gold-carats h4 {
+            margin: 0 0 10px 0;
+            color: #0f2b4b;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .carat-table {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+        .carat-item {
+            background: white;
+            padding: 8px 4px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            border: 1px solid #e2e8f0;
+        }
+        .carat-title {
+            font-weight: 700;
+            color: #0f2b4b;
+            font-size: 0.9rem;
+        }
+        .carat-percent {
+            font-size: 0.7rem;
+            color: #5e6f7e;
+            margin: 2px 0;
+        }
+        .carat-price {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #2ecc71;
+            font-size: 0.9rem;
+            background: #e8f8f0;
+            padding: 2px 6px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+        .update-time {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #5e6f7e;
+            margin: 16px 0 10px;
+            background: #dfe6ed;
+            padding: 6px 12px;
+            border-radius: 50px;
+            display: inline-block;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        footer {
+            background: #cfdbe8;
+            padding: 20px 16px;
+            text-align: center;
+            font-size: 0.8rem;
+            margin-top: 30px;
+            border-top: 3px solid #b0c4de;
+            color: #1e2b3c;
+            line-height: 1.8;
+            border-radius: 30px 30px 0 0;
+        }
+        footer strong {
+            color: #0a1a2c;
+        }
+        .contact-info {
+            direction: ltr;
+            display: inline-block;
+            background: #b0c4de;
+            padding: 4px 16px;
+            border-radius: 30px;
+            margin-top: 8px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h2>⛽ مؤشرات الطاقة والمعادن الثمينة • شامل</h2>
+</header>
+
+<div class="container">
+    <div class="refresh-section">
+        <button class="btn-refresh" id="refreshBtn" onclick="loadData()">⟳ تحديث البيانات</button>
+        <button class="btn-refresh btn-source" onclick="window.open('https://www.investing.com/commodities/real-time-futures', '_blank')">📈 زيارة Investing.com للأسعار الحقيقية</button>
+    </div>
+
+    <!-- بطاقة نفط برنت -->
+    <div class="card">
+        <div class="card-header">
+            <span class="label"><i>🛢️</i> برنت (Brent)</span>
+            <div id="brent" class="price">--.-- $</div>
+        </div>
+    </div>
+
+    <!-- بطاقة نفط تكساس -->
+    <div class="card">
+        <div class="card-header">
+            <span class="label"><i>🇺🇸</i> تكساس (WTI)</span>
+            <div id="wti" class="price">--.-- $</div>
+        </div>
+    </div>
+
+    <!-- بطاقة الغاز الطبيعي -->
+    <div class="card">
+        <div class="card-header">
+            <span class="label"><i>🔥</i> غاز طبيعي</span>
+            <div id="gas" class="price">--.-- $</div>
+        </div>
+    </div>
+
+    <!-- بطاقة الذهب مع جدول العيارات -->
+    <div class="card" id="card-gold">
+        <div class="card-header">
+            <span class="label"><i>🏅</i> الذهب (Gold)</span>
+            <div id="gold" class="price">--.-- $</div>
+        </div>
+        <div id="gold-gram" class="gram-price">الجرام: --.-- $</div>
+        
+        <!-- جدول عيارات الذهب -->
+        <div class="gold-carats" id="gold-carats">
+            <h4>🔻 أسعار الجرام حسب العيار</h4>
+            <div class="carat-table">
+                <div class="carat-item">
+                    <div class="carat-title">عيار 24</div>
+                    <div class="carat-percent">100%</div>
+                    <div id="carat-24" class="carat-price">--.-- $</div>
+                </div>
+                <div class="carat-item">
+                    <div class="carat-title">عيار 22</div>
+                    <div class="carat-percent">91.6%</div>
+                    <div id="carat-22" class="carat-price">--.-- $</div>
+                </div>
+                <div class="carat-item">
+                    <div class="carat-title">عيار 21</div>
+                    <div class="carat-percent">87.5%</div>
+                    <div id="carat-21" class="carat-price">--.-- $</div>
+                </div>
+                <div class="carat-item">
+                    <div class="carat-title">عيار 18</div>
+                    <div class="carat-percent">75%</div>
+                    <div id="carat-18" class="carat-price">--.-- $</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- بطاقة الفضة -->
+    <div class="card" id="card-silver">
+        <div class="card-header">
+            <span class="label"><i>🥈</i> الفضة (Silver)</span>
+            <div id="silver" class="price">--.-- $</div>
+        </div>
+        <div id="silver-gram" class="gram-price">الجرام: --.-- $</div>
+    </div>
+
+    <!-- بطاقة البلاتين -->
+    <div class="card" id="card-platinum">
+        <div class="card-header">
+            <span class="label"><i>🔷</i> البلاتين (Platinum)</span>
+            <div id="platinum" class="price">--.-- $</div>
+        </div>
+        <div id="platinum-gram" class="gram-price">الجرام: --.-- $</div>
+    </div>
+
+    <!-- بطاقة البلاديوم -->
+    <div class="card" id="card-palladium">
+        <div class="card-header">
+            <span class="label"><i>⚪</i> البلاديوم (Palladium)</span>
+            <div id="palladium" class="price">--.-- $</div>
+        </div>
+        <div id="palladium-gram" class="gram-price">الجرام: --.-- $</div>
+    </div>
+
+    <div id="time" class="update-time"></div>
+</div>
+
+<footer>
+    <strong>الأستاذ محمد قادري</strong><br>
+    أستاذ مادة الفيزياء - ثانوية محمد الأخضر فيلالي<br>
+    ولاية غرداية - الجزائر<br>
+    <span class="contact-info" dir="ltr">✉ kadri68@gmail.com | ☎ 0662692987</span>
+</footer>
+
+<script>
+    // ----- الإعدادات -----
+    const PROXY_BASE = "https://api.allorigins.win/get?url=";
+    // رموز الأصول في Yahoo Finance
+    const SYMBOLS = {
+        brent: "BZ=F",
+        wti: "CL=F",
+        gas: "NG=F",
+        gold: "GC=F",
+        silver: "SI=F",
+        platinum: "PL=F",
+        palladium: "PA=F"
+    };
+
+    // عناصر DOM
+    const brentEl = document.getElementById('brent');
+    const wtiEl = document.getElementById('wti');
+    const gasEl = document.getElementById('gas');
+    const goldEl = document.getElementById('gold');
+    const silverEl = document.getElementById('silver');
+    const platinumEl = document.getElementById('platinum');
+    const palladiumEl = document.getElementById('palladium');
+    const goldGramEl = document.getElementById('gold-gram');
+    const silverGramEl = document.getElementById('silver-gram');
+    const platinumGramEl = document.getElementById('platinum-gram');
+    const palladiumGramEl = document.getElementById('palladium-gram');
+    const carat24El = document.getElementById('carat-24');
+    const carat22El = document.getElementById('carat-22');
+    const carat21El = document.getElementById('carat-21');
+    const carat18El = document.getElementById('carat-18');
+    const timeEl = document.getElementById('time');
+    const refreshBtn = document.getElementById('refreshBtn');
+
+    // تجميع عناصر الأسعار
+    const priceElements = [brentEl, wtiEl, gasEl, goldEl, silverEl, platinumEl, palladiumEl];
+    const gramElements = {
+        gold: goldGramEl,
+        silver: silverGramEl,
+        platinum: platinumGramEl,
+        palladium: palladiumGramEl
+    };
+
+    // دالة مساعدة لإنشاء رابط الوكيل المشفر
+    function buildProxyUrl(symbol) {
+        const targetUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}`;
+        return PROXY_BASE + encodeURIComponent(targetUrl);
+    }
+
+    // دالة جلب سعر واحد باستخدام Proxy
+    async function fetchPrice(symbol) {
+        const url = buildProxyUrl(symbol);
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error ${response.status}`);
+        }
+        const responseData = await response.json();
+        if (!responseData || !responseData.contents) {
+            throw new Error("استجابة غير صالحة من الوكيل");
+        }
+        const data = JSON.parse(responseData.contents);
+        const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
+        if (price === undefined || price === null) {
+            throw new Error("السعر غير متوفر");
+        }
+        return price;
+    }
+
+    // دالة لتحديث واجهة المستخدم (حالة التحميل)
+    function setLoadingState(isLoading) {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            if (isLoading) {
+                card.classList.add('loading');
+            } else {
+                card.classList.remove('loading');
+            }
+        });
+
+        priceElements.forEach(el => {
+            if (isLoading) {
+                el.classList.add('loading');
+            } else {
+                el.classList.remove('loading');
+            }
+        });
+
+        refreshBtn.disabled = isLoading;
+    }
+
+    // دالة تحديث جميع الأسعار
+    async function loadData() {
+        setLoadingState(true);
+
+        try {
+            const promises = Object.values(SYMBOLS).map(symbol => fetchPrice(symbol));
+            const results = await Promise.allSettled(promises);
+
+            const symbolsList = Object.keys(SYMBOLS);
+            results.forEach((result, index) => {
+                const element = priceElements[index];
+                const symbolKey = symbolsList[index];
+                if (result.status === 'fulfilled') {
+                    const price = result.value;
+                    element.textContent = price.toFixed(2) + ' $';
+                    element.classList.remove('error');
+                    
+                    // حساب وعرض سعر الجرام للمعادن
+                    if (gramElements.hasOwnProperty(symbolKey)) {
+                        const gramPrice = price / 31.1035;
+                        gramElements[symbolKey].textContent = `الجرام: ${gramPrice.toFixed(2)} $`;
+                    }
+
+                    // إذا كان المعدن هو الذهب، قم بتحديث أسعار العيارات
+                    if (symbolKey === 'gold') {
+                        const gramPrice = price / 31.1035;
+                        carat24El.textContent = gramPrice.toFixed(2) + ' $';
+                        carat22El.textContent = (gramPrice * 0.916).toFixed(2) + ' $';
+                        carat21El.textContent = (gramPrice * 0.875).toFixed(2) + ' $';
+                        carat18El.textContent = (gramPrice * 0.75).toFixed(2) + ' $';
+                    }
+                } else {
+                    element.textContent = '⚠️ غير متوفر';
+                    element.classList.add('error');
+                    console.warn(`فشل جلب ${symbolKey}:`, result.reason);
+                    
+                    if (gramElements.hasOwnProperty(symbolKey)) {
+                        gramElements[symbolKey].textContent = 'الجرام: غير متوفر';
+                    }
+                    
+                    // إخفاء أسعار العيارات إذا فشل الذهب
+                    if (symbolKey === 'gold') {
+                        carat24El.textContent = '--.-- $';
+                        carat22El.textContent = '--.-- $';
+                        carat21El.textContent = '--.-- $';
+                        carat18El.textContent = '--.-- $';
+                    }
+                }
+            });
+
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('ar-DZ', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            timeEl.textContent = `آخر تحديث: ${timeStr}`;
+
+        } catch (error) {
+            console.error('خطأ عام في التحميل:', error);
+            priceElements.forEach(el => {
+                if (el.textContent.includes('--')) el.textContent = 'خطأ في التحميل';
+            });
+            Object.values(gramElements).forEach(el => {
+                el.textContent = 'الجرام: خطأ';
+            });
+            carat24El.textContent = '--.-- $';
+            carat22El.textContent = '--.-- $';
+            carat21El.textContent = '--.-- $';
+            carat18El.textContent = '--.-- $';
+            timeEl.textContent = `آخر محاولة: ${new Date().toLocaleTimeString('ar-DZ')} (فشل)`;
+        } finally {
+            setLoadingState(false);
+        }
+    }
+
+    // تحميل البيانات تلقائيًا عند فتح الصفحة
+    loadData();
+
+    // إعادة التحميل كل 5 دقائق
+    setInterval(loadData, 300000);
+</script>
+
+</body>
+</html>

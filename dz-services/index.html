@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#087f5b">
+<title>دليل الجزائر للخدمات الحكومية</title>
+<style>
+:root{--bg:#f4f7f6;--card:#fff;--text:#17302a;--muted:#667a74;--green:#087f5b;--green2:#0b9a6e;--gold:#d6a72c;--line:#e2eae7;--shadow:0 10px 30px #12362a12}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif}
+a{text-decoration:none;color:inherit}.hero{background:linear-gradient(135deg,#064e3b,#087f5b 55%,#0b9a6e);color:#fff;padding:28px 18px 34px;border-radius:0 0 28px 28px;box-shadow:0 8px 30px #064e3b35}
+.wrap{max-width:1100px;margin:auto}.top{display:flex;justify-content:space-between;gap:15px;align-items:center}.brand{display:flex;align-items:center;gap:12px}.logo{width:52px;height:52px;border-radius:16px;background:#ffffff18;border:1px solid #ffffff40;display:grid;place-items:center;font-size:28px}
+h1{font-size:25px;margin:0 0 4px}.sub{opacity:.86;font-size:13px}.actions{display:flex;gap:8px}.iconbtn{border:1px solid #ffffff40;background:#ffffff18;color:white;border-radius:12px;padding:9px 11px;cursor:pointer}
+.search{margin-top:22px;display:flex;background:#fff;border-radius:17px;padding:6px;box-shadow:0 10px 25px #002d2025}.search input{flex:1;border:0;outline:0;font-size:16px;padding:12px 13px;color:#17302a;background:transparent}.search button{border:0;background:var(--green);color:white;border-radius:12px;padding:0 17px;font-weight:bold}
+.quick{display:flex;gap:8px;overflow:auto;margin-top:13px;padding-bottom:3px}.pill{white-space:nowrap;border:1px solid #ffffff45;background:#ffffff15;color:#fff;padding:7px 11px;border-radius:30px;font-size:12px;cursor:pointer}
+main{padding:20px 15px 50px}.notice{background:#fff;border:1px solid var(--line);padding:14px 16px;border-radius:16px;box-shadow:var(--shadow);margin-bottom:18px;font-size:13px;line-height:1.8}
+.notice strong{color:var(--green)}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:16px 0}.toolbar h2{margin:0;font-size:20px}.select{border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px;color:var(--text)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow);transition:.2s;position:relative}.card:hover{transform:translateY(-2px)}.head{display:flex;align-items:flex-start;gap:11px}.ico{width:44px;height:44px;border-radius:13px;background:#e8f5f0;display:grid;place-items:center;font-size:23px;flex:none}.card h3{font-size:15px;margin:1px 0 5px}.desc{font-size:12px;color:var(--muted);line-height:1.65;min-height:39px}.tag{display:inline-block;font-size:10px;background:#eef7f4;color:var(--green);padding:4px 7px;border-radius:7px;margin-top:10px}.official{color:#087f5b;font-size:10px;font-weight:bold}.open{display:flex;align-items:center;justify-content:center;margin-top:13px;background:var(--green);color:#fff;padding:10px;border-radius:11px;font-size:12px;font-weight:bold}.fav{position:absolute;left:12px;top:12px;border:0;background:transparent;font-size:19px;cursor:pointer;color:#9aa9a4}.fav.on{color:#d39b18}.empty{text-align:center;padding:35px;color:var(--muted);display:none}.footer{text-align:center;color:var(--muted);font-size:11px;padding:25px 15px;border-top:1px solid var(--line)}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.grid{grid-template-columns:1fr}.hero{padding-top:20px}.top h1{font-size:20px}.actions .iconbtn{padding:8px}.notice{font-size:12px}}
+.dark{--bg:#0c1513;--card:#13211e;--text:#e8f3ef;--muted:#9ab0a9;--line:#263b35;--shadow:0 10px 30px #0005}.dark .select,.dark .search{background:#13211e;color:var(--text)}.dark .search input{color:var(--text)}.dark .ico{background:#19352d}.dark .tag{background:#19352d}
+</style>
+</head>
+<body>
+<header class="hero">
+<div class="wrap">
+<div class="top">
+<div class="brand"><div class="logo">🇩🇿</div><div><h1>دليل الجزائر للخدمات الحكومية الشامل</h1><div class="sub">منصة موحدة للوصول السريع إلى الخدمات والمنصات الحكومية الرسمية</div></div></div>
+<div class="actions"><button class="iconbtn" id="theme" title="الوضع الليلي">☾</button><button class="iconbtn" id="favOnly" title="المفضلة">★</button></div>
+</div>
+<div class="search"><input id="search" placeholder="ابحث: جواز السفر، الضرائب، التوظيف، الجامعة..." autocomplete="off"><button onclick="runSearch()">بحث</button></div>
+<div class="quick">
+<button class="pill" onclick="setCat('الكل')">الكل</button><button class="pill" onclick="setCat('وثائق وهوية')">الوثائق</button><button class="pill" onclick="setCat('التربية')">التربية</button><button class="pill" onclick="setCat('التعليم العالي')">الجامعة</button><button class="pill" onclick="setCat('العدالة')">العدالة</button><button class="pill" onclick="setCat('المالية والضرائب')">الضرائب</button><button class="pill" onclick="setCat('العمل والضمان')">العمل والضمان</button><button class="pill" onclick="setCat('البريد والاتصالات')">البريد</button>
+</div>
+</div>
+</header>
+<main class="wrap">
+<div class="notice"><strong>تنبيه أمني:</strong> هذا التطبيق هو دليل وروابط فقط، ولا يطلب منك كلمة مرور أو رقم بطاقة أو رمز OTP. عند فتح خدمة حساسة، تأكد أن عنوان الموقع تابع للجهة الرسمية. البوابة الوطنية الرسمية للخدمات الرقمية الحكومية هي <strong>dzds.dz</strong>.</div>
+<div class="toolbar"><h2 id="count">الخدمات</h2><select class="select" id="category" onchange="setCat(this.value)"><option>الكل</option></select></div>
+<div class="grid" id="grid"></div><div class="empty" id="empty">لا توجد خدمات مطابقة للبحث.</div>
+</main>
+<footer class="footer"><div style="background:linear-gradient(135deg,#063f30,#087f5b);color:#fff;border-radius:22px;padding:22px 18px;margin-bottom:18px;text-align:right;line-height:2"><div style="font-size:16px;font-weight:bold">قام بالتجميع والإعداد</div><div style="font-size:19px;font-weight:bold">الأستاذ محمد قادري</div><div>العالية — ولاية تقرت</div><div>أستاذ مادة الفيزياء — ثانوية محمد الأخضر فيلالي</div><div>ولاية غرداية — الجزائر</div><div style="margin-top:8px;font-size:12px;opacity:.9">Email: kadri68@gmail.com &nbsp; | &nbsp; Phone: 0662692987</div></div>دليل الخدمات الحكومية الجزائرية • نسخة مطوّرة 2026<br>يجب مراجعة الرابط الرسمي قبل إدخال أي بيانات شخصية أو مالية.</footer>
+<script>
+const services=[
+["📮","بريد الجزائر — الخدمات الإلكترونية","الخدمات الرسمية لبريد الجزائر والحسابات البريدية والبطاقات والخدمات الرقمية","البريد والاتصالات","https://www.poste.dz/"],
+["💳","BaridiMob","الخدمة الرسمية لبريد الجزائر للخدمات المصرفية البريدية عبر الهاتف","البريد والاتصالات","https://www.poste.dz/"],
+["💻","ECCP — الحساب البريدي الجاري","الاطلاع على حساب CCP وكشوف الحساب والخدمات الإلكترونية لبريد الجزائر","البريد والاتصالات","https://eccp.poste.dz/"],
+["💰","BaridiWeb","فضاء الخدمات الإلكترونية المرتبطة بالحساب البريدي وبطاقة الذهبية","البريد والاتصالات","https://baridiweb.poste.dz/"],
+["🩺","CNAS — الضمان الاجتماعي","الخدمات الرقمية للمؤمن لهم وذوي الحقوق والتعويضات والشهادات","الضمان الاجتماعي","https://www.cnas.dz/"],
+["🪪","EL HANAA — CNAS","فضاء المؤمن له: التعويضات والمعلومات والشهادات والتحقق من وثائق الانتساب","الضمان الاجتماعي","https://elhanaa.cnas.dz/"],
+["👷","CASNOS — الضمان لغير الأجراء","الانتساب والاشتراكات والمنافع والخدمات الخاصة بغير الأجراء","الضمان الاجتماعي","https://www.casnos.dz/"],
+["🔐","Damancom — CASNOS","فضاء الخدمات الرقمية للمؤمنين لدى CASNOS","الضمان الاجتماعي","https://guichet.casnos.dz/"],
+["🧓","CNR — الصندوق الوطني للتقاعد","معلومات وخدمات الصندوق الوطني للتقاعد للمتقاعدين وذوي الحقوق","صندوق التقاعد","http://www.cnr.dz/"],
+["📱","RetraiteDZ — التطبيق الرسمي","تطبيق CNR الرسمي: معلومات التقاعد والوكالات والشكاوى والتذاكر والخدمات عن بعد","صندوق التقاعد","https://play.google.com/store/apps/details?id=dz.cnr.cnr"],
+["🎫","CNR — التذكرة والخدمات عن بعد","الوصول إلى خدمات CNR الرقمية وتقليل وقت الانتظار في الوكالات عند توفر الخدمة","صندوق التقاعد","http://www.cnr.dz/"],
+["💼","ANEM — الوكالة الوطنية للتشغيل","التسجيل وتحيين الوضعية وعروض العمل وخدمات طالبي العمل","التشغيل","https://www.anem.dz/"],
+["🏗️","CACOBATPH","خدمات الصندوق الوطني للعطل مدفوعة الأجر والبطالة الناجمة عن سوء الأحوال الجوية لقطاعات BTPH","الضمان الاجتماعي","https://www.cacobatph.dz/"],
+["🧾","Dzair Digital Services — الضرائب","خدمات جبائية رقمية: شهادات عدم الإخضاع والجدول الضريبي وNIF وC20","المالية والضرائب","https://dzds.dz/"],
+["💻","Jibayatic — جبايتك","التصريح والدفع الإلكتروني للضرائب والرسوم عن بعد","المالية والضرائب","https://jibayatic.mf.gov.dz/"],
+["🪪","NIF en ligne","المنصة الرسمية للتعريف الجبائي والترقيم الجبائي عن بعد","المالية والضرائب","https://nifenligne.mf.gov.dz/"],
+
+["🏛️","Dzair Digital Services","البوابة الوطنية للخدمات الرقمية الحكومية — نقطة البداية لجميع الخدمات المدمجة","الحكومة الرقمية","https://dzds.dz/"],
+["🪪","وزارة الداخلية — الخدمات","الحالة المدنية، الوثائق البيومترية، الشباك عن بعد، الرخص والشكاوى","وثائق وهوية","https://services.interieur.gov.dz/ar/"],
+["📄","الحالة المدنية","شهادات الميلاد والزواج والوفاة والخدمات الرقمية للحالة المدنية","وثائق وهوية","https://services.interieur.gov.dz/ar/"],
+["🛂","الوثائق البيومترية","بطاقة التعريف، جواز السفر، رخصة السياقة ومتابعة الطلبات","وثائق وهوية","https://services.interieur.gov.dz/ar/"],
+["🧾","الشباك عن بُعد","إيداع الملفات الإدارية عبر الإنترنت ومتابعة الإجراءات","وثائق وهوية","https://services.interieur.gov.dz/ar/"],
+["🎓","وزارة التربية الوطنية","الموقع الرسمي، الأخبار، الرزنامة والفضاءات الرقمية","التربية","https://www.education.gov.dz/"],
+["👨‍🏫","فضاء الأستاذ","الوثائق الإدارية والبيداغوجية والخدمات الخاصة بالأساتذة","التربية","https://ostad.education.gov.dz/"],
+["👨‍👩‍👧","فضاء الأولياء","متابعة المسار الدراسي والخدمات الرقمية الموجهة للأولياء","التربية","https://www.education.gov.dz/"],
+["📝","منصة توظيف التربية","بوابة وزارة التربية والمنصات الرقمية الخاصة بالتوظيف والمسابقات","التربية","https://www.education.gov.dz/"],
+["🏫","وزارة التعليم العالي","البوابة الرسمية للتعليم العالي والبحث العلمي","التعليم العالي","https://www.mesrs.dz/"],
+["🎓","PROGRES","خدمات الطلبة: التوجيه، النتائج، الشهادات، الدكتوراه والخدمات الجامعية","التعليم العالي","https://www.mesrs.dz/fr/progres/"],
+["🏠","الخدمات الجامعية","الإيواء، المنحة، النقل، الإطعام ومنصات الحياة الجامعية","التعليم العالي","https://www.mesrs.dz/plateformes-mesrs-ar/"],
+["⚖️","وزارة العدل","الموقع الرسمي وخدمات ومعلومات قطاع العدالة","العدالة","https://www.mjustice.dz/ar/"],
+["📜","السوابق القضائية — القسيمة 3","طلب واستخراج صحيفة السوابق القضائية إلكترونيا","العدالة","https://portail.mjustice.dz/"],
+["⚖️","النيابة الإلكترونية e-nyaba","إيداع شكوى أو عريضة لدى النيابة ومتابعة مآلها","العدالة","https://portail.mjustice.dz/"],
+["📚","بوابة القانون الجزائري","النصوص والمراجع القانونية الرسمية لقطاع العدالة","العدالة","https://droit.mjustice.gov.dz/"],
+["🏛️","الجريدة الرسمية","البحث في أعداد الجريدة الرسمية والنصوص القانونية","العدالة","https://www.joradp.dz/HFR/Accueil.htm"],
+["💰","المديرية العامة للضرائب","الموقع الرسمي، التشريع الجبائي والخدمات الرقمية","المالية والضرائب","https://www.mfdgi.gov.dz/fr/"],
+["🧮","جبايتك Jibayatic","التصريح والدفع الإلكتروني للضرائب والرسوم","المالية والضرائب","https://jibayatic.mf.gov.dz/"],
+["🪪","NIF عبر الإنترنت","المنصة الرسمية للتعريف والترقيم الجبائي عن بعد","المالية والضرائب","https://nifenligne.mf.gov.dz/"],
+["🚗","قسيمتك — الضريبة على السيارات","خدمات الضرائب المتعلقة بقسيمة السيارات عبر بوابة الضرائب","المالية والضرائب","https://www.mfdgi.gov.dz/fr/"],
+["🏢","وزارة التجارة","التجارة الداخلية، حماية المستهلك، النماذج والشكاوى","التجارة والأعمال","https://www.commerce.gov.dz/ar"],
+["🏪","سجلكوم CNRC","البحث عن التجار والشركات، النشاطات والأسماء التجارية","التجارة والأعمال","https://sidjilcom.cnrc.dz/"],
+["🚀","الوكالة الجزائرية لترقية الاستثمار AAPI","معلومات وخدمات الاستثمار وإنشاء المشاريع","التجارة والأعمال","https://aapi.dz/"],
+["🧑‍💼","وزارة العمل والتشغيل","المعلومات الرسمية والتشغيل والحماية الاجتماعية","العمل والضمان","https://www.mtess.gov.dz/"],
+["🩺","CNAS","الضمان الاجتماعي للعمال الأجراء: CHIFA والمنصات الرقمية والخدمات","العمل والضمان","https://cnas.dz/fr/"],
+["👷","CASNOS","الضمان الاجتماعي لغير الأجراء: الانخراط، الاشتراكات وفضاء المؤمن","العمل والضمان","https://guichet.casnos.dz/"],
+["💼","الوكالة الوطنية للتشغيل ANEM","خدمات التشغيل والباحثين عن العمل والمعلومات المهنية","العمل والضمان","https://www.anem.dz/"],
+["🏦","Algérie Poste","البريد، الحسابات البريدية، البطاقات والخدمات المالية البريدية","البريد والاتصالات","https://www.poste.dz/"],
+["💳","BaridiWeb / BaridiMob","إدارة CCP وEdahabia والتحويلات والخدمات المالية البريدية","البريد والاتصالات","https://baridiweb.poste.dz/"],
+["💰","E-CCP","فضاء الحساب البريدي الجاري والخدمات المرتبطة به","البريد والاتصالات","https://eccp.poste.dz/"],
+["📱","اتصالات الجزائر","خدمات الهاتف والإنترنت وحساب الزبون والدفع الإلكتروني","البريد والاتصالات","https://www.algerietelecom.dz/"],
+["⚡","سونلغاز","خدمات الكهرباء والغاز ومعلومات الزبائن والفوترة","الطاقة والمياه","https://www.sonelgaz.dz/"],
+["💧","الجزائرية للمياه ADE","مؤسسة المياه، الفوترة والخدمات والمعلومات","الطاقة والمياه","https://www.ade.dz/"],
+["🏠","AADL","خدمات ومعلومات السكن وبرامج عدل","السكن والعمران","https://www.aadl.dz/"],
+["🏗️","وزارة السكن والعمران","البرامج السكنية، التنظيم والمعلومات الرسمية","السكن والعمران","https://www.mhuv.gov.dz/"],
+["🚆","وزارة النقل","الطيران، السكك الحديدية، النقل البحري والبري والمعلومات الرسمية","النقل","https://www.transport.gov.dz/"],
+["✈️","الخطوط الجوية الجزائرية","الحجز والمعلومات الرسمية للرحلات والخدمات الجوية","النقل","https://airalgerie.dz/"],
+["🚢","ميناء الجزائر","معلومات وخدمات المؤسسة المينائية","النقل","https://www.portalger.dz/"],
+["🏥","وزارة الصحة","المعلومات الصحية والبرامج والخدمات الرسمية","الصحة","https://www.sante.gov.dz/"],
+["🌾","وزارة الفلاحة والتنمية الريفية","الخدمات والمعلومات والبرامج الفلاحية","الفلاحة","https://madr.gov.dz/"],
+["🌍","وزارة الشؤون الخارجية","الخدمات القنصلية والمعلومات الرسمية للجالية","الخارجية","https://www.mfa.gov.dz/"],
+["🛡️","الحماية المدنية","معلومات وخدمات الحماية المدنية والتوعية","الأمن والطوارئ","https://www.protectioncivile.dz/"],
+["👮","الشرطة الجزائرية","الموقع الرسمي للمديرية العامة للأمن الوطني","الأمن والطوارئ","https://www.algeriepolice.dz/"],
+["📊","الديوان الوطني للإحصائيات ONS","الإحصاءات والمؤشرات الرسمية للجزائر","إحصائيات ومعلومات","https://www.ons.dz/"],
+["🏛️","الوزارة الأولى","أخبار الحكومة والبيانات الرسمية","الحكومة","https://www.premier-ministre.gov.dz/"],
+["🇩🇿","رئاسة الجمهورية","الموقع الرسمي لرئاسة الجمهورية الجزائرية","الحكومة","https://www.el-mouradia.dz/"],
+["📣","وكالة الأنباء الجزائرية APS","الأخبار الرسمية والوطنية","إعلام رسمي","https://www.aps.dz/"]
+];
+let fav=JSON.parse(localStorage.getItem("dzgovFav")||"[]"), cat="الكل", favMode=false;
+const cats=[...new Set(services.map(x=>x[3]))];
+const sel=document.getElementById("category"); cats.forEach(c=>{let o=document.createElement("option");o.textContent=c;sel.appendChild(o)});
+function render(){
+ let q=document.getElementById("search").value.trim().toLowerCase();
+ let data=services.filter(x=>(cat==="الكل"||x[3]===cat)&&(!favMode||fav.includes(x[1]))&&(!q||x.join(" ").toLowerCase().includes(q)));
+ document.getElementById("count").textContent=`الخدمات (${data.length})`;
+ const grid=document.getElementById("grid");grid.innerHTML="";
+ data.forEach((x,i)=>{let is=fav.includes(x[1]);let d=document.createElement("article");d.className="card";d.innerHTML=`<button class="fav ${is?"on":""}" title="مفضلة" onclick="toggleFav('${esc(x[1])}')">${is?"★":"☆"}</button><div class="head"><div class="ico">${x[0]}</div><div><h3>${x[1]}</h3><div class="official">✓ جهة/بوابة رسمية</div></div></div><div class="desc">${x[2]}</div><span class="tag">${x[3]}</span><a class="open" href="${x[4]}" target="_blank" rel="noopener">فتح الخدمة ↗</a>`;grid.appendChild(d)});
+ document.getElementById("empty").style.display=data.length?"none":"block";
+}
+function esc(s){return s.replace(/'/g,"\\'")}
+function toggleFav(name){fav=fav.includes(name)?fav.filter(x=>x!==name):[...fav,name];localStorage.setItem("dzgovFav",JSON.stringify(fav));render()}
+function setCat(c){cat=c;sel.value=c;favMode=false;document.getElementById("favOnly").classList.remove("active");render()}
+function runSearch(){render()}
+document.getElementById("search").addEventListener("input",render);
+document.getElementById("favOnly").onclick=()=>{favMode=!favMode;render()};
+document.getElementById("theme").onclick=()=>{document.body.classList.toggle("dark");localStorage.setItem("dzgovDark",document.body.classList.contains("dark"))};
+if(localStorage.getItem("dzgovDark")==="true")document.body.classList.add("dark");
+render();
+</script>
+</body>
+</html>

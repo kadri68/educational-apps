@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محول الوحدات | Unit Converter</title>
+    <style>
+        :root {
+            --bg: #f3f6f9;
+            --surface: #ffffff;
+            --text: #2d3748;
+            --text-secondary: #718096;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-light: #eff6ff;
+            --border: #e2e8f0;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            --radius: 12px;
+            --transition: 0.3s ease;
+            --input-bg: #f8fafc;
+        }
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --primary: #60a5fa;
+            --primary-hover: #93c5fd;
+            --primary-light: #1e3a8a;
+            --border: #334155;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            --input-bg: #0f172a;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            font-size: 14px;
+        }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 15px 10px;
+            transition: background var(--transition), color var(--transition);
+        }
+        .app-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .app-logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn-icon, .lang-btn {
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            color: var(--text);
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .lang-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            font-weight: bold;
+        }
+        .btn-icon:hover, .lang-btn:hover {
+            background: var(--border);
+        }
+        .category-wrapper {
+            margin-bottom: 20px;
+        }
+        .category-wrapper label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+        .category-select {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--input-bg);
+            color: var(--text);
+            cursor: pointer;
+            outline: none;
+            transition: border var(--transition);
+        }
+        .category-select:focus {
+            border-color: var(--primary);
+        }
+        .converter-row {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .converter-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .converter-field label {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .converter-field input,
+        .converter-field select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--input-bg);
+            color: var(--text);
+            font-size: 1.1rem;
+            outline: none;
+            transition: all var(--transition);
+        }
+        .converter-field input:focus,
+        .converter-field select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        .swap-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: -4px 0;
+            z-index: 2;
+        }
+        .swap-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary);
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .swap-btn:hover {
+            background: var(--primary-hover);
+            transform: rotate(180deg);
+        }
+        .result-box {
+            background: var(--primary-light);
+            border: 1px dashed var(--primary);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .result-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            word-break: break-all;
+        }
+        .result-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: var(--surface);
+            padding: 24px;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 400px;
+            box-shadow: var(--shadow);
+            position: relative;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            text-align: center;
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            background: none;
+            border: none;
+        }
+        .dev-info h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        .dev-info p {
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        .dev-info .dev-email,
+        .dev-info .dev-phone {
+            direction: ltr;
+            display: inline-block;
+            font-weight: bold;
+        }
+        .dev-info .dev-email {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="app-logo" id="appTitle">🔄 محول الوحدات</div>
+            <div class="header-actions">
+                <button class="lang-btn active" data-lang="ar">AR</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="fr">FR</button>
+                <button class="btn-icon" id="infoBtn" title="حول المطور">ℹ️</button>
+                <button class="btn-icon" id="themeToggle" title="تبديل الوضع">☀️</button>
+            </div>
+        </header>
+
+        <div class="category-wrapper">
+            <label id="categoryLabel">اختر نوع التحويل:</label>
+            <select class="category-select" id="categorySelect"></select>
+        </div>
+
+        <div class="converter-row">
+            <div class="converter-field">
+                <label id="labelFrom">من الوحدة</label>
+                <select id="selectFrom"></select>
+            </div>
+            <div class="swap-wrapper">
+                <button class="swap-btn" id="swapBtn" title="تبديل">⇅</button>
+            </div>
+            <div class="converter-field">
+                <label id="labelTo">إلى الوحدة</label>
+                <select id="selectTo"></select>
+            </div>
+            <div class="converter-field">
+                <label id="labelValue">القيمة</label>
+                <input type="text" id="inputValue" placeholder="أدخل القيمة هنا..." autocomplete="off" inputmode="decimal">
+            </div>
+        </div>
+
+        <div class="result-box">
+            <div class="result-value" id="resultValue">—</div>
+            <div class="result-label" id="resultLabel">النتيجة</div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="devModal">
+        <div class="modal-content dev-info">
+            <button class="close-btn" id="closeModal">&times;</button>
+            <h3 id="modalTitle">معلومات المطور</h3>
+            <p><strong id="devName">الأستاذ محمد قادري</strong></p>
+            <p id="devSubject">أستاذ مادة الفيزياء</p>
+            <p id="devSchool">ثانوية محمد الأخضر فيلالي<br>ولاية غرداية - الجزائر</p>
+            <p>Email: <span class="dev-email" id="devEmail">kadri68@gmail.com</span></p>
+            <p>Phone: <span class="dev-phone" id="devPhone">0662692987</span></p>
+        </div>
+    </div>
+
+    <script>
+        // ===================== الترجمات متعددة اللغات =====================
+        const translations = {
+            ar: {
+                appTitle: '🔄 محول الوحدات',
+                categoryLabel: 'اختر نوع التحويل:',
+                labelFrom: 'من الوحدة',
+                labelTo: 'إلى الوحدة',
+                labelValue: 'القيمة',
+                valuePlaceholder: 'أدخل القيمة هنا...',
+                resultLabel: 'النتيجة',
+                swapTitle: 'تبديل',
+                infoTitle: 'حول المطور',
+                themeTitle: 'تبديل الوضع',
+                modalTitle: 'معلومات المطور',
+                devName: 'الأستاذ محمد قادري',
+                devSubject: 'أستاذ مادة الفيزياء',
+                devSchool: 'ثانوية محمد الأخضر فيلالي<br>ولاية غرداية - الجزائر',
+                devEmail: 'kadri68@gmail.com',
+                devPhone: '0662692987',
+                noResult: '—',
+                offlineBadge: '📡 يعمل بدون إنترنت'
+            },
+            en: {
+                appTitle: '🔄 Unit Converter',
+                categoryLabel: 'Select conversion type:',
+                labelFrom: 'From Unit',
+                labelTo: 'To Unit',
+                labelValue: 'Value',
+                valuePlaceholder: 'Enter value here...',
+                resultLabel: 'Result',
+                swapTitle: 'Swap',
+                infoTitle: 'About Developer',
+                themeTitle: 'Toggle Theme',
+                modalTitle: 'Developer Info',
+                devName: 'Mr. Mohamed Kadri',
+                devSubject: 'Physics Teacher',
+                devSchool: 'Mohamed Lakhdar Filali High School<br>Ghardaia - Algeria',
+                devEmail: 'kadri68@gmail.com',
+                devPhone: '0662692987',
+                noResult: '—',
+                offlineBadge: '📡 Works Offline'
+            },
+            fr: {
+                appTitle: '🔄 Convertisseur',
+                categoryLabel: 'Choisissez le type de conversion :',
+                labelFrom: 'De l\'unité',
+                labelTo: 'Vers l\'unité',
+                labelValue: 'Valeur',
+                valuePlaceholder: 'Entrez la valeur ici...',
+                resultLabel: 'Résultat',
+                swapTitle: 'Échanger',
+                infoTitle: 'À propos du développeur',
+                themeTitle: 'Changer le thème',
+                modalTitle: 'Infos développeur',
+                devName: 'M. Mohamed Kadri',
+                devSubject: 'Professeur de Physique',
+                devSchool: 'Lycée Mohamed Lakhdar Filali<br>Ghardaïa - Algérie',
+                devEmail: 'kadri68@gmail.com',
+                devPhone: '0662692987',
+                noResult: '—',
+                offlineBadge: '📡 Fonctionne hors ligne'
+            }
+        };
+
+        // ===================== بيانات الفئات والوحدات (ثلاثية اللغة) =====================
+        const categoriesData = {
+            length: {
+                name: { ar: 'الطول', en: 'Length', fr: 'Longueur' },
+                units: {
+                    meter: { name: { ar: 'متر', en: 'Meter', fr: 'Mètre' }, factor: 1 },
+                    kilometer: { name: { ar: 'كيلومتر', en: 'Kilometer', fr: 'Kilomètre' }, factor: 1000 },
+                    centimeter: { name: { ar: 'سنتيمتر', en: 'Centimeter', fr: 'Centimètre' }, factor: 0.01 },
+                    millimeter: { name: { ar: 'مليمتر', en: 'Millimeter', fr: 'Millimètre' }, factor: 0.001 },
+                    micrometer: { name: { ar: 'ميكرومتر', en: 'Micrometer', fr: 'Micromètre' }, factor: 0.000001 },
+                    nanometer: { name: { ar: 'نانومتر', en: 'Nanometer', fr: 'Nanomètre' }, factor: 1e-9 },
+                    mile: { name: { ar: 'ميل', en: 'Mile', fr: 'Mile' }, factor: 1609.344 },
+                    yard: { name: { ar: 'ياردة', en: 'Yard', fr: 'Yard' }, factor: 0.9144 },
+                    foot: { name: { ar: 'قدم', en: 'Foot', fr: 'Pied' }, factor: 0.3048 },
+                    inch: { name: { ar: 'بوصة', en: 'Inch', fr: 'Pouce' }, factor: 0.0254 },
+                    nauticalMile: { name: { ar: 'ميل بحري', en: 'Nautical Mile', fr: 'Mille nautique' }, factor: 1852 },
+                    lightYear: { name: { ar: 'سنة ضوئية', en: 'Light Year', fr: 'Année-lumière' }, factor: 9.461e15 },
+                    astronomicalUnit: { name: { ar: 'وحدة فلكية', en: 'Astronomical Unit', fr: 'Unité astronomique' }, factor: 1.496e11 },
+                    angstrom: { name: { ar: 'أنجستروم', en: 'Ångström', fr: 'Ångström' }, factor: 1e-10 }
+                }
+            },
+            weight: {
+                name: { ar: 'الوزن والكتلة', en: 'Weight & Mass', fr: 'Poids & Masse' },
+                units: {
+                    kilogram: { name: { ar: 'كيلوغرام', en: 'Kilogram', fr: 'Kilogramme' }, factor: 1 },
+                    gram: { name: { ar: 'غرام', en: 'Gram', fr: 'Gramme' }, factor: 0.001 },
+                    milligram: { name: { ar: 'مليغرام', en: 'Milligram', fr: 'Milligramme' }, factor: 0.000001 },
+                    microgram: { name: { ar: 'ميكروغرام', en: 'Microgram', fr: 'Microgramme' }, factor: 1e-9 },
+                    ton: { name: { ar: 'طن متري', en: 'Metric Ton', fr: 'Tonne' }, factor: 1000 },
+                    pound: { name: { ar: 'رطل (باوند)', en: 'Pound', fr: 'Livre' }, factor: 0.45359237 },
+                    ounce: { name: { ar: 'أوقية (أونصة)', en: 'Ounce', fr: 'Once' }, factor: 0.0283495 },
+                    carat: { name: { ar: 'قيراط', en: 'Carat', fr: 'Carat' }, factor: 0.0002 },
+                    stone: { name: { ar: 'ستون (حجر)', en: 'Stone', fr: 'Stone' }, factor: 6.35029 },
+                    grain: { name: { ar: 'حبة', en: 'Grain', fr: 'Grain' }, factor: 0.0000647989 }
+                }
+            },
+            volume: {
+                name: { ar: 'الحجم', en: 'Volume', fr: 'Volume' },
+                units: {
+                    liter: { name: { ar: 'لتر', en: 'Liter', fr: 'Litre' }, factor: 1 },
+                    milliliter: { name: { ar: 'مليلتر', en: 'Milliliter', fr: 'Millilitre' }, factor: 0.001 },
+                    cubicMeter: { name: { ar: 'متر مكعب', en: 'Cubic Meter', fr: 'Mètre cube' }, factor: 1000 },
+                    gallonUS: { name: { ar: 'غالون أمريكي', en: 'US Gallon', fr: 'Gallon US' }, factor: 3.78541 },
+                    gallonUK: { name: { ar: 'غالون بريطاني', en: 'UK Gallon', fr: 'Gallon UK' }, factor: 4.54609 },
+                    quartUS: { name: { ar: 'كوارت أمريكي', en: 'US Quart', fr: 'Quart US' }, factor: 0.946353 },
+                    pintUS: { name: { ar: 'باينت أمريكي', en: 'US Pint', fr: 'Pinte US' }, factor: 0.473176 },
+                    cupUS: { name: { ar: 'كوب أمريكي', en: 'US Cup', fr: 'Tasse US' }, factor: 0.236588 },
+                    fluidOunceUS: { name: { ar: 'أوقية سائلة أمريكية', en: 'US Fluid Ounce', fr: 'Once fluide US' }, factor: 0.0295735 },
+                    tablespoon: { name: { ar: 'ملعقة طعام', en: 'Tablespoon', fr: 'Cuillère à soupe' }, factor: 0.0147868 },
+                    teaspoon: { name: { ar: 'ملعقة شاي', en: 'Teaspoon', fr: 'Cuillère à café' }, factor: 0.00492892 }
+                }
+            },
+            area: {
+                name: { ar: 'المساحة', en: 'Area', fr: 'Superficie' },
+                units: {
+                    squareMeter: { name: { ar: 'متر مربع', en: 'Square Meter', fr: 'Mètre carré' }, factor: 1 },
+                    squareKilometer: { name: { ar: 'كيلومتر مربع', en: 'Square Kilometer', fr: 'Kilomètre carré' }, factor: 1e6 },
+                    hectare: { name: { ar: 'هكتار', en: 'Hectare', fr: 'Hectare' }, factor: 10000 },
+                    acre: { name: { ar: 'فدان', en: 'Acre', fr: 'Acre' }, factor: 4046.86 },
+                    squareMile: { name: { ar: 'ميل مربع', en: 'Square Mile', fr: 'Mille carré' }, factor: 2.59e6 },
+                    squareYard: { name: { ar: 'ياردة مربعة', en: 'Square Yard', fr: 'Yard carré' }, factor: 0.836127 },
+                    squareFoot: { name: { ar: 'قدم مربع', en: 'Square Foot', fr: 'Pied carré' }, factor: 0.092903 },
+                    squareInch: { name: { ar: 'بوصة مربعة', en: 'Square Inch', fr: 'Pouce carré' }, factor: 0.00064516 },
+                    dunam: { name: { ar: 'دونم', en: 'Dunam', fr: 'Dunam' }, factor: 1000 }
+                }
+            },
+            speed: {
+                name: { ar: 'السرعة', en: 'Speed', fr: 'Vitesse' },
+                units: {
+                    meterPerSecond: { name: { ar: 'متر/ثانية', en: 'Meter/Second', fr: 'Mètre/seconde' }, factor: 1 },
+                    kilometerPerHour: { name: { ar: 'كيلومتر/ساعة', en: 'Kilometer/Hour', fr: 'Kilomètre/heure' }, factor: 0.277778 },
+                    milePerHour: { name: { ar: 'ميل/ساعة', en: 'Mile/Hour', fr: 'Mile/heure' }, factor: 0.44704 },
+                    knot: { name: { ar: 'عقدة', en: 'Knot', fr: 'Nœud' }, factor: 0.514444 },
+                    mach: { name: { ar: 'ماخ', en: 'Mach', fr: 'Mach' }, factor: 343 },
+                    speedOfLight: { name: { ar: 'سرعة الضوء', en: 'Speed of Light', fr: 'Vitesse de la lumière' }, factor: 299792458 }
+                }
+            },
+            time: {
+                name: { ar: 'الزمن', en: 'Time', fr: 'Temps' },
+                units: {
+                    second: { name: { ar: 'ثانية', en: 'Second', fr: 'Seconde' }, factor: 1 },
+                    millisecond: { name: { ar: 'ميلي ثانية', en: 'Millisecond', fr: 'Milliseconde' }, factor: 0.001 },
+                    microsecond: { name: { ar: 'ميكرو ثانية', en: 'Microsecond', fr: 'Microseconde' }, factor: 1e-6 },
+                    nanosecond: { name: { ar: 'نانو ثانية', en: 'Nanosecond', fr: 'Nanoseconde' }, factor: 1e-9 },
+                    minute: { name: { ar: 'دقيقة', en: 'Minute', fr: 'Minute' }, factor: 60 },
+                    hour: { name: { ar: 'ساعة', en: 'Hour', fr: 'Heure' }, factor: 3600 },
+                    day: { name: { ar: 'يوم', en: 'Day', fr: 'Jour' }, factor: 86400 },
+                    week: { name: { ar: 'أسبوع', en: 'Week', fr: 'Semaine' }, factor: 604800 },
+                    month: { name: { ar: 'شهر (متوسط)', en: 'Month (avg)', fr: 'Mois (moy.)' }, factor: 2.628e6 },
+                    year: { name: { ar: 'سنة', en: 'Year', fr: 'Année' }, factor: 3.156e7 },
+                    decade: { name: { ar: 'عقد', en: 'Decade', fr: 'Décennie' }, factor: 3.156e8 },
+                    century: { name: { ar: 'قرن', en: 'Century', fr: 'Siècle' }, factor: 3.156e9 }
+                }
+            },
+            temperature: {
+                name: { ar: 'درجة الحرارة', en: 'Temperature', fr: 'Température' }, isSpecial: true,
+                units: {
+                    celsius: { name: { ar: 'درجة مئوية (C)', en: 'Celsius (C)', fr: 'Celsius (C)' } },
+                    fahrenheit: { name: { ar: 'فهرنهايت (F)', en: 'Fahrenheit (F)', fr: 'Fahrenheit (F)' } },
+                    kelvin: { name: { ar: 'كلفن (K)', en: 'Kelvin (K)', fr: 'Kelvin (K)' } }
+                }
+            },
+            pressure: {
+                name: { ar: 'الضغط', en: 'Pressure', fr: 'Pression' },
+                units: {
+                    pascal: { name: { ar: 'باسكال (Pa)', en: 'Pascal (Pa)', fr: 'Pascal (Pa)' }, factor: 1 },
+                    kilopascal: { name: { ar: 'كيلوباسكال', en: 'Kilopascal', fr: 'Kilopascal' }, factor: 1000 },
+                    bar: { name: { ar: 'بار', en: 'Bar', fr: 'Bar' }, factor: 1e5 },
+                    atmosphere: { name: { ar: 'ضغط جوي (atm)', en: 'Atmosphere (atm)', fr: 'Atmosphère (atm)' }, factor: 101325 },
+                    mmHg: { name: { ar: 'ملم زئبق', en: 'mmHg', fr: 'mmHg' }, factor: 133.322 },
+                    psi: { name: { ar: 'باوند/بوصة²', en: 'PSI', fr: 'PSI' }, factor: 6894.76 },
+                    torr: { name: { ar: 'تور', en: 'Torr', fr: 'Torr' }, factor: 133.322 }
+                }
+            },
+            energy: {
+                name: { ar: 'الطاقة', en: 'Energy', fr: 'Énergie' },
+                units: {
+                    joule: { name: { ar: 'جول (J)', en: 'Joule (J)', fr: 'Joule (J)' }, factor: 1 },
+                    kilojoule: { name: { ar: 'كيلوجول', en: 'Kilojoule', fr: 'Kilojoule' }, factor: 1000 },
+                    calorie: { name: { ar: 'سعرة حرارية', en: 'Calorie', fr: 'Calorie' }, factor: 4.184 },
+                    kilocalorie: { name: { ar: 'كيلوسعرة', en: 'Kilocalorie', fr: 'Kilocalorie' }, factor: 4184 },
+                    wattHour: { name: { ar: 'واط ساعي', en: 'Watt Hour', fr: 'Watt-heure' }, factor: 3600 },
+                    kilowattHour: { name: { ar: 'كيلوواط ساعي', en: 'Kilowatt Hour', fr: 'Kilowatt-heure' }, factor: 3.6e6 },
+                    electronVolt: { name: { ar: 'إلكترون فولت', en: 'Electronvolt', fr: 'Électron-volt' }, factor: 1.602176634e-19 },
+                    btu: { name: { ar: 'وحدة حرارية بريطانية', en: 'BTU', fr: 'BTU' }, factor: 1055.06 }
+                }
+            },
+            power: {
+                name: { ar: 'القدرة (الاستطاعة)', en: 'Power', fr: 'Puissance' },
+                units: {
+                    watt: { name: { ar: 'واط (W)', en: 'Watt (W)', fr: 'Watt (W)' }, factor: 1 },
+                    kilowatt: { name: { ar: 'كيلوواط', en: 'Kilowatt', fr: 'Kilowatt' }, factor: 1000 },
+                    megawatt: { name: { ar: 'ميغاواط', en: 'Megawatt', fr: 'Mégawatt' }, factor: 1e6 },
+                    horsepower: { name: { ar: 'حصان ميكانيكي', en: 'Horsepower', fr: 'Cheval-vapeur' }, factor: 745.7 },
+                    milliwatt: { name: { ar: 'ميلي واط', en: 'Milliwatt', fr: 'Milliwatt' }, factor: 0.001 }
+                }
+            },
+            force: {
+                name: { ar: 'القوة', en: 'Force', fr: 'Force' },
+                units: {
+                    newton: { name: { ar: 'نيوتن (N)', en: 'Newton (N)', fr: 'Newton (N)' }, factor: 1 },
+                    dyne: { name: { ar: 'داين', en: 'Dyne', fr: 'Dyne' }, factor: 0.00001 },
+                    poundForce: { name: { ar: 'باوند قوة', en: 'Pound-Force', fr: 'Livre-force' }, factor: 4.44822 },
+                    kilogramForce: { name: { ar: 'كيلوغرام قوة', en: 'Kilogram-Force', fr: 'Kilogramme-force' }, factor: 9.80665 }
+                }
+            },
+            electricity: {
+                name: { ar: 'الكهرباء', en: 'Electricity', fr: 'Électricité' },
+                isGrouped: true,
+                groups: {
+                    voltage: {
+                        name: { ar: 'الجهد الكهربائي', en: 'Voltage', fr: 'Tension' },
+                        units: {
+                            volt: { name: { ar: 'فولت (V)', en: 'Volt (V)', fr: 'Volt (V)' }, factor: 1 },
+                            millivolt: { name: { ar: 'ميلي فولت', en: 'Millivolt', fr: 'Millivolt' }, factor: 0.001 },
+                            kilovolt: { name: { ar: 'كيلو فولت', en: 'Kilovolt', fr: 'Kilovolt' }, factor: 1000 }
+                        }
+                    },
+                    current: {
+                        name: { ar: 'التيار الكهربائي', en: 'Current', fr: 'Courant' },
+                        units: {
+                            ampere: { name: { ar: 'أمبير (A)', en: 'Ampere (A)', fr: 'Ampère (A)' }, factor: 1 },
+                            milliampere: { name: { ar: 'ميلي أمبير', en: 'Milliampere', fr: 'Milliampère' }, factor: 0.001 },
+                            microampere: { name: { ar: 'ميكرو أمبير', en: 'Microampere', fr: 'Microampère' }, factor: 1e-6 }
+                        }
+                    },
+                    resistance: {
+                        name: { ar: 'المقاومة الكهربائية', en: 'Resistance', fr: 'Résistance' },
+                        units: {
+                            ohm: { name: { ar: 'أوم (Ω)', en: 'Ohm (Ω)', fr: 'Ohm (Ω)' }, factor: 1 },
+                            kiloohm: { name: { ar: 'كيلو أوم', en: 'Kiloohm', fr: 'Kiloohm' }, factor: 1000 },
+                            megaohm: { name: { ar: 'ميغا أوم', en: 'Megaohm', fr: 'Mégaohm' }, factor: 1e6 }
+                        }
+                    }
+                }
+            },
+            frequency: {
+                name: { ar: 'التردد', en: 'Frequency', fr: 'Fréquence' },
+                units: {
+                    hertz: { name: { ar: 'هرتز (Hz)', en: 'Hertz (Hz)', fr: 'Hertz (Hz)' }, factor: 1 },
+                    kilohertz: { name: { ar: 'كيلوهرتز', en: 'Kilohertz', fr: 'Kilohertz' }, factor: 1000 },
+                    megahertz: { name: { ar: 'ميغاهرتز', en: 'Megahertz', fr: 'Mégahertz' }, factor: 1e6 },
+                    gigahertz: { name: { ar: 'غيغاهرتز', en: 'Gigahertz', fr: 'Gigahertz' }, factor: 1e9 },
+                    rpm: { name: { ar: 'دورة/دقيقة', en: 'RPM', fr: 'tr/min' }, factor: 1 / 60 }
+                }
+            },
+            angles: {
+                name: { ar: 'الزوايا', en: 'Angles', fr: 'Angles' },
+                units: {
+                    degree: { name: { ar: 'درجة', en: 'Degree', fr: 'Degré' }, factor: 1 },
+                    radian: { name: { ar: 'راديان', en: 'Radian', fr: 'Radian' }, factor: 57.2958 },
+                    gradian: { name: { ar: 'غراد', en: 'Gradian', fr: 'Grade' }, factor: 0.9 },
+                    minuteOfArc: { name: { ar: 'دقيقة قوسية', en: 'Minute of Arc', fr: 'Minute d\'arc' }, factor: 1 / 60 },
+                    secondOfArc: { name: { ar: 'ثانية قوسية', en: 'Second of Arc', fr: 'Seconde d\'arc' }, factor: 1 / 3600 }
+                }
+            },
+            digitalData: {
+                name: { ar: 'البيانات الرقمية', en: 'Digital Data', fr: 'Données numériques' },
+                units: {
+                    bit: { name: { ar: 'بت', en: 'Bit', fr: 'Bit' }, factor: 1 },
+                    byte: { name: { ar: 'بايت', en: 'Byte', fr: 'Octet' }, factor: 8 },
+                    kilobyte: { name: { ar: 'كيلوبايت (KB)', en: 'Kilobyte (KB)', fr: 'Kilooctet (Ko)' }, factor: 8000 },
+                    megabyte: { name: { ar: 'ميغابايت (MB)', en: 'Megabyte (MB)', fr: 'Mégaoctet (Mo)' }, factor: 8e6 },
+                    gigabyte: { name: { ar: 'غيغابايت (GB)', en: 'Gigabyte (GB)', fr: 'Gigaoctet (Go)' }, factor: 8e9 },
+                    terabyte: { name: { ar: 'تيرابايت (TB)', en: 'Terabyte (TB)', fr: 'Téraoctet (To)' }, factor: 8e12 },
+                    kibibyte: { name: { ar: 'كيبيبايت (KiB)', en: 'Kibibyte (KiB)', fr: 'Kibioctet (Kio)' }, factor: 8192 },
+                    mebibyte: { name: { ar: 'ميبيبايت (MiB)', en: 'Mebibyte (MiB)', fr: 'Mébioctet (Mio)' }, factor: 8388608 },
+                    gibibyte: { name: { ar: 'غيبيبايت (GiB)', en: 'Gibibyte (GiB)', fr: 'Gibioctet (Gio)' }, factor: 8589934592 }
+                }
+            },
+            fuelConsumption: {
+                name: { ar: 'استهلاك الوقود', en: 'Fuel Consumption', fr: 'Consommation' }, isSpecial: true,
+                units: {
+                    litersPer100km: { name: { ar: 'لتر/100كم', en: 'L/100km', fr: 'L/100km' } },
+                    kmPerLiter: { name: { ar: 'كم/لتر', en: 'km/L', fr: 'km/L' } },
+                    mpgUS: { name: { ar: 'ميل/غالون أمريكي', en: 'MPG (US)', fr: 'MPG (US)' } },
+                    mpgUK: { name: { ar: 'ميل/غالون بريطاني', en: 'MPG (UK)', fr: 'MPG (UK)' } }
+                }
+            }
+        };
+
+        // ===================== حالة التطبيق =====================
+        const state = {
+            theme: 'dark',            // الوضع الليلي افتراضي
+            language: 'ar',           // اللغة العربية افتراضياً
+            category: 'length',
+            fromUnit: 'meter',
+            toUnit: 'kilometer'
+        };
+
+        // ===================== دوال مساعدة =====================
+        function t(key) {
+            return translations[state.language]?.[key] || translations['en'][key] || key;
+        }
+
+        function tName(nameObj) {
+            return nameObj?.[state.language] || nameObj?.['en'] || '';
+        }
+
+        function updateDirection() {
+            document.documentElement.dir = state.language === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = state.language;
+        }
+
+        function updateThemeUI() {
+            document.documentElement.setAttribute('data-theme', state.theme);
+            const btn = document.getElementById('themeToggle');
+            btn.textContent = state.theme === 'dark' ? '☀️' : '🌙';
+            btn.title = t('themeTitle');
+        }
+
+        function updateLanguageButtons() {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === state.language);
+            });
+        }
+
+        function applyAllTranslations() {
+            document.getElementById('appTitle').textContent = t('appTitle');
+            document.getElementById('categoryLabel').textContent = t('categoryLabel');
+            document.getElementById('labelFrom').textContent = t('labelFrom');
+            document.getElementById('labelTo').textContent = t('labelTo');
+            document.getElementById('labelValue').textContent = t('labelValue');
+            document.getElementById('inputValue').placeholder = t('valuePlaceholder');
+            document.getElementById('resultLabel').textContent = t('resultLabel');
+            document.getElementById('swapBtn').title = t('swapTitle');
+            document.getElementById('infoBtn').title = t('infoTitle');
+            document.getElementById('modalTitle').textContent = t('modalTitle');
+            document.getElementById('devName').textContent = t('devName');
+            document.getElementById('devSubject').textContent = t('devSubject');
+            document.getElementById('devSchool').innerHTML = t('devSchool');
+            document.getElementById('devEmail').textContent = t('devEmail');
+            document.getElementById('devPhone').textContent = t('devPhone');
+            updateThemeUI();
+        }
+
+        // حفظ الإعدادات في localStorage
+        function saveSettings() {
+            try {
+                localStorage.setItem('unitConvSettings', JSON.stringify({
+                    language: state.language,
+                    theme: state.theme,
+                    category: state.category,
+                    fromUnit: state.fromUnit,
+                    toUnit: state.toUnit
+                }));
+            } catch (e) {}
+        }
+
+        function loadSettings() {
+            try {
+                const saved = localStorage.getItem('unitConvSettings');
+                if (saved) {
+                    const s = JSON.parse(saved);
+                    if (s.language && translations[s.language]) state.language = s.language;
+                    if (s.theme) state.theme = s.theme;
+                    if (s.category && categoriesData[s.category]) state.category = s.category;
+                    if (s.fromUnit) state.fromUnit = s.fromUnit;
+                    if (s.toUnit) state.toUnit = s.toUnit;
+                }
+            } catch (e) {}
+        }
+
+        // ===================== بناء الواجهة =====================
+        function populateCategories() {
+            const select = document.getElementById('categorySelect');
+            select.innerHTML = '';
+            for (const [key, data] of Object.entries(categoriesData)) {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = tName(data.name);
+                if (key === state.category) opt.selected = true;
+                select.appendChild(opt);
+            }
+        }
+
+        function populateUnits() {
+            const catData = categoriesData[state.category];
+            const selectFrom = document.getElementById('selectFrom');
+            const selectTo = document.getElementById('selectTo');
+            selectFrom.innerHTML = '';
+            selectTo.innerHTML = '';
+
+            let unitEntries = [];
+            if (catData.isGrouped) {
+                for (const [groupKey, group] of Object.entries(catData.groups)) {
+                    for (const [unitKey, unit] of Object.entries(group.units)) {
+                        unitEntries.push({
+                            key: unitKey,
+                            name: `${tName(group.name)} - ${tName(unit.name)}`,
+                            group: groupKey
+                        });
+                    }
+                }
+            } else {
+                unitEntries = Object.keys(catData.units).map(key => ({
+                    key,
+                    name: tName(catData.units[key].name),
+                    group: null
+                }));
+            }
+
+            const allKeys = unitEntries.map(u => u.key);
+            if (!allKeys.includes(state.fromUnit)) state.fromUnit = allKeys[0];
+            if (!allKeys.includes(state.toUnit)) state.toUnit = allKeys.length > 1 ? allKeys[1] : allKeys[0];
+
+            unitEntries.forEach(unit => {
+                const optFrom = document.createElement('option');
+                optFrom.value = unit.key;
+                optFrom.textContent = unit.name;
+                if (unit.key === state.fromUnit) optFrom.selected = true;
+                selectFrom.appendChild(optFrom);
+
+                const optTo = document.createElement('option');
+                optTo.value = unit.key;
+                optTo.textContent = unit.name;
+                if (unit.key === state.toUnit) optTo.selected = true;
+                selectTo.appendChild(optTo);
+            });
+
+            if (catData.isGrouped) enforceSameGroup();
+        }
+
+        function enforceSameGroup() {
+            const catData = categoriesData[state.category];
+            if (!catData.isGrouped) return;
+            const fromGroup = getUnitGroup(state.fromUnit);
+            const toGroup = getUnitGroup(state.toUnit);
+            if (fromGroup !== toGroup) {
+                const sameGroupUnits = [];
+                for (const [groupKey, group] of Object.entries(catData.groups)) {
+                    if (groupKey === fromGroup) sameGroupUnits.push(...Object.keys(group.units));
+                }
+                if (sameGroupUnits.length) {
+                    state.toUnit = sameGroupUnits[0] !== state.fromUnit ? sameGroupUnits[0] : (sameGroupUnits[1] || sameGroupUnits[0]);
+                    document.getElementById('selectTo').value = state.toUnit;
+                }
+            }
+        }
+
+        function getUnitGroup(unitKey) {
+            const catData = categoriesData[state.category];
+            if (!catData.isGrouped) return null;
+            for (const [groupKey, group] of Object.entries(catData.groups)) {
+                if (group.units[unitKey]) return groupKey;
+            }
+            return null;
+        }
+
+        // ===================== التحويل =====================
+        function convertTemperature(val, from, to) {
+            let c;
+            if (from === 'celsius') c = val;
+            else if (from === 'fahrenheit') c = (val - 32) * 5 / 9;
+            else if (from === 'kelvin') c = val - 273.15;
+            else return null;
+            if (to === 'celsius') return c;
+            if (to === 'fahrenheit') return (c * 9 / 5) + 32;
+            if (to === 'kelvin') return c + 273.15;
+            return null;
+        }
+
+        function convertFuel(val, from, to) {
+            let lpk;
+            if (from === 'litersPer100km') lpk = val;
+            else if (from === 'kmPerLiter') lpk = val > 0 ? 100 / val : Infinity;
+            else if (from === 'mpgUS') lpk = val > 0 ? 235.214583 / val : Infinity;
+            else if (from === 'mpgUK') lpk = val > 0 ? 282.480936 / val : Infinity;
+            else return null;
+            if (!isFinite(lpk) || lpk <= 0) return null;
+            if (to === 'litersPer100km') return lpk;
+            if (to === 'kmPerLiter') return 100 / lpk;
+            if (to === 'mpgUS') return 235.214583 / lpk;
+            if (to === 'mpgUK') return 282.480936 / lpk;
+            return null;
+        }
+
+        function getFactor(unitKey) {
+            const catData = categoriesData[state.category];
+            if (catData.isGrouped) {
+                for (const group of Object.values(catData.groups)) {
+                    if (group.units[unitKey]) return group.units[unitKey].factor;
+                }
+            } else {
+                return catData.units[unitKey]?.factor;
+            }
+            return null;
+        }
+
+        function calculate() {
+            const input = document.getElementById('inputValue').value.trim();
+            const resultBox = document.getElementById('resultValue');
+            if (input === '' || isNaN(input)) {
+                resultBox.textContent = t('noResult');
+                return;
+            }
+            const val = parseFloat(input);
+            const catData = categoriesData[state.category];
+            let result;
+
+            if (catData.isSpecial) {
+                if (state.category === 'temperature') result = convertTemperature(val, state.fromUnit, state.toUnit);
+                else if (state.category === 'fuelConsumption') result = convertFuel(val, state.fromUnit, state.toUnit);
+                else result = null;
+            } else if (catData.isGrouped) {
+                const fromGroup = getUnitGroup(state.fromUnit);
+                const toGroup = getUnitGroup(state.toUnit);
+                if (fromGroup !== toGroup) {
+                    resultBox.textContent = t('noResult');
+                    return;
+                }
+                const fromFactor = getFactor(state.fromUnit);
+                const toFactor = getFactor(state.toUnit);
+                result = (val * fromFactor) / toFactor;
+            } else {
+                const fromFactor = getFactor(state.fromUnit);
+                const toFactor = getFactor(state.toUnit);
+                result = (val * fromFactor) / toFactor;
+            }
+
+            if (result === null || !isFinite(result)) {
+                resultBox.textContent = t('noResult');
+                return;
+            }
+            if (Math.abs(result) < 1e-12) resultBox.textContent = '0';
+            else if (Math.abs(result) > 1e12) resultBox.textContent = result.toExponential(4);
+            else resultBox.textContent = parseFloat(result.toPrecision(10)).toString();
+        }
+
+        // ===================== الأحداث =====================
+        function refreshAll() {
+            applyAllTranslations();
+            updateDirection();
+            populateCategories();
+            populateUnits();
+            calculate();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSettings(); // تحميل الإعدادات المحفوظة (اللغة والوضع)
+            // فرض الوضع الليلي الافتراضي إذا لم يحفظ سابقاً
+            if (localStorage.getItem('unitConvSettings') === null) {
+                state.theme = 'dark';
+                state.language = 'ar';
+            }
+            updateThemeUI();
+            updateDirection();
+            updateLanguageButtons();
+            applyAllTranslations();
+            populateCategories();
+            populateUnits();
+            calculate();
+
+            // أزرار اللغة
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.language = btn.dataset.lang;
+                    updateLanguageButtons();
+                    refreshAll();
+                    saveSettings();
+                });
+            });
+
+            document.getElementById('themeToggle').addEventListener('click', () => {
+                state.theme = state.theme === 'light' ? 'dark' : 'light';
+                updateThemeUI();
+                saveSettings();
+            });
+
+            document.getElementById('categorySelect').addEventListener('change', (e) => {
+                state.category = e.target.value;
+                const catData = categoriesData[state.category];
+                let firstUnits = [];
+                if (catData.isGrouped) {
+                    firstUnits = Object.values(catData.groups)[0] ? Object.keys(Object.values(catData.groups)[0].units) : [];
+                } else if (catData.isSpecial) {
+                    firstUnits = Object.keys(catData.units);
+                } else {
+                    firstUnits = Object.keys(catData.units);
+                }
+                state.fromUnit = firstUnits[0];
+                state.toUnit = firstUnits.length > 1 ? firstUnits[1] : firstUnits[0];
+                populateUnits();
+                calculate();
+                saveSettings();
+            });
+
+            document.getElementById('selectFrom').addEventListener('change', (e) => {
+                state.fromUnit = e.target.value;
+                if (categoriesData[state.category].isGrouped) enforceSameGroup();
+                calculate();
+                saveSettings();
+            });
+
+            document.getElementById('selectTo').addEventListener('change', (e) => {
+                state.toUnit = e.target.value;
+                if (categoriesData[state.category].isGrouped) enforceSameGroup();
+                calculate();
+                saveSettings();
+            });
+
+            document.getElementById('inputValue').addEventListener('input', calculate);
+
+            document.getElementById('swapBtn').addEventListener('click', () => {
+                const temp = state.fromUnit;
+                state.fromUnit = state.toUnit;
+                state.toUnit = temp;
+                populateUnits();
+                if (categoriesData[state.category].isGrouped) enforceSameGroup();
+                calculate();
+                saveSettings();
+            });
+
+            // النافذة المنبثقة
+            const modal = document.getElementById('devModal');
+            document.getElementById('infoBtn').addEventListener('click', () => modal.classList.add('active'));
+            document.getElementById('closeModal').addEventListener('click', () => modal.classList.remove('active'));
+            modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+        });
+    </script>
+</body>
+</html>

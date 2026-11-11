@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#00796b">
+    <meta name="description" content="سائح طيباوي - تحدي العقل اليومي، من إعداد الأستاذ محمد قادري">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="سائح طيباوي">
+    <link rel="manifest"
+    href="data:application/json;base64,ewogICJuYW1lIjogItiz2KfYt9mEINi32YrYqNin2YrZiiIsCiAgInNob3J0X25hbWUiOiAi2LPYp9i32YQg2LfZitio2KfZitmKIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmOGY2ZjAiLAogICJ0aGVtZV9jb2xvciI6ICIjMWE3YTZkIiwKICAiaWNvbnMiOiBbCiAgICB7InNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUIyWlhKemFXOXVQU2N4TURBbklHaGxhV2RvZEQwbk1UQXdKejRLUEhCaGRHZ2daRDBuVjJsdVpHOTNKeUJ6Y0dGalpUMG5KVEV3SlRJbElHNTFiR3c5SnpJeU1DazhMM0JoZEdnK1BDOXpkbWMrIiwic2l6ZXMiOiAiNTEyeDUxMiIsInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCJ9CiAgXQp9">
+    <title>سائح طيباوي - تحدي العقل اليومي</title>
+    <style>
+        :root {
+            --bg: #fdfaf5;
+            --bg-card: #ffffff;
+            --bg-secondary: #f3efe6;
+            --text: #2c3e50;
+            --text-secondary: #546e7a;
+            --primary: #00897b;
+            --primary-light: #4ebaaa;
+            --primary-dark: #005b4f;
+            --accent: #f57c00;
+            --accent-light: #ffb74d;
+            --gold: #d4af37;
+            --success: #43a047;
+            --danger: #e53935;
+            --border: #e0e0e0;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --radius: 16px;
+            --radius-sm: 12px;
+            --radius-xs: 8px;
+            
+            /* تم تحسين الخطوط لتكون مقروءة بوضوح دون تدمير تناسق الشاشات الصغيرة */
+            --font-xl: 1.6rem;
+            --font-lg: 1.3rem;
+            --font-md: 1.1rem;
+            --font-sm: 0.95rem;
+            --font-xs: 0.85rem;
+            
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --bounce: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .dark-mode {
+            --bg: #121212;
+            --bg-card: #1e1e1e;
+            --bg-secondary: #2c2c2c;
+            --text: #e0e0e0;
+            --text-secondary: #9e9e9e;
+            --border: #333333;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            min-height: 100dvh;
+            transition: background var(--transition), color var(--transition);
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            user-select: none;
+            -webkit-user-select: none;
+            line-height: 1.6;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        
+        /* شريط التنقل العلوي */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .menu-btn {
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: var(--radius-xs);
+            transition: background var(--transition);
+        }
+        .menu-btn:active {
+            background: rgba(255,255,255,0.2);
+        }
+        .nav-title {
+            font-size: var(--font-lg);
+            font-weight: 700;
+        }
+
+        /* القائمة الجانبية (Sidebar) */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100vh;
+            background: var(--bg-card);
+            box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+            z-index: 1000;
+            transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .sidebar.active {
+            right: 0;
+        }
+        .sidebar-header {
+            padding: 30px 20px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            text-align: center;
+        }
+        .sidebar-header .logo-icon {
+            width: 60px; height: 60px; margin: 0 auto 10px;
+            background: white; color: var(--primary);
+            box-shadow: none; animation: none;
+        }
+        .sidebar-header h2 { font-size: var(--font-lg); margin-bottom: 5px; }
+        .sidebar-menu {
+            list-style: none;
+            padding: 15px 0;
+            flex-grow: 1;
+        }
+        .sidebar-menu li {
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: var(--font-md);
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            border-bottom: 1px solid var(--bg-secondary);
+            transition: background var(--transition);
+        }
+        .sidebar-menu li:hover, .sidebar-menu li:active {
+            background: var(--bg-secondary);
+            color: var(--primary);
+        }
+        .sidebar-menu li span.icon { font-size: 1.4rem; }
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(2px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .app-container {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 15px 20px 100px;
+        }
+        .app-header { text-align: center; padding: 10px 0; position: relative; }
+        .logo-icon {
+            width: 80px; height: 80px; margin: 0 auto 10px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 40px; color: #fff; box-shadow: 0 6px 20px rgba(0,137,123,0.35);
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%,100%{box-shadow:0 6px 20px rgba(0,137,123,0.35);}
+            50%{box-shadow:0 8px 30px rgba(0,137,123,0.55);}
+        }
+        .app-title { font-size:var(--font-xl); font-weight:800; color:var(--primary-dark); margin:4px 0; }
+        .dark-mode .app-title { color:var(--primary-light); }
+        .app-slogan { font-size:var(--font-md); color:var(--text-secondary); font-weight:600; }
+        
+        .date-display {
+            display:inline-flex; align-items:center; gap:8px; background:var(--bg-secondary);
+            padding:8px 16px; border-radius:20px; font-size:var(--font-sm); color:var(--text-secondary); margin-top:12px; font-weight: 600;
+        }
+        
+        .dedication-banner {
+            background: linear-gradient(135deg, #fff9e6, #fff3e0);
+            border: 2px solid var(--accent-light); border-radius: var(--radius);
+            padding: 20px 18px; margin: 20px 0; text-align: center;
+            position: relative; overflow: hidden;
+            box-shadow: var(--shadow); transition: all var(--transition);
+        }
+        .dark-mode .dedication-banner {
+            background: linear-gradient(135deg, #2c2210, #3d2c12); border-color: #b07c2c;
+        }
+        .dedication-banner::before {
+            content:''; position:absolute; top:-30px; right:-30px; width:80px; height:80px;
+            background:var(--accent); opacity:0.1; border-radius:50%;
+        }
+        .dedication-text {
+            font-size:var(--font-md); color:var(--text); line-height:1.8;
+            position:relative; z-index:1; font-weight:600;
+        }
+        .dedication-text strong { color:var(--primary-dark); font-size:var(--font-lg); }
+        .dark-mode .dedication-text strong { color:var(--accent-light); }
+        .dedication-icon { font-size:2rem; display:inline-block; animation:floatIcon 2.5s ease-in-out infinite; margin-bottom: 5px; }
+        @keyframes floatIcon { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+        
+        .stats-row { display:grid; grid-template-columns:repeat(2,1fr); gap:15px; margin:20px 0; }
+        .stat-item { text-align:center; background:var(--bg-card); border-radius:var(--radius-sm); padding:16px 10px; box-shadow:var(--shadow); border:1px solid var(--border); }
+        .stat-value { font-size:1.8rem; font-weight:700; color:var(--primary); }
+        .stat-label { font-size:var(--font-sm); color:var(--text-secondary); font-weight:600; margin-top:4px; }
+        
+        .btn {
+            display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:18px 20px;
+            border:none; border-radius:var(--radius-sm); font-size:var(--font-lg); font-weight:700;
+            cursor:pointer; transition:all var(--bounce); font-family:inherit; text-decoration:none;
+        }
+        .btn:active { transform:scale(0.96); }
+        .btn-primary { background:linear-gradient(135deg, var(--primary), var(--primary-light)); color:#fff; box-shadow:0 6px 20px rgba(0,137,123,0.3); padding:20px 24px; }
+        .btn-primary:hover { box-shadow:0 8px 25px rgba(0,137,123,0.45); transform:translateY(-3px); }
+        .btn-secondary { background:var(--bg-secondary); color:var(--text); border:1px solid var(--border); }
+        .btn-accent { background:linear-gradient(135deg, var(--accent), var(--accent-light)); color:#fff; box-shadow:0 6px 20px rgba(245,124,0,0.3); }
+        .btn-sm { padding:10px 16px; font-size:var(--font-md); width:auto; border-radius:var(--radius-xs); }
+        
+        .xp-bar { width:100%; height:12px; background:var(--border); border-radius:6px; overflow:hidden; margin:8px 0; }
+        .xp-bar-fill { height:100%; background:linear-gradient(90deg, var(--accent), #ffca28); border-radius:6px; transition:width 0.6s ease; }
+        
+        .games-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:15px; margin:15px 0; }
+        .game-mini-card { background:var(--bg-card); border-radius:var(--radius-sm); padding:20px 15px; text-align:center; box-shadow:var(--shadow); border:2px solid transparent; cursor:pointer; transition:all var(--bounce); font-size:var(--font-md); font-weight:700; }
+        .game-mini-card:hover { border-color:var(--primary); transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+        .game-mini-card .game-emoji { font-size:2.5rem; display:block; margin-bottom:8px; }
+
+        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:100; display:flex; align-items:center; justify-content:center; padding:20px; animation:fadeIn 0.25s ease; }
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+        .modal { background:var(--bg-card); border-radius:var(--radius); padding:25px 20px; width:100%; max-width:480px; max-height:85vh; overflow-y:auto; box-shadow:var(--shadow-lg); animation:slideUp 0.35s cubic-bezier(0.175,0.885,0.32,1.275); position:relative; }
+        @keyframes slideUp { from{transform:translateY(40px);opacity:0;} to{transform:translateY(0);opacity:1;} }
+        .modal-close { position:sticky; top:0; float:left; width:40px; height:40px; border-radius:50%; background:var(--bg-secondary); border:none; cursor:pointer; font-size:1.4rem; color:var(--text); display:flex; align-items:center; justify-content:center; z-index:5; transition:all var(--transition); }
+        .modal-close:hover { background:var(--danger); color:#fff; }
+        
+        .game-area { background:var(--bg-card); border-radius:var(--radius); padding:25px 20px; margin:15px 0; box-shadow:var(--shadow); border:2px solid var(--border); min-height:250px; text-align:center; }
+        .game-timer { font-size:1.8rem; font-weight:700; color:var(--primary); margin:10px 0; display:block; direction:ltr; }
+        .game-score-display { font-size:var(--font-lg); font-weight:700; color:var(--accent); display:block; margin-bottom:10px; }
+        
+        .memory-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; max-width:380px; margin:0 auto; }
+        .memory-card { aspect-ratio:1; border-radius:var(--radius-xs); cursor:pointer; font-size:2rem; display:flex; align-items:center; justify-content:center; background:var(--primary); color:transparent; transition:all 0.3s; border:2px solid var(--border); font-weight:700; }
+        .memory-card.flipped { background:var(--bg-card); color:var(--text); border-color:var(--accent); box-shadow:0 0 15px rgba(245,124,0,0.3); }
+        .memory-card.matched { background:var(--success); color:#fff; border-color:var(--success); pointer-events:none; animation:matchPop 0.4s ease; }
+        @keyframes matchPop { 0%,100%{transform:scale(1);} 50%{transform:scale(1.15);} }
+        
+        .sudoku-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; max-width:300px; margin:0 auto; background:var(--border); border-radius:8px; overflow:hidden; direction:ltr; }
+        .sudoku-cell { aspect-ratio:1; background:var(--bg-card); display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:700; cursor:pointer; transition:all var(--transition); border:none; color:var(--text); font-family:inherit; }
+        .sudoku-cell:focus { background:#e0f2f1; outline:3px solid var(--primary); outline-offset:-3px; z-index:2; }
+        .dark-mode .sudoku-cell:focus { background:#004d40; }
+        .sudoku-cell.given { color:var(--primary-dark); font-weight:800; cursor:default; }
+        .sudoku-cell.user-filled { color:var(--accent); }
+        .sudoku-cell.error { color:var(--danger); animation:shake 0.5s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-5px);} 75%{transform:translateX(5px);} }
+        
+        .numpad { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; max-width:320px; margin:15px auto; direction:ltr; }
+        .numpad button { aspect-ratio:1; border-radius:50%; border:2px solid var(--border); background:var(--bg-card); font-size:1.3rem; font-weight:700; cursor:pointer; transition:all var(--bounce); color:var(--text); font-family:inherit; }
+        .numpad button:hover { background:var(--primary); color:#fff; border-color:var(--primary); }
+        .numpad button:active { transform:scale(0.9); }
+        
+        .math-equation { font-size:3rem; font-weight:800; margin:25px 0; letter-spacing:2px; color:var(--primary-dark); direction:ltr; }
+        .dark-mode .math-equation { color:var(--primary-light); }
+        .math-options { display:grid; grid-template-columns:1fr 1fr; gap:15px; max-width:320px; margin:0 auto; direction:ltr; }
+        .math-option { padding:18px; border-radius:var(--radius-sm); border:2px solid var(--border); background:var(--bg-card); font-size:1.4rem; font-weight:700; cursor:pointer; transition:all var(--bounce); font-family:inherit; color:var(--text); }
+        .math-option:hover { border-color:var(--primary); background:rgba(0,137,123,0.05); }
+        .math-option.correct { background:var(--success); color:#fff; border-color:var(--success); animation:matchPop 0.4s ease; }
+        .math-option.wrong { background:var(--danger); color:#fff; border-color:var(--danger); animation:shake 0.5s ease; }
+        
+        .pattern-row { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:15px 0; }
+        .pattern-shape { width:50px; height:50px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.6rem; font-weight:700; transition:all var(--transition); }
+        .pattern-options { display:flex; gap:15px; justify-content:center; flex-wrap:wrap; margin:20px 0; }
+        .pattern-option { width:65px; height:65px; border-radius:12px; border:3px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1.8rem; font-weight:700; transition:all var(--bounce); background:var(--bg-card); }
+        .pattern-option:hover { border-color:var(--primary); transform:scale(1.08); }
+        
+        .sequence-display { font-size:3rem; font-weight:800; letter-spacing:10px; margin:20px 0; color:var(--primary); direction:ltr; display:inline-block; }
+        .sequence-input { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:15px 0; direction:ltr; }
+        .sequence-input input { width:55px; height:55px; text-align:center; font-size:1.5rem; font-weight:700; border-radius:var(--radius-xs); border:2px solid var(--border); background:var(--bg-card); color:var(--text); font-family:inherit; }
+        .sequence-input input:focus { border-color:var(--primary); outline:none; box-shadow:0 0 0 4px rgba(0,137,123,0.15); }
+        
+        .color-dot { width:60px; height:60px; border-radius:50%; display:inline-block; margin:5px; box-shadow:0 4px 12px rgba(0,0,0,0.2); animation:popIn 0.3s ease; }
+        @keyframes popIn { from{transform:scale(0.3);opacity:0;} to{transform:scale(1);opacity:1;} }
+        .color-options { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:20px 0; }
+        .color-option { width:55px; height:55px; border-radius:50%; cursor:pointer; border:3px solid transparent; transition:all var(--bounce); box-shadow:0 3px 8px rgba(0,0,0,0.15); }
+        .color-option:hover { transform:scale(1.15); border-color:var(--text); }
+        
+        .difficulty-badge { display:inline-block; padding:6px 14px; border-radius:16px; font-size:var(--font-sm); font-weight:700; }
+        .diff-easy { background:#e8f5e9; color:#2e7d32; } .diff-medium { background:#fff3e0; color:#ef6c00; } .diff-hard { background:#ffebee; color:#c62828; } .diff-expert { background:#ede7f6; color:#4527a0; }
+        .dark-mode .diff-easy { background:#1b3a1b; } .dark-mode .diff-medium { background:#3a2a10; } .dark-mode .diff-hard { background:#3a1515; } .dark-mode .diff-expert { background:#1a1035; }
+        
+        .achievement-item { display:flex; align-items:center; gap:15px; padding:15px 18px; border-radius:var(--radius-sm); background:var(--bg-secondary); margin:10px 0; transition:all var(--transition); border:1px solid var(--border); }
+        .achievement-item.unlocked { background:rgba(245,124,0,0.08); border-color:var(--accent); }
+        .achievement-icon { font-size:2rem; width:50px; text-align:center; }
+        .achievement-item.locked .achievement-icon { filter:grayscale(1); opacity:0.4; }
+        
+        .toast { position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:#2c3e50; color:#fff; padding:15px 25px; border-radius:30px; font-size:var(--font-md); font-weight:700; z-index:200; animation:toastIn 0.4s ease, toastOut 0.4s ease 2.5s forwards; box-shadow:0 10px 30px rgba(0,0,0,0.3); text-align:center; max-width:90vw; }
+        @keyframes toastIn { from{transform:translateX(-50%) translateY(40px);opacity:0;} to{transform:translateX(-50%) translateY(0);opacity:1;} }
+        @keyframes toastOut { from{opacity:1;} to{opacity:0;transform:translateX(-50%) translateY(-20px);} }
+        
+        .confetti-piece { position:fixed; width:12px; height:12px; border-radius:3px; z-index:300; pointer-events:none; animation:confettiFall 2.5s ease-out forwards; }
+        @keyframes confettiFall { 0%{transform:translateY(-100px) rotate(0deg);opacity:1;} 100%{transform:translateY(105vh) rotate(720deg);opacity:0;} }
+        
+        .setting-row { display:flex; align-items:center; justify-content:space-between; padding:15px 0; border-bottom:1px solid var(--border); font-size:var(--font-md); font-weight:600;}
+        .toggle-switch { position:relative; width:55px; height:32px; background:var(--border); border-radius:16px; cursor:pointer; transition:all var(--transition); border:none; }
+        .toggle-switch.active { background:var(--primary); }
+        .toggle-switch::after { content:''; position:absolute; top:4px; right:4px; width:24px; height:24px; border-radius:50%; background:#fff; transition:all var(--transition); box-shadow:0 2px 5px rgba(0,0,0,0.2); }
+        .toggle-switch.active::after { right:27px; }
+        .hidden { display:none !important; }
+        
+        .wordsearch-grid { display:grid; gap:2px; background:var(--border); border-radius:10px; overflow:hidden; margin:0 auto; max-width:340px; }
+        .wordsearch-cell { aspect-ratio:1; background:var(--bg-card); display:flex; align-items:center; justify-content:center; font-weight:800; cursor:pointer; font-size:var(--font-md); transition:all 0.15s; color:var(--text); }
+        .wordsearch-cell.selected { background:var(--accent-light); color:#fff; }
+        .wordsearch-cell.found { background:var(--success); color:#fff; }
+        
+        .question-text { font-size:var(--font-lg); font-weight:700; line-height:1.7; margin:20px 0; }
+        .question-options { display:flex; flex-direction:column; gap:12px; max-width:420px; margin:0 auto; }
+        .question-option { padding:15px 20px; border-radius:var(--radius-sm); border:2px solid var(--border); background:var(--bg-card); cursor:pointer; font-size:var(--font-md); font-weight:600; transition:all var(--bounce); text-align:right; font-family:inherit; color:var(--text); }
+        .question-option:hover { border-color:var(--primary); background:rgba(0,137,123,0.05); }
+        .question-option.correct { background:var(--success); color:#fff; border-color:var(--success); }
+        .question-option.wrong { background:var(--danger); color:#fff; border-color:var(--danger); }
+        
+        .about-card { background:linear-gradient(135deg, #fff, #fdfaf5); border-radius:var(--radius); padding:25px 20px; margin:15px 0; border:2px solid var(--primary-light); box-shadow:var(--shadow-lg); text-align:justify; font-size:var(--font-md); }
+        .dark-mode .about-card { background:linear-gradient(135deg, #2a2a2a, #1f2726); border-color:#005b4f; }
+        .about-card .quote { display:block; text-align:center; font-style:italic; font-weight:800; color:var(--primary); margin:15px 0; font-size:var(--font-lg); padding:10px; background:rgba(0,137,123,0.08); border-radius:var(--radius-sm); }
+        .dark-mode .about-card .quote { color:var(--primary-light); }
+        .dev-info { background: var(--bg-secondary); padding: 15px; border-radius: var(--radius-sm); margin-top: 20px; border: 1px dashed var(--primary); text-align: center; }
+        
+        .btn-row-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل العلوي -->
+    <div class="top-navbar">
+        <div class="nav-title">🧠 سائح طيباوي</div>
+        <div class="menu-btn" onclick="toggleSidebar()">☰</div>
+    </div>
+
+    <!-- القائمة الجانبية (Sidebar) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">🧠</div>
+            <h2>تحدي العقل اليومي</h2>
+            <p style="font-size: var(--font-sm); opacity: 0.9;">بإعداد الأستاذ محمد قادري</p>
+        </div>
+        <ul class="sidebar-menu">
+            <li onclick="toggleSidebar(); document.getElementById('mainScreen').classList.remove('hidden'); document.getElementById('gameScreen').classList.add('hidden');">
+                <span class="icon">🏠</span> الرئيسية
+            </li>
+            <li onclick="toggleSidebar(); startDailyChallenge();">
+                <span class="icon">🎯</span> التحدي اليومي
+            </li>
+            <li onclick="toggleSidebar(); showAllGames();">
+                <span class="icon">🎮</span> جميع الألعاب
+            </li>
+            <li onclick="toggleSidebar(); showStatistics();">
+                <span class="icon">📊</span> الإحصائيات
+            </li>
+            <li onclick="toggleSidebar(); showBestScores();">
+                <span class="icon">🏅</span> أفضل النتائج
+            </li>
+            <li onclick="toggleSidebar(); showAchievements();">
+                <span class="icon">🎖️</span> الإنجازات
+            </li>
+            <li onclick="toggleSidebar(); showSettings();">
+                <span class="icon">⚙️</span> الإعدادات
+            </li>
+            <li onclick="toggleSidebar(); showAboutSayeh();">
+                <span class="icon">👨‍🏫</span> عن التطبيق والمطور
+            </li>
+        </ul>
+    </div>
+
+    <div class="app-container" id="appContainer">
+        
+        <div id="mainScreen">
+            <header class="app-header">
+                <h1 class="app-title">أهلاً بك</h1>
+                <p class="app-slogan">لننشط العقل معاً هذا اليوم</p>
+                <div class="date-display" id="dateDisplay">📅 <span id="dateText"></span></div>
+            </header>
+
+            <div class="dedication-banner" id="dedicationBanner">
+                <span class="dedication-icon">🎓</span>
+                <p class="dedication-text">
+                    <strong>إهداء خاص</strong><br>
+                    إلى الصديق العزيز والأخ الغالي<br>
+                    <strong>الأستاذ سائح طيباوي</strong><br>
+                    أستاذ العلوم الطبيعية المتقاعد<br>
+                    🕊️ مع أطيب التمنيات بدوام الصحة والعقل النشط<br>
+                    <span style="font-size: var(--font-sm); opacity:0.8; display:block; margin-top:5px;">من أخيك محمد قادري</span>
+                </p>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-item"><div class="stat-value" id="streakCount">0</div><div class="stat-label">🔥 أيام متتالية</div></div>
+                <div class="stat-item"><div class="stat-value" id="levelDisplay">1</div><div class="stat-label">⭐ المستوى الحالي</div></div>
+            </div>
+            
+            <div style="background:var(--bg-card); padding:15px; border-radius:var(--radius-sm); border:1px solid var(--border); margin-bottom:20px; box-shadow:var(--shadow);">
+                <div style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:5px;">
+                    <span>💎 نقاط الخبرة</span>
+                    <span id="xpDisplay" style="color:var(--primary);">0</span>
+                </div>
+                <div class="xp-bar"><div class="xp-bar-fill" id="xpBarFill" style="width:0%"></div></div>
+                <p style="text-align:center;font-size:var(--font-xs);color:var(--text-secondary);margin-top:8px;" id="xpToNext">تحتاج 100 XP للمستوى التالي</p>
+            </div>
+
+            <button class="btn btn-primary" onclick="startDailyChallenge()" id="btnDailyChallenge" style="margin-top: 10px;">🎯 ابدأ تحدي اليوم</button>
+            <div id="dailyStatus" style="text-align:center;margin:10px 0;font-size:var(--font-sm);color:var(--success);font-weight:bold;"></div>
+
+            <!-- تمت إزالة الأزرار الأخرى ونقلها للقائمة الجانبية لتوفير مساحة وراحة للعين -->
+        </div>
+
+        <div id="gameScreen" class="hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:15px;">
+                <button class="btn btn-sm btn-secondary" onclick="exitGame()">↩ رجوع</button>
+                <span style="font-weight:800; font-size:var(--font-lg); color:var(--primary);" id="gameTitle">اللعبة</span>
+                <span class="difficulty-badge diff-easy" id="gameDifficulty">سهل</span>
+            </div>
+            <div class="game-area" id="gameArea"></div>
+            <div style="text-align:center;margin:15px 0;">
+                <span class="game-score-display" id="gameScoreDisplay"></span>
+                <span class="game-timer" id="gameTimerDisplay"></span>
+            </div>
+            <div id="gameExtraControls" style="text-align:center;margin:10px 0;"></div>
+        </div>
+
+        <div id="dailyProgressBar" class="hidden" style="margin:15px 0;text-align:center; background:var(--bg-card); padding:15px; border-radius:var(--radius-sm); border:1px solid var(--border);">
+            <p style="font-weight:bold; margin-bottom:10px;">مراحل التحدي اليومي:</p>
+            <div style="display:flex;gap:10px;justify-content:center;" id="dailyDots"></div>
+        </div>
+    </div>
+    <div id="toastContainer"></div>
+
+    <script>
+        // ==================== وظائف القائمة الجانبية ====================
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        }
+
+        // ==================== سائح طيباوي - محرك اللعبة ====================
+        const DB_KEYS = {
+            userData: 'sayeh_user_data', dailyChallenge: 'sayeh_daily', achievements: 'sayeh_achievements',
+            bestScores: 'sayeh_best_scores', settings: 'sayeh_settings', gameHistory: 'sayeh_history'
+        };
+        function getDefaultUserData() { return { level:1, xp:0, totalGamesCompleted:0, totalPuzzlesSolved:0, streakDays:0, lastPlayDate:null, bestStreak:0, totalPlayTime:0, successRate:0, totalAttempts:0, totalSuccesses:0, stars:0, medals:0, cups:0 }; }
+        function getDefaultSettings() { return { darkMode:false, soundEnabled:true, soundEffects:true, fontSize:'medium' }; }
+        function loadData(k, d) { try{ const r=localStorage.getItem(k); return r?JSON.parse(r):d; }catch(e){return d;} }
+        function saveData(k, d) { try{ localStorage.setItem(k, JSON.stringify(d)); }catch(e){} }
+        
+        let userData = loadData(DB_KEYS.userData, getDefaultUserData());
+        let settings = loadData(DB_KEYS.settings, getDefaultSettings());
+        let achievements = loadData(DB_KEYS.achievements, []);
+        let bestScores = loadData(DB_KEYS.bestScores, {});
+        let gameHistory = loadData(DB_KEYS.gameHistory, []);
+
+        function applySettings() {
+            document.body.classList.toggle('dark-mode', settings.darkMode);
+            const sizes = { small:'14px', medium:'16px', large:'18px', xlarge:'20px' };
+            // تم ضبط التكبير مع المحافظة على التناسق
+            document.documentElement.style.fontSize = sizes[settings.fontSize] || '16px';
+        }
+        function updateDateDisplay() {
+            document.getElementById('dateText').textContent = new Date().toLocaleDateString('ar-SA', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+        }
+        function getTodayKey() { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+        function getDailyChallengeData() {
+            const today = getTodayKey();
+            const saved = loadData(DB_KEYS.dailyChallenge, { date:'', games:[], completed:[], score:0, claimed:false });
+            if(saved.date !== today) {
+                const all = Object.keys(GAME_DEFINITIONS);
+                const sh = [...all].sort(()=>Math.random()-0.5).slice(0,5);
+                return { date:today, games:sh, completed:[], score:0, claimed:false };
+            }
+            return saved;
+        }
+        function saveDailyChallenge(d) { saveData(DB_KEYS.dailyChallenge, d); }
+        
+        function updateMainUI() {
+            document.getElementById('streakCount').textContent = userData.streakDays;
+            document.getElementById('levelDisplay').textContent = userData.level;
+            document.getElementById('xpDisplay').textContent = userData.xp;
+            
+            const next = getXPForNextLevel(userData.level);
+            const cur = getXPForLevel(userData.level);
+            const prog = ((userData.xp - cur) / (next - cur)) * 100;
+            document.getElementById('xpBarFill').style.width = Math.min(100, Math.max(0, prog)) + '%';
+            document.getElementById('xpToNext').textContent = `تحتاج ${next - userData.xp} XP للمستوى ${userData.level+1}`;
+            
+            const daily = getDailyChallengeData();
+            if(daily.date===getTodayKey() && daily.completed.length>=5) {
+                document.getElementById('dailyStatus').textContent = '✅ أكملت تحدي اليوم بنجاح!';
+                document.getElementById('btnDailyChallenge').textContent = '🎉 تحدي اليوم مكتمل';
+                document.getElementById('btnDailyChallenge').style.opacity = '0.8';
+            } else if(daily.date===getTodayKey() && daily.completed.length>0) {
+                document.getElementById('dailyStatus').textContent = `⏳ تقدم التحدي: ${daily.completed.length} من 5`;
+                document.getElementById('btnDailyChallenge').textContent = '🎯 متابعة التحدي اليومي';
+                document.getElementById('btnDailyChallenge').style.opacity = '1';
+            } else {
+                document.getElementById('dailyStatus').textContent = '';
+                document.getElementById('btnDailyChallenge').textContent = '🎯 ابدأ التحدي اليومي';
+                document.getElementById('btnDailyChallenge').style.opacity = '1';
+            }
+        }
+        
+        function getXPForLevel(lv) { let t=0; for(let i=1;i<lv;i++) t+=getXPForNextLevel(i); return t; }
+        function getXPForNextLevel(lv) { return Math.floor(100*Math.pow(1.15, lv-1)); }
+        
+        function addXP(amount) {
+            userData.xp += amount;
+            while(userData.xp >= getXPForLevel(userData.level+1)) {
+                userData.level++;
+                showToast(`🎉 تهانينا! وصلت للمستوى ${userData.level}!`, 'success');
+                spawnConfetti();
+            }
+            saveData(DB_KEYS.userData, userData); updateMainUI(); checkAchievements();
+        }
+        
+        function updateStreak() {
+            const today = getTodayKey();
+            const y = new Date(); y.setDate(y.getDate()-1);
+            const yk = `${y.getFullYear()}-${String(y.getMonth()+1).padStart(2,'0')}-${String(y.getDate()).padStart(2,'0')}`;
+            if(userData.lastPlayDate === today) return;
+            if(userData.lastPlayDate === yk || userData.lastPlayDate === today) {
+                if(userData.lastPlayDate !== today) { userData.streakDays++; if(userData.streakDays>userData.bestStreak) userData.bestStreak=userData.streakDays; }
+            } else if(userData.lastPlayDate !== today) { userData.streakDays=1; }
+            userData.lastPlayDate = today;
+            saveData(DB_KEYS.userData, userData); updateMainUI(); checkAchievements();
+        }
+        
+        const ACHIEVEMENTS_LIST = [
+            { id:'first_win', icon:'🌟', name:'أول إنجاز', desc:'أكمل أول تحدٍ بنجاح', cond:()=>userData.totalGamesCompleted>=1 },
+            { id:'solve_10', icon:'🧩', name:'عقل نشط', desc:'حل 10 ألغاز', cond:()=>userData.totalPuzzlesSolved>=10 },
+            { id:'solve_50', icon:'🎯', name:'مفكر بارع', desc:'حل 50 لغزاً', cond:()=>userData.totalPuzzlesSolved>=50 },
+            { id:'streak_7', icon:'🔥', name:'أسبوع من التركيز', desc:'العب لـ 7 أيام متتالية', cond:()=>userData.streakDays>=7 },
+            { id:'level_10', icon:'🎓', name:'المستوى 10', desc:'وصول للمستوى 10', cond:()=>userData.level>=10 },
+            { id:'expert_reached', icon:'🏅', name:'درجة الخبير', desc:'وصول للمستوى 15', cond:()=>userData.level>=15 },
+        ];
+        
+        function checkAchievements() {
+            let nw=[];
+            ACHIEVEMENTS_LIST.forEach(a=>{ if(!achievements.includes(a.id) && a.cond()) { achievements.push(a.id); nw.push(a); } });
+            if(nw.length) { saveData(DB_KEYS.achievements, achievements); nw.forEach(a=>showToast(`🎖️ إنجاز جديد: ${a.name}`, 'achievement')); }
+        }
+        
+        const GAME_DEFINITIONS = {
+            memory:{name:'مطابقة البطاقات',emoji:'🃏'}, math:{name:'العمليات الحسابية',emoji:'🔢'},
+            pattern:{name:'أكمل النمط',emoji:'🔷'}, sequence:{name:'تذكر الأرقام',emoji:'🧮'},
+            colorseq:{name:'تسلسل الألوان',emoji:'🌈'}, sudoku:{name:'سودوكو',emoji:'📐'},
+            wordsearch:{name:'البحث عن الكلمات',emoji:'🔍'}, different:{name:'الشكل المختلف',emoji:'👁️'},
+            order:{name:'الترتيب',emoji:'📊'}, letters:{name:'ترتيب الحروف',emoji:'🔤'},
+            quiz:{name:'أسئلة ثقافية',emoji:'❓'}, observation:{name:'قوة الملاحظة',emoji:'👀'},
+            logic:{name:'ألغاز المنطق',emoji:'🤔'}, maze:{name:'المتاهات',emoji:'🌀'}, crossword:{name:'الكلمات المتقاطعة',emoji:'✏️'}
+        };
+        
+        let currentGameKey, gameTimerInterval, gameStartTime, isDailyChallengeMode, dailyChallengeData;
+        
+        function getDifficulty() { return userData.level>=15?'expert':userData.level>=10?'hard':userData.level>=5?'medium':'easy'; }
+        
+        function startGame(key, isDaily=false) {
+            currentGameKey=key; isDailyChallengeMode=isDaily; gameStartTime=Date.now();
+            document.getElementById('mainScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+            document.getElementById('gameTitle').textContent = GAME_DEFINITIONS[key].name;
+            const d = getDifficulty();
+            document.getElementById('gameDifficulty').textContent = {easy:'سهل',medium:'متوسط',hard:'صعب',expert:'خبير'}[d];
+            document.getElementById('gameDifficulty').className = 'difficulty-badge diff-'+d;
+            document.getElementById('gameScoreDisplay').textContent = '';
+            document.getElementById('gameExtraControls').innerHTML = '';
+            document.getElementById('dailyProgressBar').classList.toggle('hidden', !isDaily);
+            if(isDaily) updateDailyDots();
+            
+            clearInterval(gameTimerInterval);
+            gameTimerInterval = setInterval(()=>{
+                const el = Math.floor((Date.now()-gameStartTime)/1000);
+                document.getElementById('gameTimerDisplay').textContent = `⏱ ${String(Math.floor(el/60)).padStart(2,'0')}:${String(el%60).padStart(2,'0')}`;
+            }, 1000);
+            
+            switch(key){
+                case'memory':initMemory();break; case'math':initMath();break; case'pattern':initPattern();break;
+                case'sequence':initSequence();break; case'colorseq':initColorSeq();break; case'sudoku':initSudoku();break;
+                case'wordsearch':initWordSearch();break; case'different':initDifferent();break; case'order':initOrder();break;
+                case'letters':initLetters();break; case'quiz':initQuiz();break; case'observation':initObs();break;
+                case'logic':initLogic();break; case'maze':initMaze();break; case'crossword':initCrossword();break;
+                default:initMemory();
+            }
+        }
+        
+        function completeGame(score, perfect=false) {
+            clearInterval(gameTimerInterval);
+            userData.totalGamesCompleted++; userData.totalPuzzlesSolved++; userData.totalAttempts++;
+            if(score>0) userData.totalSuccesses++;
+            userData.successRate = userData.totalAttempts?Math.round((userData.totalSuccesses/userData.totalAttempts)*100):0;
+            const xp = Math.floor(score*(perfect?2:1)*(1+userData.level*0.1));
+            addXP(xp); updateStreak();
+            
+            if(!bestScores[currentGameKey]||score>bestScores[currentGameKey]) { bestScores[currentGameKey]=score; saveData(DB_KEYS.bestScores, bestScores); }
+            
+            if(isDailyChallengeMode&&dailyChallengeData) {
+                if(!dailyChallengeData.completed.includes(currentGameKey)) { dailyChallengeData.completed.push(currentGameKey); dailyChallengeData.score+=score; saveDailyChallenge(dailyChallengeData); updateDailyDots(); }
+                if(dailyChallengeData.completed.length>=5&&!dailyChallengeData.claimed) {
+                    dailyChallengeData.claimed=true; saveDailyChallenge(dailyChallengeData);
+                    addXP(200+userData.level*20); userData.stars++;
+                    saveData(DB_KEYS.userData, userData); showToast('🎉 أكملت تحدي اليوم! مكافأة XP!', 'success'); spawnConfetti();
+                }
+            }
+            saveData(DB_KEYS.userData, userData); updateMainUI(); checkAchievements();
+            document.getElementById('gameScoreDisplay').textContent = `🏆 النتيجة: ${score} | +${xp} XP`;
+            document.getElementById('gameExtraControls').innerHTML = `<button class="btn btn-accent btn-sm" onclick="replayGame()">🔁 إعادة اللعب</button> <button class="btn btn-primary btn-sm" onclick="exitGame()">✅ العودة</button>`;
+            if(perfect) showToast('✨ أداء ممتاز!', 'success');
+        }
+        
+        function replayGame() { clearInterval(gameTimerInterval); gameStartTime=Date.now(); document.getElementById('gameScoreDisplay').textContent=''; document.getElementById('gameExtraControls').innerHTML=''; gameTimerInterval=setInterval(()=>{ const el=Math.floor((Date.now()-gameStartTime)/1000); document.getElementById('gameTimerDisplay').textContent=`⏱ ${String(Math.floor(el/60)).padStart(2,'0')}:${String(el%60).padStart(2,'0')}`; },1000); startGame(currentGameKey, isDailyChallengeMode); }
+        function exitGame() { clearInterval(gameTimerInterval); document.getElementById('gameScreen').classList.add('hidden'); document.getElementById('mainScreen').classList.remove('hidden'); document.getElementById('dailyProgressBar').classList.add('hidden'); isDailyChallengeMode=false; dailyChallengeData=null; updateMainUI(); }
+        function updateDailyDots() { if(!dailyChallengeData) dailyChallengeData=getDailyChallengeData(); document.getElementById('dailyDots').innerHTML = dailyChallengeData.games.map(g=>`<span style="font-size:2.2rem;opacity:${dailyChallengeData.completed.includes(g)?'1':'0.3'}">${dailyChallengeData.completed.includes(g)?'✅':GAME_DEFINITIONS[g]?.emoji||'🎮'}</span>`).join(''); }
+        
+        function startDailyChallenge() {
+            dailyChallengeData=getDailyChallengeData();
+            if(dailyChallengeData.date!==getTodayKey()) { dailyChallengeData=getDailyChallengeData(); saveDailyChallenge(dailyChallengeData); }
+            if(dailyChallengeData.completed.length>=5) { showToast('🎉 لقد أكملت تحدي اليوم مسبقاً!'); return; }
+            const next = dailyChallengeData.games.find(g=>!dailyChallengeData.completed.includes(g));
+            if(next) { isDailyChallengeMode=true; updateDailyDots(); document.getElementById('dailyProgressBar').classList.remove('hidden'); startGame(next, true); }
+        }
+
+        // --- تضمين الألعاب المصغرة ---
+        function initMemory(){const diff=getDifficulty();const p=diff==='easy'?6:diff==='medium'?8:diff==='hard'?10:12;const em=['🌸','🌟','🎈','🦋','🍎','🎵','🐱','🌈','⭐','🍀','🎯','💖'].slice(0,p);const cards=[...em,...em].sort(()=>Math.random()-0.5);let fl=[],mc=0,at=0,lk=false;const cols=p<=6?3:4;document.getElementById('gameArea').innerHTML=`<div class="memory-grid" style="grid-template-columns:repeat(${cols},1fr);">${cards.map((e,i)=>`<div class="memory-card" data-emoji="${e}" onclick="flipM(this)">${e}</div>`).join('')}</div>`;window.flipM=function(c){if(lk||c.classList.contains('flipped')||c.classList.contains('matched'))return;c.classList.add('flipped');fl.push(c);if(fl.length===2){at++;lk=true;const[a,b]=fl;if(a.dataset.emoji===b.dataset.emoji){setTimeout(()=>{a.classList.add('matched');b.classList.add('matched');mc++;fl=[];lk=false;if(mc===p)completeGame(Math.max(10,Math.floor(1000/Math.max(at,1))*p),at<=p+2);},300);}else{setTimeout(()=>{a.classList.remove('flipped');b.classList.remove('flipped');fl=[];lk=false;},700);}}};}
+        function initMath(){window.mt=getDifficulty()==='easy'?5:getDifficulty()==='medium'?8:getDifficulty()==='hard'?10:15;window.mc=0;window.mr=0;genMath();}function genMath(){const diff=getDifficulty();let mx,ops;if(diff==='easy'){mx=20;ops=['+','-'];}else if(diff==='medium'){mx=50;ops=['+','-','×'];}else if(diff==='hard'){mx=100;ops=['+','-','×','÷'];}else{mx=200;ops=['+','-','×','÷'];}const op=ops[Math.floor(Math.random()*ops.length)];let a,b,ans;if(op==='+'){a=randInt(1,mx);b=randInt(1,mx);ans=a+b;}else if(op==='-'){a=randInt(Math.floor(mx/2),mx);b=randInt(1,a);ans=a-b;}else if(op==='×'){a=randInt(2,Math.floor(mx/5));b=randInt(2,12);ans=a*b;}else{b=randInt(2,12);ans=randInt(1,Math.floor(mx/b));a=ans*b;}const wr=new Set();wr.add(ans);while(wr.size<4){const off=randInt(-Math.floor(ans*0.3),Math.floor(ans*0.3));const w=ans+off;if(w>0&&w!==ans)wr.add(w);}window.cq={a,b,op,ans,opts:[...wr].sort(()=>Math.random()-0.5)};document.getElementById('gameArea').innerHTML=`<div class="math-equation">${window.cq.a} ${window.cq.op} ${window.cq.b} = ؟</div><div class="math-options">${window.cq.opts.map(o=>`<button class="math-option" onclick="ansMath(${o},this)">${o}</button>`).join('')}</div><p style="margin-top:15px; font-weight:bold;">سؤال ${window.mr+1} من ${window.mt}</p>`;}window.ansMath=function(v,btn){document.querySelectorAll('.math-option').forEach(b=>b.disabled=true);if(v===window.cq.ans){btn.classList.add('correct');window.mc++;}else{btn.classList.add('wrong');document.querySelectorAll('.math-option').forEach(b=>{if(parseInt(b.textContent)===window.cq.ans)b.classList.add('correct');});}window.mr++;setTimeout(()=>{if(window.mr>=window.mt){const sc=Math.floor((window.mc/window.mt)*100*(getDifficulty()==='expert'?2:getDifficulty()==='hard'?1.5:1));completeGame(sc,window.mc===window.mt);}else genMath();},800);};
+        function initPattern(){const sh=['🔴','🔵','🟢','🟡','🟣','🟠'];const ln=getDifficulty()==='easy'?4:getDifficulty()==='medium'?5:getDifficulty()==='hard'?6:7;const pat=[];for(let i=0;i<ln;i++)pat.push(sh[randInt(0,sh.length-1)]);const cor=pat[pat.length-1];const opts=[cor];while(opts.length<4){const s=sh[randInt(0,sh.length-1)];if(!opts.includes(s))opts.push(s);}window.pc=cor;document.getElementById('gameArea').innerHTML=`<h3 style="margin-bottom:15px;">ما الشكل التالي؟</h3><div class="pattern-row">${pat.map(s=>`<div class="pattern-shape">${s}</div>`).join('')} ❓</div><div class="pattern-options">${opts.sort(()=>Math.random()-0.5).map(s=>`<div class="pattern-option" onclick="ansPat('${s}',this)">${s}</div>`).join('')}</div>`;}window.ansPat=function(s,btn){document.querySelectorAll('.pattern-option').forEach(b=>b.style.pointerEvents='none');if(s===window.pc){btn.style.borderColor='var(--success)';btn.style.background='rgba(67,160,71,0.2)';completeGame(80+randInt(0,20),true);}else{btn.style.borderColor='var(--danger)';btn.style.background='rgba(229,57,53,0.2)';document.querySelectorAll('.pattern-option').forEach(b=>{if(b.textContent===window.pc){b.style.borderColor='var(--success)';b.style.background='rgba(67,160,71,0.2)';}});completeGame(40+randInt(0,20),false);}};
+        function initSequence(){const ln=getDifficulty()==='easy'?4:getDifficulty()==='medium'?5:getDifficulty()==='hard'?7:9;const seq=[];for(let i=0;i<ln;i++)seq.push(randInt(0,9));window.sa=seq.join('');document.getElementById('gameArea').innerHTML=`<h3>تذكر التسلسل:</h3><div class="sequence-display" id="ss">${seq.join(' ')}</div><p style="color:var(--text-secondary); font-weight:bold;">سيختفي خلال ثوانٍ معدودة</p><div class="sequence-input hidden" id="si">${seq.map((_,i)=>`<input type="number" maxlength="1" id="si${i}">`).join('')}</div><button class="btn btn-primary hidden" style="margin-top:20px;" id="sb" onclick="chkSeq()">تحقق من الإجابة</button>`;setTimeout(()=>{document.getElementById('ss').style.opacity='0';setTimeout(()=>{document.getElementById('ss').classList.add('hidden');document.getElementById('si').classList.remove('hidden');document.getElementById('sb').classList.remove('hidden');if(document.getElementById('si0'))document.getElementById('si0').focus();},400);},4000);}window.chkSeq=function(){const inp=document.querySelectorAll('#si input');let u='';inp.forEach(i=>u+=i.value);const m=[...window.sa].filter((c,i)=>c===u[i]).length;completeGame(u===window.sa?100:Math.floor((m/window.sa.length)*60),u===window.sa);};
+        function initColorSeq(){const ln=getDifficulty()==='easy'?3:getDifficulty()==='medium'?5:getDifficulty()==='hard'?7:9;const cols=['#e74c3c','#2ecc71','#3498db','#f39c12','#9b59b6','#1abc9c'];const seq=[];for(let i=0;i<ln;i++)seq.push(cols[randInt(0,cols.length-1)]);window.cs=seq;window.cu=[];window.ci=0;document.getElementById('gameArea').innerHTML=`<h3>شاهد الألوان ثم أعد ترتيبها</h3><div id="ca" style="min-height:80px; margin:20px 0;"></div><div class="color-options">${cols.map(c=>`<div class="color-option" style="background:${c};" onclick="selCol('${c}',this)"></div>`).join('')}</div><div id="cp" style="font-weight:bold;">اللون 1 من ${ln}</div>`;showColSeq(0);}function showColSeq(i){if(i>=window.cs.length){document.getElementById('ca').innerHTML='<h3 style="color:var(--success);">✅ الآن أدخل الترتيب</h3>';window.cu=[];window.ci=0;document.getElementById('cp').textContent=`اللون 1 من ${window.cs.length}`;return;}document.getElementById('ca').innerHTML=`<div class="color-dot" style="background:${window.cs[i]};width:70px;height:70px;"></div>`;setTimeout(()=>{document.getElementById('ca').innerHTML='';setTimeout(()=>showColSeq(i+1),300);},700);}window.selCol=function(c,btn){if(window.ci>=window.cs.length)return;window.cu.push(c);window.ci++;document.getElementById('cp').textContent=`اللون ${window.ci+1} من ${window.cs.length}`;btn.style.transform='scale(0.8)';setTimeout(()=>btn.style.transform='',150);if(window.ci>=window.cs.length){const ok=window.cs.every((c,i)=>c===window.cu[i]);completeGame(ok?100:Math.floor((window.cu.filter((c,i)=>c===window.cs[i]).length/window.cs.length)*60),ok);}};
+        function initSudoku(){const sol=[[1,2,3,4],[3,4,1,2],[2,1,4,3],[4,3,2,1]];const puz=sol.map(r=>[...r]);const rm=getDifficulty()==='easy'?4:getDifficulty()==='medium'?7:getDifficulty()==='hard'?10:13;const rem=new Set();while(rem.size<rm)rem.add(`${randInt(0,3)},${randInt(0,3)}`);rem.forEach(rc=>{const[r,c]=rc.split(',').map(Number);puz[r][c]=0;});window.sp=puz;window.ss=sol;let h='<div class="sudoku-grid">';for(let r=0;r<4;r++)for(let c=0;c<4;c++)h+=`<button class="sudoku-cell ${puz[r][c]>0?'given':'user-filled'}" data-r="${r}" data-c="${c}" onclick="selS(this)" ${puz[r][c]>0?'disabled':''}>${puz[r][c]||''}</button>`;h+='</div><div class="numpad">'+[1,2,3,4,0].map(n=>`<button onclick="plS(${n})">${n===0?'🗑️':n}</button>`).join('')+'</div>';document.getElementById('gameArea').innerHTML=h;window.sel=null;}window.selS=function(cell){document.querySelectorAll('.sudoku-cell').forEach(c=>c.style.outline='none');cell.style.outline='3px solid var(--accent)';cell.style.outlineOffset='-3px';window.sel={r:parseInt(cell.dataset.r),c:parseInt(cell.dataset.c),cell};};window.plS=function(n){if(!window.sel)return;const{r,c,cell}=window.sel;if(n===0){window.sp[r][c]=0;cell.textContent='';cell.classList.remove('error');return;}window.sp[r][c]=n;cell.textContent=n;cell.classList.toggle('error',window.ss[r][c]!==n);if(window.sp.every((row,ri)=>row.every((v,ci)=>v===window.ss[ri][ci])))completeGame(150,true);};
+        function initWordSearch(){const wds=['عقل','ذاكرة','تركيز','منطق','تحدي','ذكاء'];const w=wds[randInt(0,wds.length-1)];const sz=6;const g=Array.from({length:sz},()=>Array.from({length:sz},()=>String.fromCharCode(1569+randInt(0,27))));const dir=randInt(0,1);const sr=randInt(0,dir===1?sz-w.length:sz-1);const sc=randInt(0,dir===0?sz-w.length:sz-1);const pos=[];for(let i=0;i<w.length;i++){const r=dir===0?sr:sr+i;const c=dir===0?sc+i:sc;g[r][c]=w[i];pos.push(`${r},${c}`);}window.ww=w;window.wp=new Set(pos);window.wf=new Set();document.getElementById('gameArea').innerHTML=`<h3 style="margin-bottom:15px;">ابحث عن كلمة: <strong style="color:var(--primary); font-size:1.4rem;">${w}</strong></h3><div class="wordsearch-grid" style="grid-template-columns:repeat(${sz},1fr);">${g.map((row,r)=>row.map((ch,c)=>`<div class="wordsearch-cell" data-rc="${r},${c}" onclick="togWS(this)">${ch}</div>`).join('')).join('')}</div><button class="btn btn-primary" style="margin-top:20px;" onclick="chkWS()">✅ تحقق من الإجابة</button>`;}window.togWS=function(cell){const rc=cell.dataset.rc;cell.classList.toggle('selected');if(cell.classList.contains('selected'))window.wf.add(rc);else window.wf.delete(rc);};window.chkWS=function(){const allOk=window.wp.size===window.wf.size&&[...window.wp].every(p=>window.wf.has(p));if(allOk){document.querySelectorAll('.wordsearch-cell.selected').forEach(c=>c.classList.add('found'));completeGame(100,true);}else{const m=[...window.wf].filter(p=>window.wp.has(p)).length;completeGame(Math.max(10,Math.floor((m/window.wp.size)*80)),false);}};
+        function initDifferent(){const sh=['🔴','🔵','🟢','🟡','🔶','🔷'];const main=sh[randInt(0,sh.length-1)];const total=getDifficulty()==='easy'?9:getDifficulty()==='medium'?16:20;const oddIdx=randInt(0,total-1);let odd;do{odd=sh[randInt(0,sh.length-1)];}while(odd===main);const cols=Math.ceil(Math.sqrt(total));let h=`<h3 style="margin-bottom:15px;">أوجد الشكل المختلف</h3><div style="display:grid;grid-template-columns:repeat(${cols},1fr);gap:5px;max-width:${cols*55}px;margin:0 auto;">`;for(let i=0;i<total;i++)h+=`<div style="font-size:2.5rem;cursor:pointer;text-align:center;transition:transform 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform=''" onclick="ansDiff(${i===oddIdx},this)">${i===oddIdx?odd:main}</div>`;h+='</div>';document.getElementById('gameArea').innerHTML=h;}window.ansDiff=function(isCor,btn){document.querySelectorAll('#gameArea div[onclick]').forEach(d=>d.style.pointerEvents='none');btn.style.background=isCor?'rgba(67,160,71,0.4)':'rgba(229,57,53,0.4)';btn.style.borderRadius='12px';completeGame(isCor?90:20,isCor);};
+        function initOrder(){const cnt=getDifficulty()==='easy'?5:getDifficulty()==='medium'?7:9;const nums=Array.from({length:cnt},()=>randInt(1,99));window.os=[...nums].sort((a,b)=>a-b);window.ou=[];document.getElementById('gameArea').innerHTML=`<h3 style="margin-bottom:15px;">رتب الأرقام تصاعدياً (من الأصغر للأكبر)</h3><div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">${nums.sort(()=>Math.random()-0.5).map(n=>`<button class="btn btn-secondary" style="width:60px; height:60px; font-size:1.4rem; padding:0; direction:ltr;" onclick="selOrd(${n},this)">${n}</button>`).join('')}</div><div id="or" style="margin-top:20px; font-size:1.4rem; font-weight:bold; color:var(--primary); direction:ltr; min-height:40px;"></div>`;}window.selOrd=function(n,btn){window.ou.push(n);btn.disabled=true;btn.style.opacity='0.5';document.getElementById('or').textContent=window.ou.join(' - ');if(window.ou.length===window.os.length){const ok=window.ou.every((v,i)=>v===window.os[i]);completeGame(ok?100:Math.floor((window.ou.filter((v,i)=>v===window.os[i]).length/window.os.length)*70),ok);}};
+        function initLetters(){const wds=['عقل','ذاكرة','تركيز','منطق','تحدي','سلام','مدرسة'];const w=wds[randInt(0,wds.length-1)];window.lw=w;window.lu=[];document.getElementById('gameArea').innerHTML=`<h3 style="margin-bottom:15px;">رتب الحروف لتكوين كلمة</h3><div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">${w.split('').sort(()=>Math.random()-0.5).map(l=>`<button class="btn btn-secondary" style="width:60px; height:60px; font-size:1.6rem; padding:0;" onclick="selLet('${l}',this)">${l}</button>`).join('')}</div><div id="lr" style="font-size:2.5rem; font-weight:bold; color:var(--primary); margin:20px 0; min-height:60px;"></div><button class="btn btn-sm btn-danger" onclick="rstLet()">🔄 إعادة ترتيب</button>`;}window.selLet=function(l,btn){window.lu.push(l);btn.disabled=true;btn.style.opacity='0.4';document.getElementById('lr').textContent=window.lu.join('');if(window.lu.join('')===window.lw)completeGame(100,true);else if(window.lu.length===window.lw.length)completeGame(30,false);};window.rstLet=function(){window.lu=[];document.querySelectorAll('#gameArea button.btn-secondary').forEach(b=>{b.disabled=false;b.style.opacity='1';});document.getElementById('lr').textContent='';};
+        function initQuiz(){const qs=[{q:'أي كوكب هو الأكبر في نظامنا الشمسي؟',opts:['المشتري','زحل','الأرض','المريخ'],ans:0},{q:'كم عدد عظام الإنسان البالغ؟',opts:['206','186','226','300'],ans:0},{q:'ما هو أصلح غذاء للعقل؟',opts:['المطالعة والقراءة','النوم الدائم','الأكل المفرط','الكسل'],ans:0}];const q=qs[randInt(0,qs.length-1)];window.qa=q.ans;document.getElementById('gameArea').innerHTML=`<p class="question-text">${q.q}</p><div class="question-options">${q.opts.map((o,i)=>`<button class="question-option" onclick="ansQ(${i},this)">${o}</button>`).join('')}</div>`;}window.ansQ=function(i,btn){document.querySelectorAll('.question-option').forEach(b=>b.style.pointerEvents='none');if(i===window.qa){btn.classList.add('correct');completeGame(100,true);}else{btn.classList.add('wrong');document.querySelectorAll('.question-option')[window.qa].classList.add('correct');completeGame(20,false);}};
+        function initObs(){const items=['🍎','🍊','🍋','🍇','🍓'];const cnt=getDifficulty()==='easy'?6:9;const disp=items.slice(0,cnt);const tar=disp[randInt(0,disp.length-1)];const shf=[...disp,...disp.slice(0,randInt(2,5))].sort(()=>Math.random()-0.5);window.ot=tar;window.oc=shf.filter(x=>x===tar).length;window.osh=shf;document.getElementById('gameArea').innerHTML=`<h3 style="margin-bottom:15px;">كم مرة ظهرت ${tar}؟</h3><div id="od" style="font-size:4rem;min-height:90px; display:flex; align-items:center; justify-content:center;"></div><div class="math-options" id="oo" style="display:none; direction:ltr;"></div>`;showObs(0);}function showObs(i){if(i>=window.osh.length){document.getElementById('od').innerHTML='<span style="font-size:2rem; color:var(--text-secondary);">اختر العدد الصحيح</span>';const opts=new Set();opts.add(window.oc);while(opts.size<4)opts.add(randInt(Math.max(1,window.oc-3),window.oc+3));document.getElementById('oo').style.display='grid';document.getElementById('oo').innerHTML=[...opts].filter(x=>x>0).sort(()=>Math.random()-0.5).map(o=>`<button class="math-option" onclick="ansObs(${o},this)">${o}</button>`).join('');return;}document.getElementById('od').textContent=window.osh[i];setTimeout(()=>{document.getElementById('od').textContent='';setTimeout(()=>showObs(i+1),200);},600);}window.ansObs=function(v,btn){document.querySelectorAll('#oo .math-option').forEach(b=>b.disabled=true);if(v===window.oc){btn.classList.add('correct');completeGame(85,true);}else{btn.classList.add('wrong');document.querySelectorAll('#oo .math-option').forEach(b=>{if(parseInt(b.textContent)===window.oc)b.classList.add('correct');});completeGame(25,false);}};
+        function initLogic(){const pz=[{q:'أحمد أكبر من بكر، وبكر أكبر من خالد، فمن الأصغر؟',opts:['خالد','أحمد','بكر'],ans:0}];const p=pz[randInt(0,pz.length-1)];window.la=p.ans;document.getElementById('gameArea').innerHTML=`<p class="question-text">${p.q}</p><div class="question-options">${p.opts.map((o,i)=>`<button class="question-option" onclick="ansL(${i},this)">${o}</button>`).join('')}</div>`;}window.ansL=function(i,btn){document.querySelectorAll('.question-option').forEach(b=>b.style.pointerEvents='none');if(i===window.la){btn.classList.add('correct');completeGame(90,true);}else{btn.classList.add('wrong');document.querySelectorAll('.question-option')[window.la].classList.add('correct');completeGame(15,false);}};
+        function initMaze(){const sz=5;const m=Array.from({length:sz},()=>Array.from({length:sz},()=>randInt(0,3)===0?'🧱':'⬜'));m[0][0]='🚶';m[sz-1][sz-1]='🏁';for(let i=0;i<sz;i++)m[i][Math.min(i,sz-1)]=i===0?'🚶':i===sz-1?'🏁':'⬜';window.mp={r:0,c:0};window.mg=m;window.ms=sz;document.getElementById('gameArea').innerHTML=`<h3 style="margin-bottom:15px;">حرك الشخصية للوصول إلى 🏁</h3><div id="mgrid" style="display:grid;grid-template-columns:repeat(${sz},1fr);gap:3px; max-width:250px; margin:0 auto 20px;"></div><div style="max-width:200px; margin:0 auto;"><div class="btn-row-3"><button class="btn btn-secondary" style="padding:15px 0; font-size:1.5rem;" onclick="mvM(0,1)">➡</button><button class="btn btn-secondary" style="padding:15px 0; font-size:1.5rem;" onclick="mvM(-1,0)">⬆</button><button class="btn btn-secondary" style="padding:15px 0; font-size:1.5rem;" onclick="mvM(0,-1)">⬅</button></div><button class="btn btn-secondary" style="width:100%; margin-top:10px; padding:15px 0; font-size:1.5rem;" onclick="mvM(1,0)">⬇</button></div>`;renderMaze();}function renderMaze(){document.getElementById('mgrid').innerHTML=window.mg.map((row,r)=>row.map((cell,c)=>r===window.mp.r&&c===window.mp.c?'<div style="font-size:2.2rem; text-align:center;">🚶</div>':`<div style="font-size:2.2rem; text-align:center;">${cell}</div>`).join('')).join('');}window.mvM=function(dr,dc){const nr=window.mp.r+dr,nc=window.mp.c+dc;if(nr>=0&&nr<window.ms&&nc>=0&&nc<window.ms&&window.mg[nr][nc]!=='🧱'){window.mp={r:nr,c:nc};renderMaze();if(nr===window.ms-1&&nc===window.ms-1)completeGame(80,true);}};
+        function initCrossword(){const w=['عقل','ذاكرة','تركيز','منطق'][randInt(0,3)];window.cw=w;window.cwg=Array(w.length).fill('');window.cwi=0;document.getElementById('gameArea').innerHTML=`<h3 style="margin-bottom:15px;">خمن الكلمة (${w.length} أحرف)</h3><div style="display:flex;gap:10px;justify-content:center; margin-bottom:20px;">${w.split('').map((_,i)=>`<span id="cwi${i}" style="width:50px;height:55px;border-bottom:4px solid var(--primary);display:flex;align-items:center;justify-content:center;font-size:2rem; font-weight:bold;"> </span>`).join('')}</div><div class="numpad" style="grid-template-columns:repeat(7,1fr); gap:6px;">${'ابتثجحخدذرزسشصضطظعغفقكلمنهوي'.split('').map(l=>`<button style="font-size:1.1rem; padding:10px 0;" onclick="gCW('${l}')">${l}</button>`).join('')}</div><button class="btn btn-danger" style="margin-top:15px;" onclick="clrCW()">🗑️ مسح الكل</button>`;}window.gCW=function(l){if(window.cwi>=window.cw.length)return;window.cwg[window.cwi]=l;document.getElementById('cwi'+window.cwi).textContent=l;window.cwi++;if(window.cwi>=window.cw.length){const g=window.cwg.join('');completeGame(g===window.cw?100:Math.max(10,Math.floor(([...g].filter((c,i)=>c===window.cw[i]).length/window.cw.length)*60)),g===window.cw);}};window.clrCW=function(){window.cwg=Array(window.cw.length).fill('');window.cwi=0;for(let i=0;i<window.cw.length;i++)document.getElementById('cwi'+i).textContent='';};
+        
+        function randInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+        
+        function showToast(m,t='info'){const c=document.getElementById('toastContainer');const d=document.createElement('div');d.className='toast';d.textContent=m;if(t==='success')d.style.background='#43a047';if(t==='achievement')d.style.background='linear-gradient(135deg,#f57c00,#ffca28)';c.appendChild(d);setTimeout(()=>d.remove(),3000);}
+        function spawnConfetti(){for(let i=0;i<50;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.left=Math.random()*100+'%';p.style.top=-(Math.random()*60)+'px';p.style.background=['#e53935','#43a047','#1e88e5','#f57c00'][Math.floor(Math.random()*4)];p.style.animationDuration=(2+Math.random()*2)+'s';document.body.appendChild(p);setTimeout(()=>p.remove(),3500);}}
+        
+        function showAllGames(){const m=createModal('🎮 مكتبة الألعاب',`<div class="games-grid">${Object.entries(GAME_DEFINITIONS).map(([k,g])=>`<div class="game-mini-card" onclick="closeAllModals();startGame('${k}')"><span class="game-emoji">${g.emoji}</span>${g.name}</div>`).join('')}</div>`);document.body.appendChild(m);}
+        function showStatistics(){document.body.appendChild(createModal('📊 الإحصائيات الشخصية',`<div class="stat-item" style="margin-bottom:10px;">📅 أيام اللعب المتتالية: <strong style="color:var(--primary); font-size:1.2rem; direction:ltr;">${userData.streakDays}</strong></div><div class="stat-item" style="margin-bottom:10px;">🏆 التحديات المكتملة: <strong style="color:var(--primary); font-size:1.2rem; direction:ltr;">${userData.totalGamesCompleted}</strong></div><div class="stat-item" style="margin-bottom:10px;">🧩 الألغاز المحلولة: <strong style="color:var(--primary); font-size:1.2rem; direction:ltr;">${userData.totalPuzzlesSolved}</strong></div><div class="stat-item" style="margin-bottom:10px;">📈 نسبة النجاح: <strong style="color:var(--primary); font-size:1.2rem; direction:ltr;">${userData.successRate}%</strong></div><div class="stat-item">⭐ المستوى الحالي: <strong style="color:var(--primary); font-size:1.2rem; direction:ltr;">${userData.level}</strong></div>`));}
+        function showBestScores(){let h='';Object.entries(GAME_DEFINITIONS).forEach(([k,g])=>{h+=`<div class="stat-item" style="display:flex;justify-content:space-between; margin-bottom:10px; padding:15px;"><span>${g.emoji} ${g.name}</span><span style="direction:ltr; font-weight:bold;">🏅 ${bestScores[k]||0}</span></div>`;});document.body.appendChild(createModal('🏅 أفضل النتائج المسجلة',h));}
+        function showAchievements(){let h='';ACHIEVEMENTS_LIST.forEach(a=>{const u=achievements.includes(a.id);h+=`<div class="achievement-item ${u?'unlocked':'locked'}"><span class="achievement-icon">${u?a.icon:'🔒'}</span><div><strong style="font-size:1.1rem;">${a.name}</strong><br><small style="color:var(--text-secondary);">${a.desc}</small></div></div>`;});document.body.appendChild(createModal('🎖️ سجل الإنجازات',`<p style="text-align:center; font-weight:bold; margin-bottom:15px; font-size:1.2rem;">تم فتح: ${achievements.length} من ${ACHIEVEMENTS_LIST.length}</p>${h}`));}
+        
+        function showAboutSayeh(){
+            document.body.appendChild(createModal('👨‍🏫 عن التطبيق والمطور',`
+            <div class="about-card">
+              <h3 style="text-align:center; color:var(--primary); margin-bottom:10px;">إهداء التطبيق</h3>
+              <p><strong>الاسم:</strong> الأستاذ سائح طيباوي</p>
+              <p>أستاذ علوم طبيعية متقاعد، بخبرة تفوق الـ 30 عاماً، بشوش ومحب دائماً للمعرفة.</p>
+              <span class="quote">✨ "العقل كالنبتة، إن سقيتها بالمعرفة أزهرت." ✨</span>
+              
+              <div class="dev-info">
+                  <h4 style="color:var(--primary-dark); margin-bottom:8px;">معلومات المطور</h4>
+                  <p style="font-weight:bold;">الأستاذ محمد قادري</p>
+                  <p>أستاذ مادة الفيزياء</p>
+                  <p>ثانوية محمد الأخضر فيلالي<br>ولاية غرداية - الجزائر</p>
+                  <div style="direction:ltr; margin-top:10px; font-weight:600; font-size:0.95rem; color:var(--text-secondary);">
+                    <p>Email: kadri68@gmail.com</p>
+                    <p>Phone: 0662692987</p>
+                  </div>
+              </div>
+            </div>`));
+        }
+        
+        function showSettings(){document.body.appendChild(createModal('⚙️ الإعدادات العامة',`<div class="setting-row"><span>🌙 الوضع الليلي المريح</span><button class="toggle-switch ${settings.darkMode?'active':''}" onclick="toggleSet('darkMode')"></button></div><div class="setting-row"><span>📝 حجم الخط</span><select style="padding:8px 12px; border-radius:8px; border:1px solid var(--border); font-family:inherit; font-size:1rem;" onchange="changeFS(this.value)"><option value="small" ${settings.fontSize==='small'?'selected':''}>صغير</option><option value="medium" ${settings.fontSize==='medium'?'selected':''}>متوسط</option><option value="large" ${settings.fontSize==='large'?'selected':''}>كبير</option></select></div><button class="btn btn-danger" style="margin-top:20px;" onclick="resetAll()">🗑️ مسح جميع بياناتي</button>`));}
+        
+        function toggleSet(k){settings[k]=!settings[k];saveData(DB_KEYS.settings,settings);applySettings();}
+        function changeFS(v){settings.fontSize=v;saveData(DB_KEYS.settings,settings);applySettings();}
+        function resetAll(){if(confirm('هل أنت متأكد من حذف جميع بياناتك وإنجازاتك؟')){localStorage.clear();userData=getDefaultUserData();settings=getDefaultSettings();achievements=[];bestScores={};gameHistory=[];saveData(DB_KEYS.userData,userData);saveData(DB_KEYS.settings,settings);saveData(DB_KEYS.achievements,achievements);saveData(DB_KEYS.bestScores,bestScores);saveData(DB_KEYS.dailyChallenge,{date:'',games:[],completed:[],score:0});applySettings();updateMainUI();closeAllModals();}}
+        
+        function createModal(t,c){const o=document.createElement('div');o.className='modal-overlay';o.onclick=e=>{if(e.target===o)o.remove();};o.innerHTML=`<div class="modal"><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button><h2 style="margin-bottom:15px; color:var(--primary); padding-right:45px;">${t}</h2>${c}</div>`;return o;}
+        function closeAllModals(){document.querySelectorAll('.modal-overlay').forEach(m=>m.remove());}
+        
+        function init(){
+            applySettings(); updateDateDisplay(); updateMainUI(); updateStreak(); checkAchievements();
+            setInterval(updateDateDisplay, 60000);
+            const d=getDailyChallengeData(); if(d.date===getTodayKey()&&d.completed.length>=5&&!d.claimed){d.claimed=true;saveDailyChallenge(d);addXP(200+userData.level*20);}
+        }
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>Kadri APK Builder</title>
+<style>
+:root{
+ --bg:#0b1220;--panel:#141f31;--panel2:#1b2940;
+ --text:#f1f5f9;--muted:#9aabc2;--accent:#38bdf8;
+ --green:#34d399;--border:#293951;--red:#fb7185;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;background:var(--bg);color:var(--text);
+ font-family:Tahoma,Arial,sans-serif;line-height:1.7;
+}
+header{
+ padding:22px 17px 18px;
+ background:linear-gradient(135deg,#142c49,#102033);
+ border-bottom:1px solid var(--border);
+}
+.header-inner{max-width:850px;margin:auto}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-icon{
+ width:48px;height:48px;border-radius:15px;
+ background:linear-gradient(135deg,#0ea5e9,#2563eb);
+ display:grid;place-items:center;font-size:25px;
+}
+h1{font-size:21px;margin:0}
+.subtitle{color:#a8bdd4;font-size:12px}
+main{max-width:850px;margin:auto;padding:16px}
+.card{
+ background:var(--panel);border:1px solid var(--border);
+ border-radius:17px;padding:17px;margin-bottom:15px;
+}
+.card h2{font-size:16px;margin:0 0 14px}
+.section-title{
+ display:flex;align-items:center;gap:9px;
+}
+.num{
+ background:#164e70;color:#7dd3fc;
+ width:27px;height:27px;border-radius:9px;
+ display:grid;place-items:center;font-size:13px;
+}
+label{display:block;font-size:13px;color:#cbd5e1;margin:12px 0 5px}
+input,select{
+ width:100%;padding:12px;border-radius:10px;
+ border:1px solid var(--border);background:#0d1727;
+ color:white;font-size:14px;outline:none;
+}
+input:focus,select:focus{border-color:var(--accent)}
+input[type=file]{font-size:12px}
+.hint{font-size:11px;color:var(--muted);margin-top:5px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{
+ border:0;border-radius:11px;padding:12px 15px;
+ font-size:14px;font-weight:bold;cursor:pointer;
+}
+.primary{background:var(--accent);color:#082033}
+.secondary{background:var(--panel2);color:white;border:1px solid var(--border)}
+.green{background:#065f46;color:#d1fae5}
+.danger{background:#4c1d2a;color:#fecdd3}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.actions button{flex:1;min-width:125px}
+.drop{
+ border:2px dashed #36516e;border-radius:14px;
+ padding:23px 12px;text-align:center;background:#101b2d;
+}
+.drop .big{font-size:33px}
+.drop p{margin:5px;font-size:13px}
+.drop small{color:var(--muted)}
+.status{
+ padding:12px;border-radius:10px;background:#10283a;
+ color:#bae6fd;font-size:12px;margin-top:12px;
+}
+.status.error{background:#401e2a;color:#fecdd3}
+.status.success{background:#10392f;color:#a7f3d0}
+.preview-icon{
+ width:65px;height:65px;border-radius:15px;
+ object-fit:cover;background:#26374c;
+ border:1px solid var(--border);
+}
+.project-info{
+ display:flex;align-items:center;gap:14px;
+ padding:12px;background:#101b2d;border-radius:12px;
+}
+.info-text{font-size:12px;color:var(--muted)}
+.info-text strong{display:block;color:white;font-size:14px}
+.progress{
+ height:7px;background:#26364b;border-radius:20px;
+ overflow:hidden;margin-top:10px;
+}
+.progress div{height:100%;width:0;background:var(--green)}
+footer{
+ text-align:center;color:#71839a;padding:20px;
+ font-size:11px;border-top:1px solid var(--border);
+}
+footer strong{color:#b6c7da}
+.hidden{display:none!important}
+.file-list{
+ max-height:145px;overflow:auto;margin-top:10px;
+ font-size:11px;color:#b7c8dc;
+}
+.file-list div{padding:4px;border-bottom:1px solid #26364b}
+@media(max-width:500px){
+ .grid{grid-template-columns:1fr}
+ main{padding:11px}
+ .card{padding:14px}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="header-inner">
+  <div class="logo">
+   <div class="logo-icon">📦</div>
+   <div>
+    <h1>Kadri APK Builder</h1>
+    <div class="subtitle">من مشروع HTML إلى تطبيق Android</div>
+   </div>
+  </div>
+ </div>
+</header>
+
+<main>
+
+<section class="card">
+ <div class="section-title">
+  <span class="num">1</span>
+  <h2>استيراد المشروع</h2>
+ </div>
+
+ <div class="drop">
+  <div class="big">📁</div>
+  <p><strong>اختر ملفات مشروعك</strong></p>
+  <small>ملف HTML أو مجلد كامل يحتوي على ملفات المشروع</small>
+  <div class="actions">
+   <button class="btn primary" onclick="document.getElementById('htmlFile').click()">اختيار HTML</button>
+   <button class="btn secondary" onclick="document.getElementById('folderFiles').click()">اختيار مجلد</button>
+  </div>
+ </div>
+
+ <input id="htmlFile" type="file" accept=".html,.htm" class="hidden">
+ <input id="folderFiles" type="file" webkitdirectory multiple class="hidden">
+
+ <div id="importStatus" class="status">لم يتم استيراد أي مشروع بعد.</div>
+ <div id="fileList" class="file-list hidden"></div>
+</section>
+
+<section class="card">
+ <div class="section-title">
+  <span class="num">2</span>
+  <h2>معلومات تطبيق Android</h2>
+ </div>
+
+ <label>اسم التطبيق</label>
+ <input id="appName" placeholder="مثلاً: تطبيق الفيزياء">
+
+ <label>معرّف التطبيق Package ID</label>
+ <input id="packageId" value="com.kadri.myapp" dir="ltr">
+ <div class="hint">مثال: com.kadri.physics يجب أن يكون فريداً وبأحرف لاتينية صغيرة.</div>
+
+ <div class="grid">
+  <div>
+   <label>إصدار التطبيق</label>
+   <input id="versionName" value="1.0">
+  </div>
+  <div>
+   <label>رقم الإصدار</label>
+   <input id="versionCode" type="number" value="1" min="1">
+  </div>
+ </div>
+
+ <label>أيقونة التطبيق</label>
+ <input id="iconFile" type="file" accept="image/png,image/jpeg,image/webp">
+ <div class="hint">يفضل صورة مربعة بحجم 512 × 512 بكسل.</div>
+</section>
+
+<section class="card">
+ <div class="section-title">
+  <span class="num">3</span>
+  <h2>إعدادات التطبيق</h2>
+ </div>
+
+ <label>اتجاه الشاشة</label>
+ <select id="orientation">
+  <option value="unspecified">تلقائي</option>
+  <option value="portrait">عمودي</option>
+  <option value="landscape">أفقي</option>
+ </select>
+
+ <label>الاتصال بالإنترنت</label>
+ <select id="internet">
+  <option value="true">السماح بالإنترنت</option>
+  <option value="false">دون إنترنت</option>
+ </select>
+
+ <label>لون شريط التطبيق</label>
+ <div class="grid">
+  <input id="themeColor" type="color" value="#101827">
+  <select id="screenMode">
+   <option value="light">واجهة فاتحة</option>
+   <option value="dark" selected>واجهة داكنة</option>
+  </select>
+ </div>
+</section>
+
+<section class="card">
+ <div class="section-title">
+  <span class="num">4</span>
+  <h2>معاينة المشروع</h2>
+ </div>
+
+ <div class="project-info">
+  <img id="iconPreview" class="preview-icon" alt="أيقونة التطبيق">
+  <div class="info-text">
+   <strong id="previewName">تطبيقي الجديد</strong>
+   <span id="previewPackage">com.kadri.myapp</span>
+   <div id="previewVersion">الإصدار 1.0</div>
+  </div>
+ </div>
+
+ <div class="actions">
+  <button class="btn secondary" id="previewBtn">معاينة HTML</button>
+  <button class="btn green" id="saveBtn">حفظ إعدادات المشروع</button>
+ </div>
+ <div id="saveStatus" class="hint"></div>
+</section>
+
+<section class="card">
+ <div class="section-title">
+  <span class="num">5</span>
+  <h2>إعداد ملفات البناء</h2>
+ </div>
+
+ <p class="hint">
+  هذه المرحلة تجهز بيانات المشروع. في الإصدار القادم سنربطها بخادم
+  Android Gradle لإنشاء ملف APK أو AAB حقيقي.
+ </p>
+
+ <div class="progress"><div id="progressBar"></div></div>
+ <div id="buildStatus" class="status">محرك البناء السحابي غير مربوط بعد.</div>
+
+ <div class="actions">
+  <button class="btn primary" id="exportBtn">تصدير إعدادات المشروع JSON</button>
+  <button class="btn secondary" id="resetBtn">مشروع جديد</button>
+ </div>
+</section>
+
+</main>
+
+<footer>
+ <strong>Kadri APK Builder</strong><br>
+ أداة تطوير وتحويل مشاريع الويب إلى تطبيقات أندرويد<br>
+ إعداد المشروع: الأستاذ محمد قادري
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+
+let projectFiles = [];
+let mainHTML = null;
+let iconData = null;
+
+function message(id,text,type=""){
+ const el=$(id);
+ el.textContent=text;
+ el.className="status "+type;
+}
+
+function updatePreview(){
+ $("previewName").textContent=$("appName").value || "تطبيقي الجديد";
+ $("previewPackage").textContent=$("packageId").value;
+ $("previewVersion").textContent="الإصدار "+$("versionName").value;
+}
+
+["appName","packageId","versionName"].forEach(id=>{
+ $(id).addEventListener("input",updatePreview);
+});
+
+$("htmlFile").addEventListener("change",async e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+ projectFiles=[file];
+ mainHTML=file;
+ message("importStatus","تم اختيار: "+file.name,"success");
+ $("fileList").classList.add("hidden");
+});
+
+$("folderFiles").addEventListener("change",e=>{
+ const files=Array.from(e.target.files);
+ if(!files.length)return;
+
+ projectFiles=files;
+ const index=files.find(f=>
+  f.webkitRelativePath.split("/").pop().toLowerCase()==="index.html"
+ );
+ mainHTML=index || files.find(f=>/\.html?$/i.test(f.name));
+
+ message("importStatus",
+  "تم استيراد "+files.length+" ملفاً. "+
+  (mainHTML?"تم العثور على صفحة HTML الرئيسية: "+mainHTML.name:
+  "لم يتم العثور على ملف HTML رئيسي."),
+  mainHTML?"success":"error"
+ );
+
+ const list=$("fileList");
+ list.classList.remove("hidden");
+ list.innerHTML="";
+ files.slice(0,100).forEach(f=>{
+  const d=document.createElement("div");
+  d.textContent=f.webkitRelativePath || f.name;
+  list.appendChild(d);
+ });
+ if(files.length>100){
+  const d=document.createElement("div");
+  d.textContent="وعدد "+(files.length-100)+" ملف إضافي.";
+  list.appendChild(d);
+ }
+});
+
+$("iconFile").addEventListener("change",e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{
+  iconData=reader.result;
+  $("iconPreview").src=iconData;
+ };
+ reader.readAsDataURL(file);
+});
+
+$("previewBtn").onclick=()=>{
+ if(!mainHTML){
+  alert("يرجى استيراد ملف HTML أولاً.");
+  return;
+ }
+ const reader=new FileReader();
+ reader.onload=()=>{
+  const win=window.open("","_blank");
+  if(!win){
+   alert("اسمح بفتح النوافذ المنبثقة للمعاينة.");
+   return;
+  }
+  win.document.open();
+  win.document.write(reader.result);
+  win.document.close();
+ };
+ reader.readAsText(mainHTML);
+};
+
+function getConfig(){
+ const pkg=$("packageId").value.trim();
+ if(!/^[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)+$/.test(pkg)){
+  throw new Error("معرّف التطبيق غير صالح. استعمل صيغة مثل com.kadri.app");
+ }
+ if(!mainHTML)throw new Error("استورد ملف HTML أو مجلداً يحتوي عليه أولاً.");
+
+ return {
+  appName:$("appName").value.trim() || "Kadri App",
+  packageId:pkg,
+  versionName:$("versionName").value,
+  versionCode:Number($("versionCode").value),
+  orientation:$("orientation").value,
+  internet:$("internet").value==="true",
+  themeColor:$("themeColor").value,
+  screenMode:$("screenMode").value,
+  mainHtml:mainHTML.name,
+  files:projectFiles.map(f=>({
+   name:f.webkitRelativePath || f.name,
+   size:f.size,
+   type:f.type
+  })),
+  iconSelected:!!iconData,
+  buildTargets:["APK","AAB"],
+  buildEngine:"Android Gradle - Cloud"
+ };
+}
+
+$("saveBtn").onclick=()=>{
+ try{
+  const config=getConfig();
+  localStorage.setItem("kadri_apk_project",JSON.stringify(config));
+  $("saveStatus").textContent="تم حفظ إعدادات المشروع على هذا المتصفح.";
+ }catch(e){alert(e.message);}
+};
+
+$("exportBtn").onclick=()=>{
+ try{
+  const config=getConfig();
+  const blob=new Blob([JSON.stringify(config,null,2)],{
+   type:"application/json"
+  });
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="kadri-project-config.json";
+  a.click();
+  URL.revokeObjectURL(url);
+  message("buildStatus","تم تصدير ملف الإعدادات JSON. هذا ليس ملف APK بعد.","success");
+ }catch(e){alert(e.message);}
+};
+
+$("resetBtn").onclick=()=>{
+ if(!confirm("هل تريد بدء مشروع جديد؟"))return;
+ projectFiles=[];
+ mainHTML=null;
+ iconData=null;
+ $("htmlFile").value="";
+ $("folderFiles").value="";
+ $("iconFile").value="";
+ $("appName").value="";
+ $("packageId").value="com.kadri.myapp";
+ $("versionName").value="1.0";
+ $("versionCode").value="1";
+ $("iconPreview").removeAttribute("src");
+ $("fileList").innerHTML="";
+ $("fileList").classList.add("hidden");
+ $("saveStatus").textContent="";
+ message("importStatus","لم يتم استيراد أي مشروع بعد.");
+ message("buildStatus","محرك البناء السحابي غير مربوط بعد.");
+ updatePreview();
+};
+
+updatePreview();
+</script>
+</body>
+</html>

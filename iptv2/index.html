@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تلفاز IPTV</title>
+<style>
+:root{--bg:#101a2b;--panel:#182640;--line:#2f4167;--text:#e9eef8;--muted:#9fb0cc;--accent:#ff6b81;--ok:#5fd4a0;--star:#ffc857}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--text);font-family:Tahoma,"Segoe UI",Arial,sans-serif;font-size:clamp(16px,2vw,24px);display:flex;flex-direction:column}
+header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line)}
+h1{font-size:1.1em;margin:0 0 0 auto;font-weight:700}
+button,input,select{font:inherit;color:var(--text);background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:8px 16px;min-height:44px}
+button{cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+button.on{color:var(--star);border-color:var(--star)}
+:focus{outline:none}
+:focus-visible,button:focus,input:focus,select:focus,.row:focus{border-color:#fff;box-shadow:0 0 0 4px var(--accent)}
+.stage{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;background:#000}
+video{flex:1;min-height:0;width:100%;background:#000}
+.bar{padding:8px 16px;background:var(--bg);display:flex;gap:12px;align-items:baseline}
+.now{font-weight:700}
+.status{color:var(--muted);font-size:.8em}
+.status.err{color:var(--accent)}
+.panel{position:absolute;inset:0 0 0 auto;width:min(520px,100%);background:var(--bg);border-inline-start:1px solid var(--line);display:flex;flex-direction:column;z-index:5}
+.panel[hidden]{display:none}
+.tools{display:flex;flex-wrap:wrap;gap:8px;padding:10px}
+.tools input{flex:1 1 100%}
+.tools select{flex:1}
+.rows{flex:1;overflow-y:auto;padding:0 10px 10px;display:flex;flex-direction:column;gap:6px}
+.row{display:flex;gap:12px;align-items:center;padding:8px 12px;border:2px solid var(--line);border-radius:10px;background:var(--panel);cursor:pointer}
+.row img,.row .ph{width:40px;height:40px;object-fit:contain;flex:none;border-radius:50%}
+.row .ph{background:var(--line);display:grid;place-items:center;font-weight:700;color:var(--muted)}
+.row .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .st{color:var(--star)}
+.row[aria-current=true]{border-color:var(--ok)}
+.empty{color:var(--muted);text-align:center;padding:24px}
+</style>
+</head>
+<body>
+<header>
+  <h1>تلفاز IPTV</h1>
+  <button id="listBtn" class="primary" aria-expanded="false">القنوات ▾</button>
+  <button id="prev">السابقة</button>
+  <button id="next">التالية</button>
+  <button id="fav">☆ مفضلة</button>
+</header>
+<div class="stage">
+  <video id="video" autoplay playsinline></video>
+  <div class="bar"><span class="now" id="now">افتح قائمة القنوات واختر قناة</span><span class="status" id="status" role="status"></span></div>
+  <div class="panel" id="panel" hidden>
+    <div class="tools">
+      <input id="url" dir="ltr" value="https://iptv-org.github.io/iptv/languages/ara.m3u" aria-label="رابط M3U">
+      <input id="q" type="search" placeholder="ابحث عن قناة" aria-label="بحث">
+      <select id="grp" aria-label="التصنيف"><option value="">كل التصنيفات</option></select>
+      <button id="tab" aria-pressed="false">★ المفضلة فقط</button>
+      <button id="reload">تحديث</button>
+    </div>
+    <div class="rows" id="rows"></div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js"></script>
+<script>
+const $ = id => document.getElementById(id), video = $('video');
+let all = [], view = [], idx = -1, hls = null, favs = new Set(), onlyFav = false, shown = 0;
+const PAGE = 100;
+try { favs = new Set(JSON.parse(localStorage.getItem('favs') || '[]')); } catch (e) {}
+const saveFavs = () => { try { localStorage.setItem('favs', JSON.stringify([...favs])); } catch (e) {} };
+const setStatus = (m, err) => { $('status').textContent = m || ''; $('status').className = 'status' + (err ? ' err' : ''); };
+
+function parseM3U(text){
+  const out = []; let meta = null;
+  for (const raw of text.split(/\r?\n/)){
+    const l = raw.trim(); if (!l) continue;
+    if (l.startsWith('#EXTINF')){
+      const a = k => (l.match(new RegExp(k + '="([^"]*)"')) || [])[1] || '';
+      meta = { name: l.slice(l.lastIndexOf(',') + 1).trim() || a('tvg-name') || 'بدون اسم', logo: a('tvg-logo'), group: a('group-title') || 'أخرى' };
+    } else if (!l.startsWith('#') && meta){ out.push({ ...meta, url: l }); meta = null; }
+  }
+  return out;
+}
+
+async function load(){
+  setStatus('جارٍ جلب القنوات…');
+  try {
+    const r = await fetch($('url').value.trim());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    all = parseM3U(await r.text());
+    const gs = [...new Set(all.map(c => c.group))].sort((a, b) => a.localeCompare(b, 'ar'));
+    $('grp').innerHTML = '<option value="">كل التصنيفات</option>';
+    gs.forEach(g => { const o = document.createElement('option'); o.textContent = g; $('grp').append(o); });
+    setStatus('تم تحميل ' + all.length + ' قناة');
+    refresh();
+  } catch (e) { setStatus('تعذّر جلب القائمة: ' + e.message, true); }
+}
+
+function refresh(){
+  const q = $('q').value.trim().toLowerCase(), g = $('grp').value;
+  view = all.filter(c => (!g || c.group === g) && (!onlyFav || favs.has(c.url)) && (!q || c.name.toLowerCase().includes(q)));
+  $('rows').innerHTML = ''; shown = 0; more();
+}
+
+function more(){
+  const box = $('rows'), old = $('moreBtn'); if (old) old.remove();
+  if (!view.length){ box.innerHTML = '<p class="empty">لا توجد قنوات</p>'; return; }
+  view.slice(shown, shown + PAGE).forEach((c, i) => {
+    const r = document.createElement('div');
+    r.className = 'row'; r.tabIndex = 0; r.setAttribute('role', 'button');
+    r.dataset.i = shown + i;
+    if (idx >= 0 && all[idx] === c) r.setAttribute('aria-current', 'true');
+    r.append(icon(c));
+    const n = document.createElement('span'); n.className = 'nm'; n.textContent = c.name; r.append(n);
+    if (favs.has(c.url)){ const s = document.createElement('span'); s.className = 'st'; s.textContent = '★'; r.append(s); }
+    r.onclick = () => { play(all.indexOf(c)); togglePanel(false); };
+    box.append(r);
+  });
+  shown = Math.min(view.length, shown + PAGE);
+  if (shown < view.length){ const b = document.createElement('button'); b.id = 'moreBtn'; b.textContent = 'عرض المزيد'; b.onclick = more; box.append(b); }
+}
+function icon(c){
+  if (c.logo){ const im = document.createElement('img'); im.loading = 'lazy'; im.alt = ''; im.src = c.logo; im.onerror = () => im.replaceWith(ph(c)); return im; }
+  return ph(c);
+}
+function ph(c){ const d = document.createElement('div'); d.className = 'ph'; d.textContent = c.name.trim().charAt(0).toUpperCase(); return d; }
+
+function play(i){
+  const list = onlyFav || $('q').value || $('grp').value ? view : all;
+  if (!all.length) return;
+  idx = (i + all.length) % all.length;
+  const c = all[idx];
+  $('now').textContent = c.name; setStatus('جارٍ التشغيل…'); updFav();
+  document.querySelectorAll('.row[aria-current]').forEach(n => n.removeAttribute('aria-current'));
+  if (hls){ hls.destroy(); hls = null; }
+  if (/m3u8/i.test(c.url) && window.Hls && Hls.isSupported()){
+    hls = new Hls();
+    hls.on(Hls.Events.MANIFEST_PARSED, () => { video.play().catch(() => {}); setStatus(''); });
+    hls.on(Hls.Events.ERROR, (_, d) => { if (d.fatal) setStatus('تعذّر تشغيل القناة. اضغط «التالية» لتجربة غيرها.', true); });
+    hls.loadSource(c.url); hls.attachMedia(video);
+  } else { video.src = c.url; video.play().catch(() => {}); }
+}
+// التالية/السابقة تتبع القائمة الحالية (مفضلة أو مصفّاة) إن وُجدت
+function step(d){
+  if (!all.length) return;
+  const pool = (onlyFav || $('q').value || $('grp').value) && view.length ? view : all;
+  const cur = idx >= 0 ? pool.indexOf(all[idx]) : -1;
+  const n = pool[(cur + d + pool.length) % pool.length];
+  play(all.indexOf(n));
+}
+function updFav(){ const on = idx >= 0 && favs.has(all[idx].url); $('fav').textContent = (on ? '★' : '☆') + ' مفضلة'; $('fav').classList.toggle('on', on); }
+function toggleFav(){
+  if (idx < 0) return;
+  const u = all[idx].url; favs.has(u) ? favs.delete(u) : favs.add(u);
+  saveFavs(); updFav(); if (!$('panel').hidden) refresh();
+}
+function togglePanel(open){
+  const p = $('panel'); open = open === undefined ? p.hidden : open;
+  p.hidden = !open; $('listBtn').setAttribute('aria-expanded', open);
+  if (open){ const t = p.querySelector('.row[aria-current]') || p.querySelector('.row') || $('q'); t.focus(); t.scrollIntoView({ block: 'nearest' }); }
+  else $('listBtn').focus();
+}
+window.onBack = () => { if (!$('panel').hidden){ togglePanel(false); return true; } return false; };
+
+$('listBtn').onclick = () => togglePanel();
+$('next').onclick = () => step(1);
+$('prev').onclick = () => step(-1);
+$('fav').onclick = toggleFav;
+$('tab').onclick = () => { onlyFav = !onlyFav; $('tab').setAttribute('aria-pressed', onlyFav); $('tab').classList.toggle('on', onlyFav); refresh(); };
+$('reload').onclick = load;
+$('q').oninput = refresh; $('grp').onchange = refresh;
+video.addEventListener('playing', () => setStatus(''));
+video.addEventListener('error', () => { if (!hls) setStatus('تعذّر تشغيل القناة.', true); });
+video.addEventListener('click', () => togglePanel(true));
+
+document.addEventListener('keydown', e => {
+  const k = e.key, t = e.target;
+  const inField = t.tagName === 'INPUT' || t.tagName === 'SELECT';
+  if (k === 'Escape' || k === 'Backspace' && !inField){ if (window.onBack()) e.preventDefault(); return; }
+  if (['ChannelUp', 'MediaTrackNext', 'PageDown'].includes(k)){ step(1); e.preventDefault(); return; }
+  if (['ChannelDown', 'MediaTrackPrevious', 'PageUp'].includes(k)){ step(-1); e.preventDefault(); return; }
+  if (t.classList && t.classList.contains('row')){
+    if (k === 'Enter' || k === ' '){ t.click(); e.preventDefault(); }
+    else if (k === 'ArrowDown' && t.nextElementSibling){ t.nextElementSibling.focus(); e.preventDefault(); }
+    else if (k === 'ArrowUp'){ (t.previousElementSibling || $('reload')).focus(); e.preventDefault(); }
+  } else if (k === 'ArrowDown' && !$('panel').hidden && (t.id === 'reload' || t.id === 'tab')){ const f = $('rows').querySelector('.row'); if (f){ f.focus(); e.preventDefault(); } }
+});
+load();
+</script>
+</body>
+</html>

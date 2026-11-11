@@ -1,0 +1,175 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f8ff;
+  margin: 20px;
+  direction: rtl;
+  text-align: center;
+}
+
+h1 {
+  color: #004080;
+  font-weight: bold;
+  font-size: 2em;
+  border: 2px solid #004080;
+  padding: 10px;
+  display: inline-block;
+  border-radius: 10px;
+}
+
+label {
+  font-weight: bold;
+  text-align: right;
+  display: block;
+  margin-top: 10px;
+}
+
+input, button {
+  margin: 5px auto;
+  width: 90%;
+  max-width: 300px;
+  padding: 10px;
+  font-size: 1em;
+  display: block;
+}
+
+button {
+  background: #004080;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0066cc;
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  margin: 20px 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 10px;
+}
+
+th, td {
+  border: 1px solid #333;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background: #004080;
+  color: #fff;
+}
+
+#actions {
+  margin: 20px 0;
+}
+
+.info-buttons, .control-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.clear-btn {
+  background: #dc3545 !important;
+}
+
+.clear-btn:hover {
+  background: #c82333 !important;
+}
+
+.exit-btn {
+  background: #6c757d !important;
+}
+
+.exit-btn:hover {
+  background: #5a6268 !important;
+}
+
+/* تنسيق القيم العظمى */
+.max-value {
+  background-color: #ffd700 !important;
+  color: #000 !important;
+  font-weight: bold;
+  border: 2px solid #ffb300 !important;
+  animation: highlight 2s ease-in-out;
+}
+
+@keyframes highlight {
+  0% { background-color: #ffd700; }
+  50% { background-color: #ffed4e; }
+  100% { background-color: #ffd700; }
+}
+
+/* تنسيق النتائج */
+.results-summary {
+  background: #e8f4f8;
+  border: 2px solid #004080;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  text-align: right;
+}
+
+.results-summary h3 {
+  color: #004080;
+  margin-bottom: 15px;
+}
+
+.result-item {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.result-label {
+  font-weight: bold;
+  color: #004080;
+}
+
+.result-value {
+  background: #ffd700;
+  color: #000;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+/* النافذة المنبثقة */
+.popup {
+  display: none;
+  position: fixed;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 70%;
+  background: #fff;
+  border: 2px solid #004080;
+  padding: 20px;
+  overflow: auto;
+  z-index: 1000;
+}
+
+.popup-close {
+  float: left;
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
