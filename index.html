@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f2a43">
+<title>تجارب تعليمية ومواقع</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f5f7f4; --ink:#0f2a43; --muted:#5b6b7a; --line:#d5dde3; --card:#ffffff;
+  --grid:rgba(15,42,67,.06); --accent:#0f2a43; --on-accent:#fff; --soft:rgba(15,42,67,.06);
+  --shadow:0 1px 2px rgba(15,42,67,.08),0 8px 24px -12px rgba(15,42,67,.18);
+}
+@media (prefers-color-scheme:dark){
+  :root{--paper:#0c1620; --ink:#e8eef3; --muted:#93a4b3; --line:#243646; --card:#13222f;
+    --grid:rgba(255,255,255,.045); --accent:#e8eef3; --on-accent:#0c1620; --soft:rgba(255,255,255,.07);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -14px rgba(0,0,0,.7);}
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'IBM Plex Sans Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+  color:var(--ink);min-height:100vh;display:flex;flex-direction:column;line-height:1.6;
+}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #2f80ed;outline-offset:2px;border-radius:6px}
+
+/* Header */
+header{padding:clamp(1.5rem,5vw,3rem) 1.2rem 1.2rem;max-width:1200px;width:100%;margin:0 auto}
+.brand{display:flex;align-items:center;gap:.8rem;margin-bottom:.4rem}
+.brand-mark{width:44px;height:44px;border-radius:10px;background:var(--accent);color:var(--on-accent);
+  display:grid;place-items:center;font-size:1.4rem;flex:none}
+h1{font-size:clamp(1.6rem,5vw,2.5rem);font-weight:700;line-height:1.25}
+.lead{color:var(--muted);max-width:60ch;margin-bottom:1.3rem}
+.search{position:relative;max-width:620px}
+.search input{width:100%;padding:.85rem 3rem;border-radius:12px;border:1.5px solid var(--line);
+  background:var(--card);box-shadow:var(--shadow);font-size:1rem}
+.search input:focus{border-color:#2f80ed;outline:none;box-shadow:0 0 0 4px rgba(47,128,237,.2)}
+.search .ico{position:absolute;inset-inline-start:1rem;top:50%;transform:translateY(-50%);pointer-events:none;opacity:.6}
+.search .clear{position:absolute;inset-inline-end:.5rem;top:50%;transform:translateY(-50%);width:34px;height:34px;
+  border:0;border-radius:8px;background:var(--soft);cursor:pointer;display:none}
+.search.has-text .clear{display:block}
+
+main{flex:1;max-width:1200px;width:100%;margin:0 auto;padding:.5rem 1.2rem 2rem}
+.view{display:none}.view.active{display:block}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem;margin-bottom:1.2rem}
+.bar h2{font-size:1.2rem;font-weight:700}
+.bar .count{color:var(--muted);font-size:.9rem}
+
+/* Categories */
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:1rem}
+.cat{--c:#2f80ed;position:relative;text-align:start;background:var(--card);border:1px solid var(--line);
+  border-radius:6px 18px 6px 18px;padding:1.2rem 1.2rem 1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;gap:.6rem;border-top:6px solid var(--c);
+  transition:transform .2s,box-shadow .2s}
+.cat:hover{transform:translateY(-3px)}
+.cat-top{display:flex;align-items:center;justify-content:space-between}
+.cat-ico{width:50px;height:50px;border-radius:12px;display:grid;place-items:center;font-size:1.7rem;
+  background:color-mix(in srgb,var(--c) 16%,transparent)}
+.cat-n{font-weight:700;font-size:.85rem;padding:.15rem .7rem;border-radius:99px;
+  background:color-mix(in srgb,var(--c) 18%,transparent)}
+.cat h3{font-size:1.15rem;font-weight:700}
+.cat p{font-size:.9rem;color:var(--muted)}
+.pills{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:auto}
+.pills span{font-size:.75rem;padding:.15rem .55rem;border-radius:6px;background:var(--soft);color:var(--muted)}
+
+/* Apps */
+.apps{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:1rem}
+.app{--c:#2f80ed;background:var(--card);border:1px solid var(--line);border-inline-start:5px solid var(--c);
+  border-radius:10px;padding:1.1rem 1.1rem 1rem;display:flex;flex-direction:column;gap:.5rem;box-shadow:var(--shadow)}
+.tag{align-self:flex-start;font-size:.75rem;font-weight:600;padding:.1rem .6rem;border-radius:6px;
+  background:color-mix(in srgb,var(--c) 18%,transparent)}
+.app h3{font-size:1.05rem;font-weight:700;line-height:1.45}
+.app p{font-size:.88rem;color:var(--muted);flex:1}
+.path{direction:ltr;text-align:end;font:.72rem ui-monospace,Consolas,monospace;color:var(--muted);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-top:1px dashed var(--line);padding-top:.45rem}
+.acts{display:flex;gap:.5rem;margin-top:.3rem}
+.btn{flex:1;text-align:center;text-decoration:none;cursor:pointer;border-radius:9px;padding:.6rem .5rem;
+  font-weight:600;font-size:.9rem;border:1.5px solid var(--accent);transition:opacity .15s}
+.btn.main{background:var(--accent);color:var(--on-accent)}
+.btn.alt{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn:hover{opacity:.85}
+.back{border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:.55rem 1rem;cursor:pointer;font-weight:600}
+.back:hover{border-color:var(--accent)}
+.catHead{display:flex;align-items:center;gap:.9rem}
+.catHead .cat-ico{--c:#2f80ed}
+.empty{grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--muted)}
+mark{background:#ffe27a;color:#222;border-radius:3px;padding:0 2px}
+
+/* Modal */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(5,12,20,.85);display:none;flex-direction:column}
+.modal.open{display:flex}
+.m-head{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.7rem 1rem;background:#0f2a43;color:#fff}
+.m-head h3{font-size:1rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m-head .acts{margin:0;flex:none}
+.m-head .btn{flex:none;padding:.45rem .9rem;border-color:#fff;color:#fff;font-size:.85rem}
+.m-head .btn.main{background:#fff;color:#0f2a43}
+.modal iframe{flex:1;width:100%;border:0;background:#fff}
+.m-hint{background:#0c1620;color:#93a4b3;font-size:.8rem;text-align:center;padding:.4rem}
+
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:1.2rem;border-top:1px solid var(--line);background:var(--card)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="brand-mark" aria-hidden="true">⚛</div><h1>تجارب تعليمية ومواقع</h1></div>
+  <p class="lead">محاكيات علمية وأدوات حسابية وتطبيقات رقمية في مكان واحد. اختر مجموعة أو ابحث بالاسم.</p>
+  <div class="search" id="searchBox">
+    <span class="ico" aria-hidden="true">🔍</span>
+    <input id="q" type="search" placeholder="ابحث باسم التجربة (عربي أو إنجليزي)" aria-label="بحث" autocomplete="off">
+    <button class="clear" id="clr" type="button" aria-label="مسح البحث">✕</button>
+  </div>
+</header>
+
+<main>
+  <section id="vCats" class="view active">
+    <div class="bar"><h2 id="catsTitle"></h2><span class="count" id="catsCount"></span></div>
+    <div class="cats" id="catsGrid"></div>
+  </section>
+  <section id="vCat" class="view">
+    <div class="bar">
+      <div class="catHead"><div class="cat-ico" id="dIco"></div><div><h2 id="dTitle"></h2><p class="count" id="dDesc"></p></div></div>
+      <button class="back" id="back" type="button">→ كل المجموعات</button>
+    </div>
+    <div class="apps" id="catApps"></div>
+  </section>
+  <section id="vSearch" class="view">
+    <div class="bar"><div><h2>نتائج البحث</h2><p class="count" id="sStats"></p></div>
+      <button class="back" id="back2" type="button">→ كل المجموعات</button></div>
+    <div class="apps" id="sApps"></div>
+  </section>
+</main>
+<footer>تجارب تعليمية ومواقع تفاعلية</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="m-head">
+    <h3 id="mTitle"></h3>
+    <div class="acts"><a class="btn main" id="mExt" href="#" target="_blank" rel="noopener">فتح بملء الشاشة ↗</a>
+      <button class="btn" id="mClose" type="button">إغلاق</button></div>
+  </div>
+  <iframe id="frame" title="معاينة" allow="fullscreen; autoplay; clipboard-write" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-downloads allow-presentation allow-pointer-lock"></iframe>
+  <div class="m-hint">إذا ظهرت شاشة بيضاء، استخدم «فتح بملء الشاشة».</div>
+</div>
+
+<script>
+const data = [
+  {
+    "id": "physics",
+    "title": "الميكانيكا والفلك",
+    "icon": "🪐",
+    "color": "#2f80ed",
+    "desc": "محاكيات فيزيائية متقدمة لدراسة حركة الكواكب، السقوط الشاقولي، ومسارات القذائف.",
+    "items": [
+      {
+        "title": "حركة الأقمار وقوانين كبلر",
+        "folder": "kepler",
+        "desc": "محاكاة فيزيائية تفاعلية لدراسة حركة الأقمار الاصطناعية وتطبيق قوانين كبلر وميكانيكا المدارات."
+      },
+      {
+        "title": "محاكي السقوط الشاقولي",
+        "folder": "vertical-fall",
+        "desc": "دراسة حركة سقوط الأجسام الشاقولية في الهواء مع قوى الاحتكاك ودافعة أرخميدس والسقوط الحر."
+      },
+      {
+        "title": "حركة القذائف في مجال الثقالة",
+        "folder": "projectile",
+        "desc": "محاكاة مسار القذيفة وتحديد المدى والذروة والسرعات وتأثير زاوية القذف والسرعة الابتدائية."
+      }
+    ]
+  },
+  {
+    "id": "electricity",
+    "title": "الكهرباء والنووي",
+    "icon": "⚡",
+    "color": "#d99a00",
+    "desc": "تجارب الدارات الكهربائية RC و RL، التناقص الإشعاعي، وحسابات الحصيلة الطاقوية.",
+    "items": [
+      {
+        "title": "دراسة ثنائي القطب RC",
+        "folder": "rc",
+        "desc": "محاكاة تفاعلية لمنحنيات شحن وتفريغ المكثفة مع حساب ثابت الزمن وتغير التوتر والشدة لحظياً."
+      },
+      {
+        "title": "دراسة ثنائي القطب RL",
+        "folder": "rl",
+        "desc": "تتبع ظاهرة التحريض الذاتي في الوشيعة ورسم بياني لتأسيس وانقطاع التيار الكهربائي."
+      },
+      {
+        "title": "قانون التناقص الإشعاعي",
+        "folder": "radioactive-decay",
+        "desc": "نمذجة الانحلال الإشعاعي للأنوية غير المستقرة، حساب زمن نصف العمر وثابت النشاط الإشعاعي."
+      },
+      {
+        "title": "حاسبة الطاقة والحصيلة الطاقوية",
+        "folder": "energy-calculator",
+        "desc": "أداة متقدمة لحساب مختلف أنماط الطاقة وتحويلاتها ورسم مخططات الحصيلة الطاقوية بدقة."
+      }
+    ]
+  },
+  {
+    "id": "chemistry",
+    "title": "الكيمياء والمحاليل",
+    "icon": "🧪",
+    "color": "#1fa77a",
+    "desc": "المعايرة، المتابعة الزمنية، الكشف عن الشوارد، جداول التقدم، والجدول الدوري للعناصر.",
+    "items": [
+      {
+        "title": "الكشف عن الشوارد والمركبات",
+        "folder": "ion-detection",
+        "desc": "دليل تجريبي تفاعلي لاختبارات وترسيب الشوارد المعدنية والمجموعات الوظيفية بالمعاشف الكيميائية."
+      },
+      {
+        "title": "المتابعة الزمنية لتحول كيميائي",
+        "folder": "reaction-kinetics",
+        "desc": "متابعة حركية التفاعل الكيميائي عبر قياس الناقلية، حجم الغاز، ورسم سرعة التفاعل وزمن نصف التفاعل."
+      },
+      {
+        "title": "المعايرة البي إتش مترية pH-Metric",
+        "folder": "ph-titration",
+        "desc": "محاكي منحنى المعايرة الحمضية الأساسية مع الكشف عن نقطة التكافؤ بطريقة المماسات وطريقة المشتقة."
+      },
+      {
+        "title": "جدول تقدم التفاعل المتقدم",
+        "folder": "progress-table",
+        "desc": "إنشاء جداول التقدم آلياً مع تحديد المتفاعل المحد والتقدم الأعظمي والتركيب المولي النهائي."
+      },
+      {
+        "title": "هندسة بعض الأنواع الكيميائية",
+        "folder": "molecular-geometry",
+        "desc": "استكشاف النماذج الجزيئية ثلاثية الأبعاد ونظرية جيليسبي وتمثيل لويس وكرام لمختلف الروابط."
+      },
+      {
+        "title": "الجدول الدوري للعناصر",
+        "folder": "periodic-table",
+        "desc": "جدول دوري تفاعلي يستعرض الخصائص الذرية، التوزيع الإلكتروني، والكتل المولية لكل العناصر."
+      },
+      {
+        "title": "قائمة الثنائيات الإلكترونية",
+        "folder": "redox-couples",
+        "desc": "مرجع علمي شامل للثنائيات (مرجع/مؤكسد) وتفاعلات الأكسدة والإرجاع الكهروكيميائية."
+      }
+    ]
+  },
+  {
+    "id": "tools",
+    "title": "الأدوات والحسابات العلمية",
+    "icon": "🧮",
+    "color": "#8e5bd6",
+    "desc": "حواسب علمية وتعليمية، حل المعادلات، محول الوحدات، وحسابات الرواتب والأعمار.",
+    "items": [
+      {
+        "title": "حاسبة الأستاذ المتقدمة",
+        "folder": "teacher-calculator",
+        "desc": "حاسبة علمية وتربوية متكاملة مخصصة للمعلمين لإجراء العمليات الحسابية والإحصائية المتقدمة."
+      },
+      {
+        "title": "حل المعادلات من الدرجة الثانية",
+        "folder": "quadratic",
+        "desc": "حساب المميز دلتا وإيجاد الحلول الحقيقية والمركبة مع التمثيل البياني لدالة كثير الحدود."
+      },
+      {
+        "title": "محول الوحدات الشامل",
+        "folder": "unit-converter",
+        "desc": "تحويل مباشر ودقيق بين مختلف الواحدات الفيزيائية (الطول، الكتلة، الضغط، الطاقة، والحرارة)."
+      },
+      {
+        "title": "حاسبة العمر الدقيقة",
+        "folder": "age-calculator",
+        "desc": "حساب العمر بالتفصيل الدقيق بالسنوات والأشهر والأيام والساعات مع التواريخ الهجرية والميلادية."
+      },
+      {
+        "title": "حساب منحة ومعاش التقاعد",
+        "folder": "retirement",
+        "desc": "أداة حسابية لمحاكاة رواتب ومنح التقاعد وفقاً لسنوات الخدمة والنسب القانونية المعمول بها."
+      },
+      {
+        "title": "تطبيق الأرقام والعمليات",
+        "folder": "numbers",
+        "desc": "أدوات رياضية للتعامل مع السلاسل الرقمية، الأعداد الأولية، والتحويلات العددية المتنوعة."
+      }
+    ]
+  },
+  {
+    "id": "tech",
+    "title": "التقنية وتطوير الروابط",
+    "icon": "💻",
+    "color": "#5469d4",
+    "desc": "أدوات الذكاء الاصطناعي، محولات الروابط، حزم APK، وتطبيقات الويب.",
+    "items": [
+      {
+        "title": "تطبيقات الذكاء الاصطناعي",
+        "folder": "ai-apps",
+        "desc": "دليل ومحاكي تفاعلي لأدوات ونماذج الذكاء الاصطناعي والتطبيقات الذكية الحديثة."
+      },
+      {
+        "title": "محول الروابط الاحترافي",
+        "folder": "link-converter",
+        "desc": "أداة لتحويل وتوليد الروابط المباشرة وتنسيق مسارات الملفات والمشاريع الرقمية."
+      },
+      {
+        "title": "محول روابط IPTV الاحترافي",
+        "folder": "iptv-converter",
+        "desc": "أداة متخصصة لتحليل وتنسيق قوائم البث ومسارات الوسائط الرقمية M3U و M3U8."
+      },
+      {
+        "title": "منشئ حزم التطبيقات Kadri APK Builder",
+        "folder": "apk-builder",
+        "desc": "منظومة تحويل وبرمجة مواقع الويب التفاعلية إلى حزم وتطبيقات أجهزة الهواتف الذكية."
+      }
+    ]
+  },
+  {
+    "id": "auto",
+    "title": "السيارات والمحركات",
+    "icon": "🚗",
+    "color": "#e5484d",
+    "desc": "تشخيص أكواد OBD، دليل القسيمة، ودليل صيانة المركبة.",
+    "items": [
+      {
+        "title": "أكواد أعطال السيارات OBD",
+        "folder": "obd-codes",
+        "desc": "قاموس تشخيصي شامل للبحث عن معاني رموز الأعطال الإلكترونية OBD-II وحلولها المقترحة."
+      },
+      {
+        "title": "دليل قسيمة السيارات",
+        "folder": "car-voucher",
+        "desc": "دليل حساب أسعار وتسعيرات قسيمة السيارات السنوية حسب فئة المركبة وسنة السير والقوة الجبائية."
+      },
+      {
+        "title": "دليل سيارتي Jetta VS8",
+        "folder": "jetta-vs8",
+        "desc": "دليل تقني للمواصفات الفنية، الصيانة الدورية، وجداول الزيوت والقطع الخاصة بالمركبة."
+      }
+    ]
+  },
+  {
+    "id": "services",
+    "title": "الأدلة والخدمات والاقتصاد",
+    "icon": "🏛️",
+    "color": "#12948a",
+    "desc": "أسعار الطاقة والمعادن، دليل الخدمات الحكومية، ورموز الولايات والبلديات.",
+    "items": [
+      {
+        "title": "أسعار النفط، الغاز والمعادن",
+        "folder": "energy-prices",
+        "desc": "لوحة بيانات لمتابعة أسعار وتحديثات موارد الطاقة والمعادن الأساسية في الأسواق العالمية."
+      },
+      {
+        "title": "دليل الخدمات الحكومية بالجزائر",
+        "folder": "dz-services",
+        "desc": "بوابة رقمية ميسرة للوصول السريع إلى مختلف البوابات والمنصات الإدارية والخدمية الوطنية."
+      },
+      {
+        "title": "رموز الدول ورموز الجزائر",
+        "folder": "country-codes",
+        "desc": "دليل رقمي مفصل لرموز الولايات والبلديات الوطنية، والرموز الهاتفية والبريدية الدولية."
+      }
+    ]
+  },
+  {
+    "id": "entertainment",
+    "title": "المواقع والترفيه والتثقيف",
+    "icon": "🎮",
+    "color": "#d6409f",
+    "desc": "بث القنوات التلفزيونية، المواقع العلمية والدينية، اختصارات ويندوز، والألعاب التفاعلية.",
+    "items": [
+      {
+        "title": "بث القنوات التلفزيونية TV1",
+        "folder": "tv1",
+        "desc": "مشغل وقارئ وسائط مرئية متطور لبث ومشاهدة الباقات الإخبارية والعامة مباشرة."
+      },
+      {
+        "title": "بث القنوات التلفزيونية TV3",
+        "folder": "tv3",
+        "desc": "منصة تشغيل بديلة ومحسنة لمتابعة المحتوى المرئي والقنوات التلفزيونية عبر الويب."
+      },
+      {
+        "title": "بوابة البث التلفزيوني IPTV2",
+        "folder": "iptv2",
+        "desc": "بوابة استعراض وتشغيل البث المباشر المتقدمة مع دعم القوائم المتعددة والجودات المختلفة."
+      },
+      {
+        "title": "اختصارات لوحة مفاتيح ويندوز",
+        "folder": "windows-shortcuts",
+        "desc": "مرجع سريع لأهم الاختصارات وأوامر لوحة المفاتيح لتسريع الإنتاجية والتنقل في Windows."
+      },
+      {
+        "title": "دليل المواقع العلمية",
+        "folder": "science-sites",
+        "desc": "مجموعة منتقاة من أفضل المنصات والمراجع العلمية ومصادر المحاكاة الفيزيائية العالمية."
+      },
+      {
+        "title": "دليل المواقع الدينية والتثقيفية",
+        "folder": "islamic-sites",
+        "desc": "بوابة تضم روابط نافعة لمصادر القرآن الكريم، الحديث، والتطبيقات التثقيفية الهادفة."
+      },
+      {
+        "title": "أكواد وتنسيقات الألوان",
+        "folder": "color-codes",
+        "desc": "منتقي ألوان احترافي ومحول الصيغ اللونية (HEX, RGB, HSL) مع مكتبة تدرجات لونية جاهزة."
+      },
+      {
+        "title": "لعبة صياح التفاعلية",
+        "folder": "sayah-game",
+        "desc": "تطبيق ويب ترفيهي تفاعلي خفيف مصمم بأحدث تقنيات Canvas والرسوميات الحركية."
+      },
+      {
+        "title": "لعبة سفيان المتميزة",
+        "folder": "sufyan-game",
+        "desc": "تطبيق ألعاب وتحديات ذهنية تفاعلية ممتعة ومناسبة لمختلف الفئات العمرية."
+      }
+    ]
+  }
+];
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm = s => String(s).toLowerCase().replace(/[\u064B-\u0652\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه');
+const total = data.reduce((n,c)=>n+c.items.length,0);
+const plural = n => n===1 ? 'تطبيق واحد' : n===2 ? 'تطبيقان' : n<=10 ? n+' تطبيقات' : n+' تطبيقاً';
+const url = i => './' + encodeURIComponent(i.folder) + '/' + encodeURIComponent(i.entry || 'index.html');
+const views = {cats:$('vCats'), cat:$('vCat'), search:$('vSearch')};
+function show(v){ Object.entries(views).forEach(([k,el])=>el.classList.toggle('active',k===v)); }
+
+function hl(text, q){
+  const t = esc(text); if(!q) return t;
+  const i = norm(text).indexOf(q);
+  if(i<0 || norm(text).length!==text.length) return t;
+  return esc(text.slice(0,i)) + '<mark>' + esc(text.slice(i,i+q.length)) + '</mark>' + esc(text.slice(i+q.length));
+}
+
+function appCard(item, cat, q){
+  return `<article class="app" style="--c:${cat.color}">
+    <span class="tag">${esc(cat.title)}</span>
+    <h3>${hl(item.title,q)}</h3>
+    <p>${esc(item.desc)}</p>
+    <div class="path" title="${esc(item.folder)}/${esc(item.entry||'index.html')}">${esc(item.folder)}/${esc(item.entry||'index.html')}</div>
+    <div class="acts">
+      <a class="btn main" href="${url(item)}" target="_blank" rel="noopener">تشغيل ↗</a>
+      <button class="btn alt" type="button" data-preview="${esc(url(item))}" data-title="${esc(item.title)}">معاينة</button>
+    </div></article>`;
+}
+
+function renderCats(){
+  $('catsTitle').textContent = `المجموعات (${data.length})`;
+  $('catsCount').textContent = `إجمالي ${total} تطبيقاً ومحاكاة`;
+  $('catsGrid').innerHTML = data.map(c => `
+    <button class="cat" type="button" data-cat="${c.id}" style="--c:${c.color}">
+      <div class="cat-top"><span class="cat-ico" aria-hidden="true">${c.icon}</span><span class="cat-n">${plural(c.items.length)}</span></div>
+      <h3>${esc(c.title)}</h3><p>${esc(c.desc)}</p>
+      <div class="pills">${c.items.slice(0,3).map(i=>`<span>${esc(i.title)}</span>`).join('')}${c.items.length>3?`<span>+${c.items.length-3} أخرى</span>`:''}</div>
+    </button>`).join('');
+}
+
+function openCat(cat){
+  $('dIco').textContent = cat.icon; $('dIco').style.setProperty('--c',cat.color);
+  $('dTitle').textContent = cat.title;
+  $('dDesc').textContent = `${cat.desc} (${plural(cat.items.length)})`;
+  $('catApps').innerHTML = cat.items.map(i=>appCard(i,cat,'')).join('');
+  show('cat'); window.scrollTo(0,0); document.title = cat.title + ' | تجارب تعليمية ومواقع';
+}
+
+function route(){
+  const id = location.hash.slice(1);
+  const cat = data.find(c=>c.id===id);
+  if(cat){ openCat(cat); }
+  else { show($('q').value.trim() ? 'search' : 'cats'); document.title = 'تجارب تعليمية ومواقع'; }
+}
+
+let timer;
+$('q').addEventListener('input', e => {
+  $('searchBox').classList.toggle('has-text', !!e.target.value);
+  clearTimeout(timer);
+  timer = setTimeout(runSearch, 120);
+});
+function runSearch(){
+  const raw = $('q').value.trim(), q = norm(raw);
+  if(!q){ if(location.hash) history.pushState(null,'',location.pathname+location.search); show('cats'); return; }
+  const res = [];
+  data.forEach(c => c.items.forEach(i => {
+    if(norm(i.title+' '+i.folder+' '+i.desc+' '+c.title).includes(q)) res.push({i,c});
+  }));
+  $('sStats').textContent = `${res.length} نتيجة لـ «${raw}»`;
+  $('sApps').innerHTML = res.length ? res.map(r=>appCard(r.i,r.c,q)).join('')
+    : '<div class="empty">لا توجد نتائج. جرّب كلمة أقصر أو اسماً بالإنجليزية.</div>';
+  show('search');
+}
+function clearSearch(){
+  $('q').value=''; $('searchBox').classList.remove('has-text');
+  if(location.hash) history.pushState(null,'',location.pathname+location.search);
+  show('cats'); $('q').focus();
+}
+$('clr').onclick = clearSearch;
+$('back2').onclick = clearSearch;
+$('back').onclick = () => { history.pushState(null,'',location.pathname+location.search); route(); window.scrollTo(0,0); };
+
+document.addEventListener('click', e => {
+  const c = e.target.closest('[data-cat]');
+  if(c){ $('q').value=''; $('searchBox').classList.remove('has-text'); location.hash = c.dataset.cat; return; }
+  const p = e.target.closest('[data-preview]');
+  if(p) openModal(p.dataset.preview, p.dataset.title);
+});
+window.addEventListener('hashchange', route);
+
+const modal = $('modal'), frame = $('frame');
+let lastFocus;
+function openModal(u,t){
+  lastFocus = document.activeElement;
+  $('mTitle').textContent = t; $('mExt').href = u; frame.src = u;
+  modal.classList.add('open'); document.body.style.overflow='hidden'; $('mClose').focus();
+}
+function closeModal(){
+  modal.classList.remove('open'); frame.src='about:blank'; document.body.style.overflow='';
+  if(lastFocus) lastFocus.focus();
+}
+$('mClose').onclick = closeModal;
+document.addEventListener('keydown', e => { if(e.key==='Escape' && modal.classList.contains('open')) closeModal(); });
+
+renderCats(); route();
+</script>
+</body>
+</html>
