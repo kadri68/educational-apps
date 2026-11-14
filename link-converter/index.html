@@ -3,95 +3,79 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b1220">
 <title>مستخرج ومحول اشتراكات Xtream الذكي</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-:root{
-  --bg:#0b1220;--panel:#111a2e;--panel2:#16213a;--line:#24324f;
-  --text:#e8eefc;--muted:#8a9bbd;--accent:#2dd4bf;--accent-d:#14b8a6;
-  --ok:#34d399;--bad:#f87171;--warn:#fbbf24;--r:14px;
-  --mono:ui-monospace,Consolas,"SF Mono",monospace;
-}
+:root{--fs:14px;--accent:#2dd4bf;--on:#041a17;--bg:#0b1220;--panel:#111a2e;--panel2:#16213a;--field:#0a1120;--line:#2b3b5e;--text:#f1f5ff;--muted:#9fb0d0;--ok:#34d399;--bad:#f87171;--warn:#fbbf24;--r:14px;--mono:ui-monospace,Consolas,monospace}
+:root[data-mode="light"]{--bg:#eef2f7;--panel:#fff;--panel2:#f1f5f9;--field:#f8fafc;--line:#c3cfdf;--text:#0f172a;--muted:#475569;--ok:#047857;--bad:#b91c1c;--warn:#b45309}
 *{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:"IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
-  background:var(--bg);
-  background-image:radial-gradient(900px 400px at 85% -10%,rgba(45,212,191,.12),transparent),radial-gradient(700px 400px at 0% 110%,rgba(99,102,241,.10),transparent);
-  color:var(--text);min-height:100vh;padding:16px;font-size:14px;line-height:1.6;
-}
-.app{max-width:900px;margin:0 auto}
+html{font-size:var(--fs)}
+body{font-family:"IBM Plex Sans Arabic",system-ui,Tahoma,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:16px;line-height:1.7;font-size:1rem}
+.app{max-width:920px;margin:0 auto}
 header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#6366f1);display:grid;place-items:center;font-size:22px;flex:none}
-header h1{font-size:1.2rem;font-weight:700}
-header p{font-size:.78rem;color:var(--muted)}
+.logo{width:3rem;height:3rem;border-radius:12px;background:var(--accent);display:grid;place-items:center;font-size:1.5rem;flex:none}
+header h1{font-size:1.3rem;line-height:1.4}header p{font-size:.85rem;color:var(--muted)}.grow{flex:1}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px}
-.hint{font-size:.8rem;color:var(--muted);margin-bottom:12px}
-label{display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:.85rem;margin-bottom:6px}
-.counter{font-size:.75rem;font-weight:500;color:var(--accent);background:rgba(45,212,191,.1);padding:1px 10px;border-radius:99px}
-textarea{
-  width:100%;min-height:130px;resize:vertical;padding:12px;border-radius:10px;
-  background:#0a1120;border:1px solid var(--line);color:var(--text);
-  font:.82rem/1.6 var(--mono);direction:ltr;text-align:left;transition:.15s;
-}
-textarea::placeholder{color:#51628a;font-family:inherit;direction:rtl}
-textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,212,191,.15)}
-#output{min-height:90px;color:#9fe8dd}
+.hint{font-size:.9rem;color:var(--muted);margin-bottom:12px}
+label{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:600;margin-bottom:6px}
+.counter{font-size:.82rem;font-weight:500;color:var(--accent);border:1px solid var(--accent);padding:0 10px;border-radius:99px}
+textarea,select{width:100%;padding:12px;border-radius:10px;background:var(--field);border:1px solid var(--line);color:var(--text);font:inherit}
+textarea{min-height:140px;resize:vertical;font:.9rem/1.7 var(--mono);direction:ltr;text-align:left}
+select{direction:ltr;font-size:.9rem}
+textarea:focus,select:focus{outline:none;border-color:var(--accent)}
+#output{min-height:100px}
 .btns{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
-button{
-  font:inherit;font-size:.82rem;font-weight:600;padding:9px 16px;border:1px solid var(--line);
-  border-radius:10px;cursor:pointer;background:var(--panel2);color:var(--text);
-  display:inline-flex;align-items:center;gap:6px;transition:.15s;
-}
-button:hover{border-color:#3a4d78;background:#1b2a49}
-button:active{transform:scale(.97)}
-button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-button.primary{background:var(--accent);border-color:var(--accent);color:#052e2a}
-button.primary:hover{background:var(--accent-d)}
-button.danger{color:var(--bad)}
-button.danger:hover{background:rgba(248,113,113,.12);border-color:var(--bad)}
-button.sm{padding:5px 11px;font-size:.75rem;border-radius:8px}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;max-height:190px;overflow-y:auto;margin-bottom:12px}
+button{font:inherit;font-size:.92rem;font-weight:600;padding:.55rem 1rem;border:1px solid var(--line);border-radius:10px;cursor:pointer;background:var(--panel2);color:var(--text);display:inline-flex;align-items:center;gap:6px}
+button:hover{border-color:var(--accent)}button:focus-visible{outline:3px solid var(--accent)}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--on)}
+button.danger{color:var(--bad)}button.sm{padding:.3rem .7rem;font-size:.82rem;border-radius:8px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;max-height:200px;overflow-y:auto;margin-bottom:12px}
 .cards:empty{display:none}
-.acc{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 12px;direction:ltr;text-align:left;font:.74rem/1.7 var(--mono)}
-.acc div{word-break:break-all}
-.acc b{color:var(--accent);display:inline-block;min-width:44px;font-weight:600}
-#checkBox{display:none}
-#checkBox.active{display:block}
-.results{display:flex;flex-direction:column;gap:10px;margin-top:10px}
-.res{background:var(--panel2);border:1px solid var(--line);border-inline-start:4px solid var(--warn);border-radius:12px;padding:12px;direction:ltr;text-align:left}
-.res.ok{border-inline-start-color:var(--ok)}
-.res.fail{border-inline-start-color:var(--bad)}
-.res-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center;font:.78rem var(--mono)}
-.status{font-family:inherit;font-weight:600;font-size:.78rem;padding:2px 10px;border-radius:99px;background:rgba(251,191,36,.15);color:var(--warn)}
-.ok .status{background:rgba(52,211,153,.15);color:var(--ok)}
-.fail .status{background:rgba(248,113,113,.15);color:var(--bad)}
-.details{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:6px;margin:10px 0;padding:8px 10px;background:#0a1120;border-radius:8px;font-size:.78rem;color:var(--muted)}
-.details strong{color:var(--text);font-weight:600}
-.acts{display:flex;flex-wrap:wrap;gap:6px}
+.acc{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 12px;direction:ltr;text-align:left;font:.82rem/1.7 var(--mono)}
+.acc div{word-break:break-all}.acc b{color:var(--accent);display:inline-block;min-width:3rem}
+details summary{cursor:pointer;font-weight:700;font-size:1.05rem;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px}
+details summary::-webkit-details-marker{display:none}
+.res{background:var(--panel2);border:1px solid var(--line);border-inline-start:5px solid var(--warn);border-radius:12px;padding:12px;margin-bottom:8px;direction:ltr;text-align:left}
+.res.ok{border-inline-start-color:var(--ok)}.res.fail{border-inline-start-color:var(--bad)}
+.res-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center;font:.85rem var(--mono)}
+.status{font-family:inherit;font-weight:700;font-size:.85rem;padding:2px 10px;border-radius:99px;color:var(--warn);border:1px solid currentColor}
+.ok .status{color:var(--ok)}.fail .status{color:var(--bad)}
+.details{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:6px;margin:10px 0;padding:8px 10px;background:var(--field);border-radius:8px;font-size:.88rem;color:var(--muted);direction:rtl;text-align:right}
+.details strong{color:var(--text)}
+.acts{display:flex;flex-wrap:wrap;gap:6px;direction:rtl}
 .qr{display:none;flex-direction:column;align-items:center;margin-top:10px;padding:12px;border:1px dashed var(--line);border-radius:10px}
-.qr.show{display:flex}
-.qr-box{background:#fff;padding:10px;border-radius:10px}
-.qr-user{margin-top:8px;font:600 .8rem var(--mono);direction:ltr}
-.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,120px);background:var(--accent);color:#052e2a;font-weight:600;padding:9px 18px;border-radius:99px;font-size:.82rem;box-shadow:0 8px 24px rgba(0,0,0,.4);transition:transform .3s;z-index:99;pointer-events:none}
+.qr.show{display:flex}.qr-box{background:#fff;padding:10px;border-radius:10px}.qr-user{margin-top:8px;font:600 .9rem var(--mono)}
+footer{text-align:center;padding:10px 0 24px}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;padding:12px;z-index:50}
+.ov.open{display:flex}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;width:100%;max-width:760px;max-height:92vh;display:flex;flex-direction:column}
+.modal.narrow{max-width:460px}
+.m-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid var(--line);font-weight:700;font-size:1.1rem}
+.m-body{padding:16px;overflow-y:auto}
+.set{margin-bottom:18px}.set h3{font-size:1rem;margin-bottom:8px}
+.fs-row{display:flex;align-items:center;gap:10px}
+input[type=range]{flex:1;accent-color:var(--accent)}
+.swatches{display:flex;flex-wrap:wrap;gap:10px}
+.sw{width:2.6rem;height:2.6rem;border-radius:50%;padding:0;border:3px solid transparent}.sw.sel{border-color:var(--text)}
+.seg{display:flex;gap:8px}.seg button.sel{background:var(--accent);color:var(--on);border-color:var(--accent)}
+.dev{text-align:center}.dev .av{font-size:2.6rem}.dev h2{margin:6px 0;font-size:1.2rem}
+.dev a.btn{display:inline-flex;margin:6px 4px;text-decoration:none;font-weight:600;padding:.55rem 1rem;border-radius:10px;background:var(--accent);color:var(--on)}
+.mail{direction:ltr;font-family:var(--mono);color:var(--accent);margin:8px 0}
+.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,140px);background:var(--accent);color:var(--on);font-weight:700;padding:.6rem 1.2rem;border-radius:99px;transition:transform .3s;z-index:99;pointer-events:none}
 .toast.show{transform:translate(-50%,0)}
-@media(max-width:520px){body{padding:10px}.panel{padding:12px}button{flex:1 1 auto;justify-content:center}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 <div class="app">
   <header>
     <div class="logo">📡</div>
-    <div>
-      <h1>مستخرج ومحول اشتراكات Xtream</h1>
-      <p>استخراج • فحص الصلاحية • رمز QR • تشغيل مباشر</p>
-    </div>
+    <div class="grow"><h1>مستخرج ومحول اشتراكات Xtream</h1><p>استخراج • فحص الصلاحية • رمز QR • سجل الفحوصات</p></div>
+    <button id="btnSet">🎨 تخصيص</button>
   </header>
+
   <section class="panel">
-    <p class="hint">استخراج تلقائي للهوست واسم المستخدم وكلمة المرور من أي نص أو روابط M3U، مع فحص الصلاحية وتوليد رمز QR لكل اشتراك.</p>
+    <p class="hint">ألصق أي نص (فردي أو مجموعة، بأي لغة): يتجاهل التطبيق العربية ويستخرج الهوست واليوزر والباسورد من كل الصيغ.</p>
     <label for="input">📋 ألصق النص هنا <span class="counter" id="inputCounter">0 اشتراك مكتشف</span></label>
     <textarea id="input" placeholder="ألصق النص هنا بأي صيغة كانت..."></textarea>
     <div class="btns">
@@ -104,204 +88,302 @@ button.sm{padding:5px 11px;font-size:.75rem;border-radius:8px}
     <label for="output">🔗 روابط التشغيل المباشرة <span class="counter" id="outputCounter">0 رابط</span></label>
     <textarea id="output" readonly placeholder="ستظهر روابط التشغيل هنا..."></textarea>
   </section>
-  <section class="panel" id="checkBox">
-    <strong>📊 نتائج الفحص وتفاصيل الصلاحية</strong>
-    <div id="results" class="results"></div>
+
+  <section class="panel">
+    <details id="histBox">
+      <summary><span>🕘 سجل الفحوصات السابقة</span><span class="counter" id="histCnt">0</span></summary>
+      <div style="margin-top:12px">
+        <select id="histSel" aria-label="اختر فحصاً سابقاً"></select>
+        <div class="btns">
+          <button class="primary sm" id="hRe">🔄 إعادة فحص المحدد</button>
+          <button class="sm" id="hCopy">📋 نسخ الرابط</button>
+          <button class="sm danger" id="hDel">🗑️ حذف</button>
+          <button class="sm danger" id="btnHistClear">🗑️ مسح السجل</button>
+        </div>
+      </div>
+    </details>
   </section>
+
+  <footer><button id="btnDev">👨‍💻 المطور</button></footer>
 </div>
-<div class="toast" id="toast">تم النسخ</div>
+
+<div class="ov" id="ovRes"><div class="modal" role="dialog" aria-modal="true">
+  <div class="m-head"><span>📊 نتائج الفحص وتفاصيل الصلاحية</span><button class="sm" data-close>✖ إغلاق</button></div>
+  <div class="m-body"><div id="results"></div></div>
+</div></div>
+
+<div class="ov" id="ovSet"><div class="modal narrow" role="dialog" aria-modal="true">
+  <div class="m-head"><span>🎨 تخصيص الصفحة</span><button class="sm" data-close>✖ إغلاق</button></div>
+  <div class="m-body">
+    <div class="set"><h3>🔠 حجم الخط: <span id="fsVal">14</span></h3>
+      <div class="fs-row"><button class="sm" id="fsMinus">A−</button><input type="range" id="fsRange" min="12" max="26" step="1"><button class="sm" id="fsPlus">A+</button></div></div>
+    <div class="set"><h3>🎨 لون الواجهة</h3><div class="swatches" id="swatches"></div></div>
+    <div class="set"><h3>🌗 النمط</h3><div class="seg"><button id="mDark">🌙 داكن</button><button id="mLight">☀️ فاتح</button></div></div>
+    <button class="danger" id="btnReset">↺ استعادة الافتراضي</button>
+  </div>
+</div></div>
+
+<div class="ov" id="ovDev"><div class="modal narrow" role="dialog" aria-modal="true">
+  <div class="m-head"><span>👨‍💻 المطور</span><button class="sm" data-close>✖ إغلاق</button></div>
+  <div class="m-body dev">
+    <div class="av">👤</div><h2>الأستاذ محمد قادري</h2>
+    <p class="hint">للاستفسار أو الاتصال</p>
+    <div class="mail">kadri68@gmail.com</div>
+    <a class="btn" href="mailto:kadri68@gmail.com">✉️ إرسال بريد</a>
+    <button id="btnMail">📋 نسخ البريد</button>
+  </div>
+</div></div>
+
+<div class="toast" id="toast" role="status"></div>
 
 <script>
 (function(){
-  const $=id=>document.getElementById(id);
-  const input=$('input'),output=$('output'),inCnt=$('inputCounter'),outCnt=$('outputCounter');
-  const checkBox=$('checkBox'),results=$('results'),cards=$('cards'),toast=$('toast');
-  const PROXY_URL='https://xtream-proxy.kadri68.workers.dev/';
-  let timer=null,accounts=[];
-  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const m3u=a=>`${a.host}/get.php?username=${encodeURIComponent(a.username)}&password=${encodeURIComponent(a.password)}&type=m3u_plus&output=ts`;
-  function showToast(msg,d=2000){
-    clearTimeout(timer);toast.textContent=msg;toast.classList.add('show');
-    timer=setTimeout(()=>toast.classList.remove('show'),d);
-  }
-  async function copyText(t,msg='تم النسخ'){
-    try{await navigator.clipboard.writeText(t)}catch(e){
-      const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();
-      document.execCommand('copy');ta.remove();
+const $=id=>document.getElementById(id);
+const input=$('input'),output=$('output'),results=$('results'),cards=$('cards'),toast=$('toast'),hsel=$('histSel');
+let timer,accounts=[];
+const HK='xtream_history_v1',SK='xtream_settings_v2',MAXH=50;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const m3u=a=>`${a.host}/get.php?username=${encodeURIComponent(a.username)}&password=${encodeURIComponent(a.password)}&type=m3u_plus&output=ts`;
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function showToast(m,d=2000){clearTimeout(timer);toast.textContent=m;toast.classList.add('show');timer=setTimeout(()=>toast.classList.remove('show'),d)}
+async function copyText(t,msg='تم النسخ'){
+  try{await navigator.clipboard.writeText(t)}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()}
+  showToast('✅ '+msg);
+}
+
+/* نوافذ */
+let lastFocus=null;
+const openM=id=>{lastFocus=document.activeElement;const o=$(id);o.classList.add('open');const b=o.querySelector('[data-close]');b&&b.focus()};
+const closeM=o=>{o.classList.remove('open');lastFocus&&lastFocus.focus&&lastFocus.focus()};
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o||e.target.closest('[data-close]'))closeM(o)}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){const o=document.querySelector('.ov.open');o&&closeM(o)}});
+
+/* تخصيص (الخط الافتراضي 14) */
+const COLORS=[['#2dd4bf','فيروزي'],['#60a5fa','أزرق'],['#a78bfa','بنفسجي'],['#f472b6','وردي'],['#fb923c','برتقالي'],['#a3e635','أخضر'],['#facc15','أصفر']];
+const def={fs:14,accent:'#2dd4bf',mode:'dark'};
+let S=Object.assign({},def,store.get(SK,{}));
+function applySettings(){
+  const r=document.documentElement;
+  r.style.setProperty('--fs',S.fs+'px');r.style.setProperty('--accent',S.accent);r.dataset.mode=S.mode;
+  const n=parseInt(S.accent.slice(1),16),lum=((n>>16)*.299+((n>>8)&255)*.587+(n&255)*.114);
+  r.style.setProperty('--on',lum>140?'#0b1220':'#fff');
+  $('fsVal').textContent=S.fs;$('fsRange').value=S.fs;
+  $('mDark').classList.toggle('sel',S.mode==='dark');$('mLight').classList.toggle('sel',S.mode==='light');
+  document.querySelectorAll('.sw').forEach(b=>b.classList.toggle('sel',b.dataset.c===S.accent));
+  store.set(SK,S);
+}
+$('swatches').innerHTML=COLORS.map(([c,n])=>`<button class="sw" data-c="${c}" style="background:${c}" aria-label="${n}"></button>`).join('');
+$('swatches').addEventListener('click',e=>{const b=e.target.closest('.sw');if(b){S.accent=b.dataset.c;applySettings()}});
+const setFs=v=>{S.fs=Math.max(12,Math.min(26,+v));applySettings()};
+$('fsRange').oninput=e=>setFs(e.target.value);
+$('fsMinus').onclick=()=>setFs(S.fs-1);$('fsPlus').onclick=()=>setFs(S.fs+1);
+$('mDark').onclick=()=>{S.mode='dark';applySettings()};$('mLight').onclick=()=>{S.mode='light';applySettings()};
+$('btnReset').onclick=()=>{S=Object.assign({},def);applySettings();showToast('↺ تمت الاستعادة')};
+$('btnSet').onclick=()=>openM('ovSet');$('btnDev').onclick=()=>openM('ovDev');
+$('btnMail').onclick=()=>copyText('kadri68@gmail.com','تم نسخ البريد');
+applySettings();
+
+/* ---------- الاستخراج الذكي (يتجاهل العربية) ---------- */
+const AR=/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/g;
+const TYPES=['live','movie','series','timeshift','streaming','hls','play'];
+function normalizeHost(h){
+  h=h.trim().replace(/\/+$/,'');
+  if(!/^https?:\/\//i.test(h))h='http://'+h;
+  return h;
+}
+function fromUrl(s){
+  try{
+    const p=new URL(s),host=`${p.protocol}//${p.host}`,q=p.searchParams;
+    const u=q.get('username'),pw=q.get('password');
+    if(u&&pw)return{host,username:u,password:pw};
+    const seg=p.pathname.split('/').filter(Boolean).map(decodeURIComponent);
+    if(seg.length>=4&&TYPES.includes(seg[0].toLowerCase()))return{host,username:seg[1],password:seg[2]};
+    if(seg.length===3&&/^\d+(\.\w+)?$/.test(seg[2]))return{host,username:seg[0],password:seg[1]};
+    return{host};
+  }catch(e){return null}
+}
+function parseText(text){
+  const out=[];let host=null,u=null,pw=null;
+  const push=()=>{if(host&&u&&pw)out.push({host,username:u,password:pw});u=pw=null};
+  const urlRe=/https?:\/\/[^\s"'<>]+/gi;
+  const labRe=/\b(user(?:name)?|login|pass(?:word)?|pwd|port|host|server)\s*[:=\-]?\s*([^\s,;|]+)/gi;
+  for(const raw of (text||'').split(/\r?\n/)){
+    for(const s of (raw.match(urlRe)||[])){
+      const r=fromUrl(s.replace(/[.,;)\]]+$/,''));
+      if(!r)continue;
+      if(r.username){out.push(r);host=r.host;u=pw=null}else{host=r.host;u=pw=null}
     }
-    showToast('✅ '+msg);
-  }
-  function normalizeHost(host,port){
-    if(!host)return '';
-    host=host.trim().replace(/\/+$/,'');
-    if(!/^https?:\/\//i.test(host))host='http://'+host;
-    try{
-      const p=new URL(host);
-      if(port&&!p.port)return `${p.protocol}//${p.hostname}:${port.trim()}`;
-      return `${p.protocol}//${p.host}`;
-    }catch(e){
-      if(port&&!host.includes(':'+port))return host+':'+port.trim();
-      return host;
+    const l=raw.replace(urlRe,' ').replace(AR,' ').trim();
+    if(!l)continue;
+    let found=false;
+    for(const m of l.matchAll(labRe)){
+      found=true;const k=m[1].toLowerCase(),v=m[2].replace(/^[:=\-]+/,'');
+      if(!v)continue;
+      if(k.startsWith('user')||k==='login')u=v;
+      else if(k.startsWith('pass')||k==='pwd')pw=v;
+      else if(k==='port'){if(host&&!/:\d+$/.test(host))host+=':'+v}
+      else host=normalizeHost(v);
+      if(u&&pw)push();
     }
+    if(found)continue;
+    const tk=l.split(/\s+/);
+    if(tk.length!==1)continue;
+    const t=tk[0].replace(/^[:=\-]+/,'');
+    if(/^[\w-]+(\.[\w-]+)*\.[a-z]{2,}(:\d+)?$/i.test(t)||/^\d{1,3}(\.\d{1,3}){3}(:\d+)?$/.test(t)){host=normalizeHost(t);u=pw=null}
+    else if(/^\d{2,5}$/.test(t)&&host&&!u){if(!/:\d+$/.test(host))host+=':'+t}
+    else if(host&&/^[\w.@~+\-!#$%^*]+$/.test(t)){if(!u)u=t;else{pw=t;push()}}
   }
-  function parseText(text){
-    const out=[];
-    if(!text||!text.trim())return out;
-    const urlRe=/(https?:\/\/[^\s"'<>]+(?:\/get\.php|\/live\/|\/playlist)[^\s"'<>]*)/gi;
-    let m;
-    while((m=urlRe.exec(text))!==null){
-      try{
-        const p=new URL(m[1]);
-        const u=p.searchParams.get('username'),pw=p.searchParams.get('password');
-        if(u&&pw)out.push({host:`${p.protocol}//${p.host}`,username:u,password:pw});
-      }catch(e){}
+  const seen=new Set();
+  return out.filter(a=>{const k=`${a.host}|${a.username}|${a.password}`.toLowerCase();if(seen.has(k))return false;seen.add(k);return true});
+}
+function updateUI(){
+  accounts=parseText(input.value);
+  $('inputCounter').textContent=`${accounts.length} اشتراك مكتشف`;
+  cards.innerHTML=accounts.map(a=>`<div class="acc"><div><b>Host</b> ${esc(a.host)}</div><div><b>User</b> ${esc(a.username)}</div><div><b>Pass</b> ${esc(a.password)}</div></div>`).join('');
+  const urls=accounts.map(m3u);
+  output.value=urls.join('\n\n');
+  $('outputCounter').textContent=`${urls.length} رابط`;
+  return accounts;
+}
+
+/* ---------- الفحص (مباشر ثم عبر وسطاء لإجبار عرض الصلاحية) ---------- */
+const fmtDate=ts=>{
+  if(!ts||ts==='null')return 'غير محدودة';
+  const d=new Date(Number(ts)*1000);
+  if(isNaN(d))return String(ts);
+  const days=Math.ceil((d-Date.now())/864e5),s=d.toLocaleDateString('en-GB');
+  return days<0?`${s} (منتهية)`:`${s} (${days} يوم)`;
+};
+async function getJson(u){
+  const c=new AbortController(),to=setTimeout(()=>c.abort(),10000);
+  try{const j=JSON.parse(await (await fetch(u,{signal:c.signal})).text());if(j&&j.user_info)return j;throw new Error('x')}
+  finally{clearTimeout(to)}
+}
+async function fetchInfo(a){
+  const api=`${a.host}/player_api.php?username=${encodeURIComponent(a.username)}&password=${encodeURIComponent(a.password)}`,e=encodeURIComponent(api);
+  /* طلب أصلي (بدون قيود CORS) عند وجود Capacitor أو Cordova داخل الـ APK */
+  try{
+    const CH=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.CapacitorHttp;
+    if(CH){const r=await CH.get({url:api,connectTimeout:10000,readTimeout:10000});const j=typeof r.data==='string'?JSON.parse(r.data):r.data;if(j&&j.user_info)return j}
+    const CP=window.cordova&&window.cordova.plugin&&window.cordova.plugin.http;
+    if(CP){const j=await new Promise((ok,no)=>CP.sendRequest(api,{method:'get',timeout:10},r=>{try{ok(JSON.parse(r.data))}catch(x){no(x)}},no));if(j&&j.user_info)return j}
+  }catch(x){}
+  const urls=[];
+  if(!(location.protocol==='https:'&&a.host.startsWith('http:')))urls.push(api);
+  urls.push('https://api.allorigins.win/raw?url='+e,'https://corsproxy.io/?'+e,'https://api.codetabs.com/v1/proxy?quest='+e,'https://thingproxy.freeboard.io/fetch/'+api,'https://yacdn.org/proxy/'+api);
+  try{return await Promise.any(urls.map(getJson))}catch(x){window.lastErr=(x.errors||[x]).map(e=>e.name+': '+e.message).join(' | ');return null}
+}
+async function checkOne(a,idx){
+  const el=$('res-'+idx),R={ok:false,label:'',exp:''};
+  const set=(cls,txt)=>{el.className='res '+cls;el.querySelector('.status').textContent=txt;R.ok=cls==='ok';R.label=txt};
+  const j=await fetchInfo(a),ui=j&&j.user_info;
+  if(!ui){set('fail','⚠️ تعذّر الفحص');R.exp='تعذّر جلب الصلاحية';el.querySelector('.exp').textContent=R.exp+' ['+(window.lastErr||'').slice(0,160)+']';return R}
+  if(ui.auth===0||ui.auth==='0'){set('fail','❌ بيانات غير صحيحة');el.querySelector('.st').textContent='غير صالح';return R}
+  const expired=ui.exp_date&&Number(ui.exp_date)*1000<Date.now();
+  R.exp=fmtDate(ui.exp_date);
+  el.querySelector('.exp').textContent=R.exp;el.querySelector('.st').textContent=ui.status||'--';
+  el.querySelector('.mx').textContent=ui.max_connections??'--';el.querySelector('.ac').textContent=ui.active_cons??'--';
+  if(String(ui.status).toLowerCase()==='active'&&!expired)set('ok','✅ يعمل');else set('fail',expired?'⛔ منتهي':'⛔ غير فعال');
+  return R;
+}
+async function performCheck(list){
+  results.innerHTML=list.map((a,i)=>`
+    <div class="res" id="res-${i}">
+      <div class="res-head"><span style="word-break:break-all">🌐 ${esc(a.host)}</span><span class="status">⏳ جارٍ الفحص...</span></div>
+      <div class="details">
+        <div><strong>المستخدم:</strong> <span dir="ltr">${esc(a.username)}</span></div>
+        <div><strong>الصلاحية:</strong> <span class="exp">جاري التحقق...</span></div>
+        <div><strong>الحالة:</strong> <span class="st">--</span></div>
+        <div><strong>الأجهزة:</strong> <span class="mx">--</span> / متصل: <span class="ac">--</span></div>
+      </div>
+      <div class="acts">
+        <button class="sm" data-act="open" data-i="${i}">▶️ فتح في تطبيق</button>
+        <button class="sm" data-act="share" data-i="${i}">📤 مشاركة</button>
+        <button class="sm" data-act="dl" data-i="${i}">⬇️ M3U</button>
+        <button class="sm" data-act="copy" data-i="${i}">📋 نسخ</button>
+        <button class="sm" data-act="qr" data-i="${i}">🔳 QR</button>
+      </div>
+      <div class="qr" id="qr-${i}"><div class="qr-box" id="qrbox-${i}"></div><div class="qr-user">${esc(a.username)}</div>
+        <button class="sm" style="margin-top:8px" data-act="qrdl" data-i="${i}">💾 حفظ الصورة</button></div>
+    </div>`).join('');
+  openM('ovRes');
+  const res=await Promise.all(list.map(checkOne));
+  saveHistory(list,res);
+}
+
+/* فتح الرابط في تطبيق مناسب */
+function openInApp(url){
+  const ua=navigator.userAgent;
+  if(/Android/i.test(ua)){
+    location.href=`intent://${url.replace(/^https?:\/\//,'')}#Intent;scheme=${url.startsWith('https')?'https':'http'};action=android.intent.action.VIEW;type=video/*;end`;
+  }else if(/iPhone|iPad|iPod/i.test(ua)){
+    location.href='vlc-x-callback://x-callback-url/stream?url='+encodeURIComponent(url);
+  }else if(navigator.share){
+    navigator.share({title:'IPTV',url}).catch(()=>{});
+  }else{window.open(url,'_blank','noopener')}
+}
+results.addEventListener('click',async e=>{
+  const b=e.target.closest('button[data-act]');if(!b)return;
+  const a=accounts[b.dataset.i];if(!a)return;
+  const act=b.dataset.act,url=m3u(a);
+  if(act==='copy')copyText(url,'تم نسخ الرابط');
+  else if(act==='open')openInApp(url);
+  else if(act==='share'){navigator.share?navigator.share({title:a.username,url}).catch(()=>{}):copyText(url,'تم نسخ الرابط')}
+  else if(act==='dl'){
+    try{const r=await fetch(url),bl=await r.blob(),l=document.createElement('a');l.href=URL.createObjectURL(bl);l.download=`${a.username}.m3u`;l.click()}
+    catch(err){openInApp(url)}
+  }else if(act==='qr'){
+    const w=$('qr-'+b.dataset.i),box=$('qrbox-'+b.dataset.i);
+    w.classList.toggle('show');
+    if(w.classList.contains('show')&&!box.hasChildNodes()){
+      if(typeof QRCode==='undefined'){showToast('⚠️ تعذّر تحميل مكتبة QR');return}
+      new QRCode(box,{text:url,width:200,height:200,correctLevel:QRCode.CorrectLevel.L});
     }
-    const hostRe=/(?:host|url|server|سيرفر|رابط|هوست)\s*[:=]\s*(https?:\/\/[^\s\r\n]+|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?::\d+)?)/gi;
-    const portRe=/(?:port|منفذ|بورت)\s*[:=]\s*(\d+)/gi;
-    const userRe=/(?:user(?:name)?|مستخدم|يوزر|حساب)\s*[:=]\s*([^\s\r\n,;]+)/gi;
-    const passRe=/(?:pass(?:word)?|كلمة\s*المرور|باسورد|كود)\s*[:=]\s*([^\s\r\n,;]+)/gi;
-    const g=re=>[...text.matchAll(re)].map(x=>x[1]);
-    const hosts=g(hostRe),ports=g(portRe),users=g(userRe),passes=g(passRe);
-    const n=Math.min(hosts.length,users.length,passes.length);
-    for(let i=0;i<n;i++)out.push({host:normalizeHost(hosts[i],ports[i]||null),username:users[i].trim(),password:passes[i].trim()});
-    const lines=text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
-    for(let i=0;i<lines.length;i++){
-      const l=lines[i];
-      if(/^(?:https?:\/\/|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i.test(l)&&!l.includes('get.php')){
-        if(i+3<lines.length&&/^\d+$/.test(lines[i+1])){
-          out.push({host:normalizeHost(l,lines[i+1]),username:lines[i+2],password:lines[i+3]});i+=3;
-        }else if(i+2<lines.length){
-          out.push({host:normalizeHost(l),username:lines[i+1],password:lines[i+2]});i+=2;
-        }
-      }
-    }
-    const seen=new Set();
-    return out.filter(a=>{
-      const k=`${a.host}|${a.username}|${a.password}`.toLowerCase();
-      if(seen.has(k))return false;seen.add(k);return true;
-    });
+  }else if(act==='qrdl'){
+    const src=$('qrbox-'+b.dataset.i).querySelector('canvas');if(!src)return;
+    const c=document.createElement('canvas');c.width=src.width+40;c.height=src.height+70;
+    const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(src,20,20);
+    x.fillStyle='#111';x.font='bold 16px monospace';x.textAlign='center';x.fillText(a.username,c.width/2,src.height+50);
+    const l=document.createElement('a');l.href=c.toDataURL('image/png');l.download=`qr-${a.username}.png`;l.click();
   }
-  function renderCards(list){
-    cards.innerHTML=list.map(a=>`<div class="acc"><div><b>Host</b> ${esc(a.host)}</div><div><b>User</b> ${esc(a.username)}</div><div><b>Pass</b> ${esc(a.password)}</div></div>`).join('');
-  }
-  function updateUI(){
-    accounts=parseText(input.value);
-    inCnt.textContent=`${accounts.length} اشتراك مكتشف`;
-    renderCards(accounts);
-    const urls=accounts.map(m3u);
-    output.value=urls.join('\n\n');
-    outCnt.textContent=`${urls.length} رابط`;
-    return accounts;
-  }
-  const fmtDate=ts=>{
-    if(!ts||ts==='null')return 'غير محدودة';
-    const d=new Date(Number(ts)*1000);
-    if(isNaN(d))return String(ts);
-    const days=Math.ceil((d-Date.now())/864e5);
-    const s=d.toLocaleDateString('en-GB');
-    return days<0?`${s} (منتهية)`: `${s} (${days} يوم)`;
-  };
-  async function checkOne(a,idx){
-    const el=$('res-'+idx);
-    const set=(cls,txt)=>{el.className='res '+cls;el.querySelector('.status').textContent=txt};
-    try{
-      const r=await fetch(PROXY_URL,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({host:a.host,username:a.username,password:a.password}),
-        signal:AbortSignal.timeout(15000)
-      });
-      let j;
-      try{j=await r.json()}catch(e){throw new Error('استجابة غير مفهومة من Worker (HTTP '+r.status+')')}
-      if(!r.ok)throw new Error(j.error||('Worker HTTP '+r.status));
-      const ui=j&&j.user_info;
-      if(!ui||ui.auth===0||ui.auth==='0'){
-        set('fail','❌ بيانات غير صحيحة');
-        el.querySelector('.exp').textContent='لم يتم قبول بيانات الاشتراك';
-        el.querySelector('.st').textContent='غير صالح';
-        return;
-      }
-      const active=String(ui.status).toLowerCase()==='active';
-      const expired=ui.exp_date&&Number(ui.exp_date)*1000<Date.now();
-      el.querySelector('.exp').textContent=fmtDate(ui.exp_date);
-      el.querySelector('.st').textContent=ui.status||'--';
-      el.querySelector('.mx').textContent=ui.max_connections??'--';
-      el.querySelector('.ac').textContent=ui.active_cons??'--';
-      if(active&&!expired)set('ok','✅ يعمل');else set('fail',expired?'⛔ منتهي':'⛔ غير فعال');
-    }catch(e){
-      const msg=e.name==='TimeoutError'?'انتهت مهلة الاتصال':(e.message||'تعذر الاتصال');
-      set('fail','⚠️ تعذّر الفحص');
-      el.querySelector('.exp').textContent=msg;
-      el.querySelector('.st').textContent='--';
-    }
-  }
-  function performCheck(list){
-    checkBox.classList.add('active');
-    results.innerHTML=list.map((a,i)=>`
-      <div class="res" id="res-${i}">
-        <div class="res-head"><span style="word-break:break-all">🌐 ${esc(a.host)}</span><span class="status">⏳ جارٍ الفحص...</span></div>
-        <div class="details">
-          <div><strong>المستخدم:</strong> ${esc(a.username)}</div>
-          <div><strong>الصلاحية:</strong> <span class="exp">جاري التحقق...</span></div>
-          <div><strong>الحالة:</strong> <span class="st">--</span></div>
-          <div><strong>الأجهزة:</strong> <span class="mx">--</span> / متصل: <span class="ac">--</span></div>
-        </div>
-        <div class="acts">
-          <button class="sm" data-act="dl" data-i="${i}">⬇️ تحميل M3U</button>
-          <button class="sm" data-act="open" data-i="${i}">▶️ فتح</button>
-          <button class="sm" data-act="copy" data-i="${i}">📋 نسخ</button>
-          <button class="sm" data-act="qr" data-i="${i}">🔳 QR</button>
-        </div>
-        <div class="qr" id="qr-${i}"><div class="qr-box" id="qrbox-${i}"></div><div class="qr-user">${esc(a.username)}</div>
-          <button class="sm" style="margin-top:8px" data-act="qrdl" data-i="${i}">💾 حفظ الصورة</button></div>
-      </div>`).join('');
-    list.forEach(checkOne);
-  }
-  results.addEventListener('click',async e=>{
-    const b=e.target.closest('button[data-act]');if(!b)return;
-    const a=accounts[b.dataset.i];if(!a)return;
-    const act=b.dataset.act,url=m3u(a);
-    if(act==='copy')copyText(url,'تم نسخ الرابط');
-    else if(act==='open')window.open(url,'_blank','noopener');
-    else if(act==='dl'){
-      try{
-        const r=await fetch(url);const blob=await r.blob();
-        const l=document.createElement('a');l.href=URL.createObjectURL(blob);
-        l.download=`${a.username}.m3u`;l.click();URL.revokeObjectURL(l.href);
-      }catch(err){
-        window.open(url,'_blank','noopener');
-        showToast('⚠️ تم الفتح في تبويب جديد بسبب قيود المتصفح');
-      }
-    }else if(act==='qr'){
-      const wrap=$('qr-'+b.dataset.i),box=$('qrbox-'+b.dataset.i);
-      wrap.classList.toggle('show');
-      if(wrap.classList.contains('show')&&!box.hasChildNodes()){
-        if(typeof QRCode==='undefined'){showToast('⚠️ تعذّر تحميل مكتبة QR');return}
-        new QRCode(box,{text:url,width:180,height:180,correctLevel:QRCode.CorrectLevel.L});
-      }
-    }else if(act==='qrdl'){
-      const src=$('qrbox-'+b.dataset.i).querySelector('canvas');
-      if(!src)return;
-      const c=document.createElement('canvas');c.width=src.width+40;c.height=src.height+70;
-      const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);
-      x.drawImage(src,20,20);x.fillStyle='#111';x.font='bold 16px monospace';x.textAlign='center';
-      x.fillText(a.username,c.width/2,src.height+50);
-      const l=document.createElement('a');l.href=c.toDataURL('image/png');l.download=`qr-${a.username}.png`;l.click();
-    }
+});
+
+/* ---------- السجل: قائمة منسدلة مخفية ---------- */
+function saveHistory(list,res){
+  let h=store.get(HK,[]);const now=Date.now();
+  list.forEach((a,i)=>{
+    const k=`${a.host}|${a.username}|${a.password}`.toLowerCase();
+    h=h.filter(x=>`${x.host}|${x.username}|${x.password}`.toLowerCase()!==k);
+    h.unshift({host:a.host,username:a.username,password:a.password,ok:res[i].ok,label:res[i].label,exp:res[i].exp,t:now});
   });
-  $('btnCheck').onclick=()=>{
-    const list=updateUI();
-    if(!list.length){showToast('⚠️ لم يتم العثور على أي بيانات صالحة');checkBox.classList.remove('active');return}
-    showToast(`✅ تم استخراج ${list.length}، جارٍ الفحص...`);
-    performCheck(list);
-  };
-  $('btnCopy').onclick=()=>{output.value.trim()?copyText(output.value.trim(),'تم نسخ كل الروابط'):showToast('⚠️ لا توجد روابط للنسخ')};
-  $('btnPaste').onclick=async()=>{
-    try{input.value=await navigator.clipboard.readText();updateUI();showToast('📌 تم اللصق')}
-    catch(e){showToast('⚠️ اسمح بالوصول للحافظة أو الصق يدوياً');input.focus()}
-  };
-  $('btnClear').onclick=()=>{input.value='';updateUI();results.innerHTML='';checkBox.classList.remove('active');showToast('🗑️ تم المسح')};
-  input.addEventListener('input',updateUI);
+  store.set(HK,h.slice(0,MAXH));renderHistory();
+}
+function renderHistory(){
+  const h=store.get(HK,[]);
+  $('histCnt').textContent=h.length;
+  hsel.innerHTML=h.length?h.map((x,i)=>`<option value="${i}">${x.ok?'✅':'❌'} ${esc(x.username)} @ ${esc(x.host.replace(/^https?:\/\//,''))} — ${esc(x.exp||x.label||'--')}</option>`).join(''):'<option value="">لا توجد فحوصات محفوظة بعد</option>';
+}
+const selected=()=>{const h=store.get(HK,[]);return h[hsel.value]||null};
+$('hRe').onclick=()=>{const x=selected();if(!x){showToast('⚠️ اختر عنصراً أولاً');return}accounts=[{host:x.host,username:x.username,password:x.password}];performCheck(accounts)};
+$('hCopy').onclick=()=>{const x=selected();x&&copyText(m3u(x),'تم نسخ الرابط')};
+$('hDel').onclick=()=>{const h=store.get(HK,[]);if(h[hsel.value]){h.splice(hsel.value,1);store.set(HK,h);renderHistory()}};
+$('btnHistClear').onclick=()=>{if(confirm('هل تريد مسح كل سجل الفحوصات؟')){store.set(HK,[]);renderHistory()}};
+renderHistory();
+
+/* ---------- الأزرار ---------- */
+$('btnCheck').onclick=()=>{
+  const list=updateUI();
+  if(!list.length){showToast('⚠️ لم يتم العثور على أي بيانات صالحة');return}
+  showToast(`✅ تم استخراج ${list.length}، جارٍ الفحص...`);
+  performCheck(list);
+};
+$('btnCopy').onclick=()=>{output.value.trim()?copyText(output.value.trim(),'تم نسخ كل الروابط'):showToast('⚠️ لا توجد روابط للنسخ')};
+$('btnPaste').onclick=async()=>{
+  try{input.value=await navigator.clipboard.readText();updateUI();showToast('📌 تم اللصق')}
+  catch(e){showToast('⚠️ اسمح بالوصول للحافظة أو الصق يدوياً');input.focus()}
+};
+$('btnClear').onclick=()=>{input.value='';updateUI();showToast('🗑️ تم المسح')};
+input.addEventListener('input',updateUI);
 })();
 </script>
 </body>
